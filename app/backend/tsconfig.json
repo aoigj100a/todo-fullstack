@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "es5",  //指定編譯生成的JS版本
+        "module": "commonjs", //指定生成哪種模組
+        "lib": ["ES2017","ES7","ES6"],
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true,  //啟用所有嚴格類型檢查選項
+        "esModuleInterop": true,  //兼容模組導入的方式
+        "skipLibCheck": true,     // 不會檢查引入的函式庫檔案       
+        "forceConsistentCasingInFileNames": true, //確保檔案的大小寫一致
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "paths": {
+            "*":["node_modules/*"]
+        }
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
+}

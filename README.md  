@@ -1,0 +1,108 @@
+# todo-fullstack
+
+### 1. 專案初始設定 ✅
+- [x] 建立基本的 Express 應用程式
+- [x] 設定 TypeScript
+- [x] 加入 CORS
+- [x] 建立 Git 版控
+- [x] 設定環境變數 (.env)
+- [ ] monorepo 初始設定
+
+### 2. 基礎架構 (進行中)
+
+```
+todo-fullstack/
+├── apps/                    # 應用程式
+│   ├── frontend/           # Next.js 前端
+│   └── backend/            # Express.js 後端
+├── packages/               # 共用套件
+│   └── shared/            # 共用型別和工具
+├── package.json           # 根目錄配置
+├── turbo.json             # Turborepo 配置
+└── README.md
+```
+
+## 前端架構 (apps/frontend)
+
+```
+frontend/
+├── public/                # 靜態資源
+├── src/
+│   ├── app/              # Next.js 13+ App Router
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   └── (routes)/    # 路由分組
+│   ├── components/       # React 元件
+│   │   ├── ui/          # 基礎 UI 元件
+│   │   └── features/    # 功能元件
+│   ├── hooks/           # 自定義 Hooks
+│   ├── lib/             # 工具函式
+│   ├── services/        # API 服務
+│   ├── styles/          # 樣式檔案
+│   └── types/           # 型別定義
+├── package.json
+└── tsconfig.json
+```
+
+- [x] 建立資料夾結構
+- [x] 設定錯誤處理中間件
+- [x] 加入請求日誌功能
+- [x] 設定健康檢查路由 (`/api/health`)
+
+### 3. 資料庫設定
+
+- [ ] 安裝 MongoDB 相關套件
+- [ ] 建立資料庫連線設定
+- [ ] 建立資料庫錯誤處理機制
+- [ ] 設定資料庫連線池
+
+### 4. Todo 功能實作
+
+- [ ] 建立 Todo Model
+- [ ] 實作 Todo Routes
+- [ ] 實作 Todo Controller
+- [ ] API 端點：
+  - [ ] GET /api/todos (取得所有)
+  - [ ] POST /api/todos (新增)
+  - [ ] PUT /api/todos/:id (更新)
+  - [ ] DELETE /api/todos/:id (刪除)
+
+### 5. 資料驗證
+
+- [ ] 安裝 express-validator
+- [ ] 建立驗證中間件
+- [ ] 加入請求資料驗證
+
+### 6. 安全性設定 ✅
+
+- [x] 設定適當的 CORS 規則
+- [x] 加入 helmet 安全標頭
+- [ ] 設定速率限制
+- [ ] 設定輸入資料清理
+
+### 7. 效能優化
+
+- [ ] 設定資料壓縮
+- [ ] 實作快取機制
+- [ ] 優化資料庫查詢
+- [ ] 設定適當的超時處理
+
+### 8. 測試
+
+- [ ] 設定測試環境
+- [ ] 撰寫單元測試
+- [ ] 撰寫整合測試
+- [ ] 設定 CI/CD
+
+### 9. 文件
+
+- [ ] API 文件
+- [ ] 使用說明
+- [ ] 部署說明
+
+### 10. 部署準備
+
+- [ ] 設定 production 環境變數
+- [ ] 建立 Docker 配置
+- [ ] 設定錯誤監控
+- [ ] 設定日誌系統
