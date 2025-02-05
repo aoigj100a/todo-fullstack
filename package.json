@@ -1,0 +1,23 @@
+{
+  "name": "todo-fullstack",
+  "private": true,
+  "workspaces": [
+    "app/backend",
+    "app/frontend",
+    "package/shared"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev -w app/backend",
+    "dev:frontend": "npm run dev -w app/frontend",
+    "build": "npm run build --workspaces",
+    "start": "npm run start --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "prettier": "^3.0.0",
+    "eslint": "^8.0.0"
+  }
+}
