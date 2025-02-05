@@ -1,10 +1,22 @@
 # Todo Full Stack Project
 
-全端 Todo List 應用，使用 Next.js + Express.js 建立前後端分離架構，導入 TypeScript 確保程式碼品質，實作 JWT 身份驗證系統，採用 MongoDB 作為資料庫，使用 React Query/SWR 管理前端資料狀態。
+## 專案目標
 
-## 專案架構
-- 前端：Next.js + TypeScript + Tailwind CSS
-- 後端：Express + TypeScript + MongoDB
+- 建立一個前後端分離的 Todo List 應用，練習完整的全端開發流程。
+- 使用 Next.js + Express.js 建立前後端分離架構，導入 TypeScript 確保程式碼品質，實作 JWT 身份驗證系統，採用 MongoDB 作為資料庫，使用 React Query/SWR 管理前端資料狀態。
+
+## 技術選擇
+### 前端（Next.js）
+- TypeScript
+- React Query/SWR 資料處理
+- Tailwind CSS 樣式
+- shadcn/ui 元件庫
+
+### 後端（Express.js）
+- TypeScript
+- MongoDB 資料庫
+- JWT 身份驗證
+- Express Validator 資料驗證
 
 ### 1. 專案初始設定 ✅
 - [x] 建立基本的 Express 應用程式
