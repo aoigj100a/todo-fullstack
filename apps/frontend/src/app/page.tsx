@@ -44,6 +44,9 @@ const TodoList = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 p-4">
+      <h1 className="text-4xl font-bold text-blue-600">
+        Hello Tailwind
+      </h1>
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">

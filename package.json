@@ -1,23 +1,26 @@
 {
   "name": "todo-fullstack",
   "private": true,
-  "workspaces": [
-    "app/backend",
-    "app/frontend",
-    "package/shared"
-  ],
+  "packageManager": "pnpm@10.2.1",
   "scripts": {
-    "dev:backend": "npm run dev -w app/backend",
-    "dev:frontend": "npm run dev -w app/frontend",
-    "build": "npm run build --workspaces",
-    "start": "npm run start --workspaces",
-    "test": "npm run test --workspaces",
-    "lint": "npm run lint --workspaces"
+    "dev:backend": "pnpm --filter ./apps/backend dev",
+    "dev:frontend": "pnpm --filter ./apps/frontend dev",
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "start": "pnpm -r start",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "typescript": "^5.0.0",
+    "eslint": "^8.0.0",
     "prettier": "^3.0.0",
-    "eslint": "^8.0.0"
+    "typescript": "^5.3.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "sharp": "latest"
+    }
   }
 }
