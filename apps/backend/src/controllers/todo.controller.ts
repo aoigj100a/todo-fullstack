@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Todo, ITodoDocument } from "../models/Todo";
 import { AppError } from '../utils/errors';
+import { Error as MongooseError } from 'mongoose';
 
 class TodoController {
   // 取得所有 Todo
@@ -17,7 +18,12 @@ class TodoController {
         data: todos
       });
     } catch (error) {
-      next(new AppError('Failed to fetch todos', 'DATABASE', 500, error));
+      next(new AppError(
+        'Failed to fetch todos', 
+        'DATABASE', 
+        500, 
+        error instanceof Error ? error.message : 'Unknown error'
+      ));
     }
   }
 
@@ -55,10 +61,20 @@ class TodoController {
     } catch (error) {
       if (error instanceof AppError) {
         next(error);
-      } else if (error.name === 'ValidationError') {
-        next(new AppError('Validation failed', 'VALIDATION', 400, error.errors));
+      } else if (error instanceof MongooseError.ValidationError) {
+        next(new AppError(
+          'Validation failed',
+          'VALIDATION',
+          400,
+          error.errors
+        ));
       } else {
-        next(new AppError('Failed to create todo', 'DATABASE', 500, error));
+        next(new AppError(
+          'Failed to create todo',
+          'DATABASE',
+          500,
+          error instanceof Error ? error.message : 'Unknown error'
+        ));
       }
     }
   }
@@ -100,10 +116,20 @@ class TodoController {
     } catch (error) {
       if (error instanceof AppError) {
         next(error);
-      } else if (error.name === 'ValidationError') {
-        next(new AppError('Validation failed', 'VALIDATION', 400, error.errors));
+      } else if (error instanceof MongooseError.ValidationError) {
+        next(new AppError(
+          'Validation failed',
+          'VALIDATION',
+          400,
+          error.errors
+        ));
       } else {
-        next(new AppError('Failed to update todo', 'DATABASE', 500, error));
+        next(new AppError(
+          'Failed to update todo',
+          'DATABASE',
+          500,
+          error instanceof Error ? error.message : 'Unknown error'
+        ));
       }
     }
   }
@@ -135,7 +161,12 @@ class TodoController {
       if (error instanceof AppError) {
         next(error);
       } else {
-        next(new AppError('Failed to delete todo', 'DATABASE', 500, error));
+        next(new AppError(
+          'Failed to delete todo',
+          'DATABASE',
+          500,
+          error instanceof Error ? error.message : 'Unknown error'
+        ));
       }
     }
   }
