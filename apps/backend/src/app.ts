@@ -1,4 +1,6 @@
 import express from 'express';
+import { authMiddleware } from './middlewares/auth';
+import todoRoutes from './routes/todo.routes';
 
 // 建立 Express 應用程式
 const app = express();
@@ -9,6 +11,11 @@ app.use(express.json());
 
 // 解析 URL 編碼的請求體
 app.use(express.urlencoded({ extended: true }));
+
+
+// 應用程式路由
+app.use('/api/todos', authMiddleware, todoRoutes);
+
 
 // 健康檢查路由 - 直接在根層級設定
 app.get('/api/health', (req, res) => {
