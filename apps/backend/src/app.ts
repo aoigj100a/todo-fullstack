@@ -1,6 +1,5 @@
 import express from 'express';
-import errorHandler from '../middlewares/errorHandler';
-import requestLogger from '../middlewares/requestLogger';
+
 // 建立 Express 應用程式
 const app = express();
 
@@ -26,8 +25,15 @@ app.get('/api/health', (req, res) => {
     error.status = 404;
     next(error);
   });
-  
   // 錯誤處理中間件
-  app.use(errorHandler);
+  app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.status(err.status || 500);
+    res.json({
+      error: {
+        message: err.message,
+        status: err.status
+      }
+    });
+  });
 
 export default app;
