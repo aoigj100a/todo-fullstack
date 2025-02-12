@@ -61,3 +61,50 @@ export const createTodo = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const deleteTodo = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    // 檢查 id 是否存在
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        error: "Todo ID is required",
+      });
+    }
+
+    // 檢查 id 格式是否有效
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid todo ID format",
+      });
+    }
+
+    // 刪除指定的 todo
+    const deletedTodo = await Todo.findByIdAndDelete(id);
+
+    // 如果找不到對應的 todo
+    if (!deletedTodo) {
+      return res.status(404).json({
+        success: false,
+        error: "Todo not found",
+      });
+    }
+
+    // 回傳成功訊息
+    res.json({
+      success: true,
+      message: "Todo deleted successfully",
+      data: deletedTodo,
+    });
+
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to delete todo",
+    });
+  }
+};
