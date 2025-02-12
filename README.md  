@@ -169,9 +169,9 @@ frontend/
 
 ### 7. Todo 功能實作
 
-- [ ] 建立 Todo Model
-- [ ] 實作 Todo Routes
-- [ ] 實作 Todo Controller
+- [x] 建立 Todo Model
+- [x] 實作 Todo Routes
+- [x] 實作 Todo Controller
 - [ ] API 端點：
   - [ ] GET /api/todos (取得所有)
   - [ ] POST /api/todos (新增)

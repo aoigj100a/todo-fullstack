@@ -1,5 +1,4 @@
 import express from 'express';
-import { authMiddleware } from './middlewares/auth';
 import todoRoutes from './routes/todo.routes';
 
 // 建立 Express 應用程式
@@ -14,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // 應用程式路由
-app.use('/api/todos', authMiddleware, todoRoutes);
+app.use('/api/todos', todoRoutes);
 
 
 // 健康檢查路由 - 直接在根層級設定
@@ -32,6 +31,7 @@ app.get('/api/health', (req, res) => {
     error.status = 404;
     next(error);
   });
+  
   // 錯誤處理中間件
   app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     res.status(err.status || 500);
