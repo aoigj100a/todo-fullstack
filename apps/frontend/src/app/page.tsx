@@ -1,111 +1,57 @@
-"use client";
-
-import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
-import { Input } from "./components/ui/input";
-import { Button } from "./components/ui/button";
-import { Checkbox } from "./components/ui/checkbox";
-import { Plus, Trash2 } from "lucide-react";
-
-const TodoList = () => {
-  const [todos, setTodos] = useState([
-    { id: 1, text: "完成前端開發", completed: false },
-    { id: 2, text: "學習 shadcn/ui", completed: true },
-    { id: 3, text: "製作 TodoList", completed: false },
-  ]);
-  const [newTodo, setNewTodo] = useState("");
-
-  const addTodo = (e) => {
-    e.preventDefault();
-    if (newTodo.trim() === "") return;
-
-    setTodos([
-      ...todos,
-      {
-        id: Date.now(),
-        text: newTodo,
-        completed: false,
-      },
-    ]);
-    setNewTodo("");
-  };
-
-  const toggleTodo = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
-
-  const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-slate-50 p-4">
-      <Card className="max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
-            待辦事項清單
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={addTodo} className="flex gap-2 mb-6">
-            <Input
-              type="text"
-              placeholder="新增待辦事項..."
-              value={newTodo}
-              onChange={(e) => setNewTodo(e.target.value)}
-              className="flex-1"
-            />
-            <Button type="submit">
-              <Plus className="w-4 h-4 mr-2" />
-              新增
-            </Button>
-          </form>
+    <main className="min-h-screen bg-gradient-to-b from-blue-100 to-white">
+      <div className="container mx-auto px-4 py-16">
+        {/* 標題區塊 */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Todo App
+          </h1>
+          <p className="text-lg text-gray-600">
+            Manage your tasks efficiently
+          </p>
+        </div>
 
-          <div className="h-96 overflow-y-auto">
-            <div className="space-y-4">
-              {todos.map((todo) => (
-                <div
-                  key={todo.id}
-                  className="flex items-center justify-between p-4 rounded-lg bg-white border"
-                >
-                  <div className="flex items-center gap-3">
-                    <Checkbox
-                      checked={todo.completed}
-                      onCheckedChange={() => toggleTodo(todo.id)}
-                    />
-                    <span
-                      className={`${
-                        todo.completed ? "line-through text-slate-500" : ""
-                      }`}
-                    >
-                      {todo.text}
-                    </span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => deleteTodo(todo.id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
+        {/* 功能展示區 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* 卡片 1 */}
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">
+              Task Management
+            </h2>
+            <p className="text-gray-600">
+              Create, organize, and track your tasks with ease
+            </p>
           </div>
 
-          <div className="mt-4 text-sm text-slate-500 text-center">
-            總計: {todos.length} 項 / 已完成:{" "}
-            {todos.filter((t) => t.completed).length} 項
+          {/* 卡片 2 */}
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">
+              Progress Tracking
+            </h2>
+            <p className="text-gray-600">
+              Monitor your progress and stay on top of deadlines
+            </p>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+
+          {/* 卡片 3 */}
+          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">
+              Team Collaboration
+            </h2>
+            <p className="text-gray-600">
+              Work together efficiently with team features
+            </p>
+          </div>
+        </div>
+
+        {/* 開始使用按鈕 */}
+        <div className="text-center mt-12">
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-colors">
+            Get Started
+          </button>
+        </div>
+      </div>
+    </main>
   );
-};
-
-export default TodoList;
+}
