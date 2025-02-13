@@ -62,6 +62,79 @@ export const createTodo = async (req: Request, res: Response) => {
   }
 };
 
+export const updateTodo = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, description, status, assignedTo } = req.body;
+    // 檢查 id 是否存在
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        error: "Todo ID is required",
+      });
+    }
+    // 檢查 id 格式是否有效
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid todo ID format",
+      });
+    }
+
+    // 檢查是否有要更新的資料
+    if (!title && !description && !status && !assignedTo) {
+      return res.status(400).json({
+        success: false,
+        error: "No update data provided",
+      });
+    }
+    // 建立更新物件
+    const updateData: any = {};
+
+    // 只更新有提供的欄位
+    if (title?.trim()) updateData.title = title.trim();
+    if (description !== undefined) updateData.description = description.trim();
+    if (status) {
+      // 驗證 status 欄位
+      const validStatuses = ["pending", "in-progress", "completed"];
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid status value",
+          validValues: validStatuses,
+        });
+      }
+      updateData.status = status;
+    }
+    if (assignedTo !== undefined) updateData.assignedTo = assignedTo;
+
+    // 使用 { new: true } 來返回更新後的文件
+    const updatedTodo = await Todo.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true, // 確保更新時也運行驗證
+    });
+    // 如果找不到對應的 todo
+    if (!updatedTodo) {
+      return res.status(404).json({
+        success: false,
+        error: "Todo not found",
+      });
+    }
+    // 回傳更新後的資料
+    res.json({
+      success: true,
+      message: "Todo updated successfully",
+      data: updatedTodo,
+    });
+  } catch (error) {
+    console.error("Error updating todo:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to update todo",
+    });
+  }
+};
+
 export const deleteTodo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -99,7 +172,6 @@ export const deleteTodo = async (req: Request, res: Response) => {
       message: "Todo deleted successfully",
       data: deletedTodo,
     });
-
   } catch (error) {
     console.error("Error deleting todo:", error);
     res.status(500).json({
