@@ -92,7 +92,7 @@ export const errorHandler = (
   // 如果是自定義的 AppError
   if (err instanceof AppError) {
     const response = err.toResponse();
-  res.status(response.status).json(response);
+    res.status(response.status).json(response);
     return;
   }
 
