@@ -14,9 +14,9 @@ const requestLogger = (req: Request, res: Response, next: NextFunction) => {
     if (isDev) {
       // Colorize output in development
       const color = res.statusCode >= 500 ? '\x1b[31m' : // red
-                   res.statusCode >= 400 ? '\x1b[33m' : // yellow
-                   res.statusCode >= 300 ? '\x1b[36m' : // cyan
-                   '\x1b[32m'; // green
+        res.statusCode >= 400 ? '\x1b[33m' : // yellow
+          res.statusCode >= 300 ? '\x1b[36m' : // cyan
+            '\x1b[32m'; // green
       console.log(`${color}${logMessage}\x1b[0m`);
     } else {
       // JSON format for production

@@ -31,9 +31,9 @@ const testCreateTodo = async () => {
     const mockAssigneeId = new mongoose.Types.ObjectId();
 
     const newTodo = new Todo({
-      title: "Test Todo",
-      description: "This is a test todo",
-      status: "pending",
+      title: 'Test Todo',
+      description: 'This is a test todo',
+      status: 'pending',
       createdBy: mockUserId,
       assignedTo: mockAssigneeId,
       dueDate: new Date('2025-03-01')
@@ -66,8 +66,8 @@ const testUpdateTodo = async (todoId: string) => {
     const updatedTodo = await Todo.findByIdAndUpdate(
       todoId,
       {
-        status: "in-progress",
-        description: "Updated description"
+        status: 'in-progress',
+        description: 'Updated description'
       },
       { new: true }
     );

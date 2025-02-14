@@ -1,10 +1,10 @@
 // src/models/Todo.ts
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface ITodo extends Document {
   title: string;
   description?: string;
-  status: "pending" | "in-progress" | "completed";
+  status: 'pending' | 'in-progress' | 'completed';
   assignedTo: string;
   createdAt: Date;
   updatedAt: Date;
@@ -14,24 +14,24 @@ const TodoSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "Title is required"],
+      required: [true, 'Title is required'],
       trim: true,
-      minlength: [3, "Title too short"],
-      maxlength: [100, "Title too long"],
+      minlength: [3, 'Title too short'],
+      maxlength: [100, 'Title too long'],
     },
     description: {
       type: String,
       trim: true,
-      maxlength: [500, "Description too long"],
-      default: "",
+      maxlength: [500, 'Description too long'],
+      default: '',
     },
     status: {
       type: String,
       enum: {
-        values: ["pending", "in-progress", "completed"],
-        message: "{VALUE} is not a valid status",
+        values: ['pending', 'in-progress', 'completed'],
+        message: '{VALUE} is not a valid status',
       },
-      default: "pending",
+      default: 'pending',
       required: true,
     },
     assignedTo: {
@@ -44,4 +44,4 @@ const TodoSchema = new Schema(
   }
 );
 
-export const Todo = mongoose.model<ITodo>("Todo", TodoSchema);
+export const Todo = mongoose.model<ITodo>('Todo', TodoSchema);
