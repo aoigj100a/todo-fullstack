@@ -19,7 +19,7 @@
 - JWT 身份驗證
 - Express Validator 資料驗證
 
-### 1. 專案初始設定 ✅
+### 1. 專案初始設定
 - [x] 建立基本的 Express 應用程式
 - [x] 設定 TypeScript
 - [x] 加入 CORS
@@ -78,11 +78,11 @@ frontend/
 
 4.1 基礎頁面建置
 
-- [ ] 建立頁面路由結構：
-  - [ ] /login (登入頁面)
-  - [ ] /register (註冊頁面)
-  - [ ] /todos (待辦事項主頁面)
-  - [ ] /profile (個人資料頁面)
+- [x] 建立頁面路由結構：
+  - [x] /login (登入頁面)
+  - [x] /register (註冊頁面)
+  - [x] /todos (待辦事項主頁面)
+  - [x] /profile (個人資料頁面)
 
 4.2 Todo 列表介面
 
@@ -129,9 +129,9 @@ frontend/
 4.7 UI 元件開發
 
 - [ ] 整合 shadcn/ui 元件：
+  - [x] 基本元件配置
   - [ ] Button 元件客製化
   - [ ] Input 元件樣式調整
-  - [ ] Dialog 元件配置
   - [ ] Select 元件整合
   - [ ] DatePicker 元件設定
 
