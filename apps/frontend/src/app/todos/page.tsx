@@ -2,14 +2,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Minus, Check } from "lucide-react";
-
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Todo } from "@/types/todo";
-import { todoService } from "@/service/todo";
+
+import { TodosLoadingState } from "@/components/todos/TodosLoadingState";
 import TodoStatusIcon from "@/components/shared/TodoStatusIcon";
+
+import { todoService } from "@/service/todo";
+import { Todo } from "@/types/todo";
 
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -20,10 +21,40 @@ export default function TodoList() {
     loadTodos();
   }, []);
 
+  // const loadTodos = async () => {
+  //   try {
+  //     const data = await todoService.getTodos();
+  //     setTodos(data);
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to load todos",
+  //       variant: "destructive",
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const loadTodos = async () => {
     try {
-      const data = await todoService.getTodos();
-      setTodos(data);
+      // 暫時使用假資料進行測試
+      const mockTodos: Todo[] = [
+        {
+          _id: "1",
+          title: "完成專案文件",
+          description: "撰寫專案的技術文件",
+          status: "completed"
+        },
+        {
+          _id: "2",
+          title: "實作待辦事項功能",
+          description: "開發 Todo 列表的基本功能",
+          status: "pending"
+        }
+      ];
+      
+      setTodos(mockTodos);
     } catch (error) {
       toast({
         title: "Error",
