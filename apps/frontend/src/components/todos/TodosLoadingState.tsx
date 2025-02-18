@@ -6,7 +6,7 @@ export function TodosLoadingState() {
   return (
     <div className="space-y-4">
       {[1, 2, 3].map((index) => (
-        <Card key={index} className="p-4 border-teal-600">
+        <Card key={index} className="p-4">
           <div className="flex items-center">
             <div className="px-4">
               <Skeleton className="h-8 w-8 rounded-full" />

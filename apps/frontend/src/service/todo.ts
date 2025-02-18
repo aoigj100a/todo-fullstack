@@ -1,78 +1,94 @@
 // src/services/todo.ts
-import { CreateTodoInput, Todo, UpdateTodoInput, TodoFilters } from '@/types/todo';
-import { authService } from './auth';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const mockTodos = [
+  {
+    _id: "1",
+    title: "完成專案架構設計",
+    description: "規劃資料夾結構、設定基礎配置、建立開發環境",
+    status: "completed" as const,
+    assignedTo: "Jenny",
+    createdAt: new Date("2024-02-15").toISOString(),
+    updatedAt: new Date("2024-02-16").toISOString(),
+  },
+  {
+    _id: "2",
+    title: "實作身份驗證功能",
+    description: "使用 JWT 實作登入、註冊和權限控制機制",
+    status: "in-progress" as const,
+    assignedTo: "Jenny",
+    createdAt: new Date("2024-02-16").toISOString(),
+    updatedAt: new Date("2024-02-16").toISOString(),
+  },
+  {
+    _id: "3",
+    title: "設計資料庫結構",
+    description: "設計 MongoDB 的 Schema，包含使用者和待辦事項的資料結構",
+    status: "pending" as const,
+    assignedTo: "Jenny",
+    createdAt: new Date("2024-02-17").toISOString(),
+    updatedAt: new Date("2024-02-17").toISOString(),
+  },
+  {
+    _id: "4",
+    title: "建立 API 文件",
+    description: "使用 Swagger 產生 API 文件，包含所有端點的詳細說明",
+    status: "pending" as const,
+    assignedTo: "Jenny",
+    createdAt: new Date("2024-02-17").toISOString(),
+    updatedAt: new Date("2024-02-17").toISOString(),
+  },
+  {
+    _id: "5",
+    title: "前端效能優化",
+    description: "實作延遲載入、壓縮資源、快取策略等優化措施",
+    status: "in-progress" as const,
+    assignedTo: "Jenny",
+    createdAt: new Date("2024-02-18").toISOString(),
+    updatedAt: new Date("2024-02-18").toISOString(),
+  },
+];
 
 export const todoService = {
-  async getTodos(filters?: TodoFilters): Promise<Todo[]> {
-    const token = authService.getToken();
-    const queryParams = new URLSearchParams();
-    
-    if (filters?.status) queryParams.append('status', filters.status);
-    if (filters?.search) queryParams.append('search', filters.search);
-    if (filters?.assignedTo) queryParams.append('assignedTo', filters.assignedTo);
-
-    const response = await fetch(`${API_URL}/todos?${queryParams}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch todos');
-    }
-
-    return response.json();
+  getTodos: async () => {
+    // 模擬 API 延遲
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return mockTodos;
   },
 
-  async createTodo(input: CreateTodoInput): Promise<Todo> {
-    const token = authService.getToken();
-    const response = await fetch(`${API_URL}/todos`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(input),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to create todo');
-    }
-
-    return response.json();
+  createTodo: async (
+    todo: Omit<(typeof mockTodos)[0], "_id" | "createdAt" | "updatedAt">
+  ) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const newTodo = {
+      _id: Math.random().toString(36).substr(2, 9),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      ...todo,
+    };
+    mockTodos.push(newTodo);
+    return newTodo;
   },
 
-  async updateTodo(input: UpdateTodoInput): Promise<Todo> {
-    const token = authService.getToken();
-    const response = await fetch(`${API_URL}/todos/${input.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(input),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to update todo');
+  deleteTodo: async (id: string) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const index = mockTodos.findIndex((todo) => todo._id === id);
+    if (index !== -1) {
+      mockTodos.splice(index, 1);
+      return true;
     }
-
-    return response.json();
+    throw new Error("Todo not found");
   },
 
-  async deleteTodo(id: string): Promise<void> {
-    const token = authService.getToken();
-    const response = await fetch(`${API_URL}/todos/${id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to delete todo');
+  updateTodo: async (
+    id: string,
+    updates: Partial<Omit<(typeof mockTodos)[0], "_id" | "createdAt">>
+  ) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const todo = mockTodos.find((todo) => todo._id === id);
+    if (!todo) {
+      throw new Error("Todo not found");
     }
+    Object.assign(todo, { ...updates, updatedAt: new Date().toISOString() });
+    return todo;
   },
 };
