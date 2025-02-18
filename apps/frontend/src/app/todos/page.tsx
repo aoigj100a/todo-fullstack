@@ -1,15 +1,90 @@
-// src/app/todos/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Minus, Check } from "lucide-react";
+import { Pencil, Trash2, Loader2 } from "lucide-react";
 
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import TodoStatusIcon from "@/components/shared/TodoStatusIcon";
+import { TodosLoadingState } from "@/components/todos/TodosLoadingState";
+
 import { Todo } from "@/types/todo";
 import { todoService } from "@/service/todo";
-import TodoStatusIcon from "@/components/shared/TodoStatusIcon";
+
+interface TodoCardProps {
+  title: string;
+  description?: string;
+  status: "pending" | "in-progress" | "completed";
+  onDelete: () => void;
+  onEdit: () => void;
+}
+
+function TodoCard({
+  title,
+  description,
+  status,
+  onDelete,
+  onEdit,
+}: TodoCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <Card
+      className="group relative overflow-hidden transition-all duration-200 hover:shadow-md"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="flex gap-6 p-6">
+        <div className="flex items-center">
+          <TodoStatusIcon status={status} />
+        </div>
+
+        <div className="flex-1 space-y-2">
+          <div className="flex items-start justify-between">
+            <h3 className="font-medium text-lg line-clamp-1">{title}</h3>
+
+            <div
+              className={`flex gap-2 transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onEdit}
+                className="h-8 w-8 p-0 hover:bg-gray-100"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onDelete}
+                className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-500"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          {description && (
+            <p className="text-sm text-gray-500 line-clamp-2">{description}</p>
+          )}
+        </div>
+      </div>
+
+      {/* <div
+        className={`absolute bottom-0 left-0 h-1 w-full
+          ${
+            status === "completed"
+              ? "bg-green-500"
+              : status === "in-progress"
+                ? "bg-blue-500"
+                : "bg-gray-300"
+          }`}
+      /> */}
+    </Card>
+  );
+}
 
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -35,77 +110,62 @@ export default function TodoList() {
     }
   };
 
-  if (isLoading) {
-    return <div className="p-4">Loading...</div>;
-  }
+  const handleDelete = async (id: string) => {
+    try {
+      await todoService.deleteTodo(id);
+      toast({
+        title: "Success",
+        description: "Todo deleted successfully",
+      });
+      loadTodos();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete todo",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex h-96 items-center justify-center">
+  //       <Loader2 className="h-8 w-8 animate-spin text-teal-500" />
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className="p-[48px]">
-      <div className="flex justify-between items-center mt-[8px]">
-        <h1 className="text-[48px] font-bold">My Todos</h1>
-        <Button
-          variant="default"
-          className="text-[32px] bg-teal-500 hover:bg-teal-600"
-        >
+    <div className="p-8">
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="text-3xl font-bold">My Todos</h1>
+        <Button variant="default" className="bg-teal-500 hover:bg-teal-600">
           Add Todo
         </Button>
       </div>
 
-      <div className="space-y-4">
-        <Card className="p-4 text-center text-gray-500 border-teal-600 w-full">
-          <div className="flex items-center">
-            <div className="text-sm text-gray-500 text-[32px] px-[16px]">
-              <TodoStatusIcon status={"completed"} />
-            </div>
-            <div className="flex justify-between items-center w-full">
-              <h3 className="text-[32px] truncate max-w-[280px]">
-                完成專案文件
-              </h3>
-              <p className="text-sm text-gray-500 text-[16px] max-w-[220px] text-left text-overflow overflow-hidden line-clamp-2">
-                撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件
-              </p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-4 text-center text-gray-500 border-teal-600">
-          <div className="flex items-center">
-            <div className="text-sm text-gray-500 text-[32px] px-[16px]">
-              <TodoStatusIcon status={"pending"} />
-            </div>
-            <div className="flex justify-between items-center  w-full">
-              <h3 className="text-[32px] truncate max-w-[280px]">
-                列表容器與卡片設計列表容器與卡片設計列表容器與卡片設計列表容器與卡片設計列表容器與卡片設計列表容器與卡片設計
-              </h3>
-              <p className="text-sm text-gray-500 text-[16px] max-w-[210px] text-left overflow-hidden line-clamp-2">
-                撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件撰寫專案的技術文件
-              </p>
-            </div>
-          </div>
-        </Card>
-      </div>
-      {/* <div className="space-y-4">
-        {todos.length === 0 ? (
-          <Card className="p-4 text-center text-gray-500 border-teal-600">
-            No todos yet. Create one to get started!
-          </Card>
-        ) : (
-          todos.map((todo) => (
-            <Card key={todo.id} className="p-4 border-teal-600">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium">{todo.title}</h3>
-                  {todo.description && (
-                    <p className="text-sm text-gray-500">{todo.description}</p>
-                  )}
-                </div>
-                <div className="text-sm text-gray-500">
-                  Status: {todo.status}
-                </div>
-              </div>
+      {isLoading ? (
+        <TodosLoadingState />
+      ) : (
+        <div className="space-y-4">
+          {todos.length === 0 ? (
+            <Card className="p-6 text-center text-gray-500">
+              <p className="text-lg">No todos yet. Create one to get started!</p>
             </Card>
-          ))
-        )}
-      </div> */}
+          ) : (
+            todos.map((todo) => (
+              <TodoCard
+                key={todo._id}
+                title={todo.title}
+                description={todo.description}
+                status={todo.status}
+                onDelete={() => handleDelete(todo._id)}
+                onEdit={() => console.log('edit', todo._id)}
+              />
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }
