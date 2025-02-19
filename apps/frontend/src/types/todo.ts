@@ -1,13 +1,15 @@
 // src/types/todo.ts
 export interface Todo {
-    id: string;
-    title: string;
-    description?: string;
-    status: 'pending' | 'in-progress' | 'completed';
-    assignedTo?: string;
-    createdAt: string;
-    updatedAt: string;
-  }
+  _id: string;
+  title: string;
+  description?: string;
+  status: "pending" | "in-progress" | "completed";
+  assignedTo: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type TodoStatus = "pending" | "in-progress" | "completed";
   
   export interface CreateTodoInput {
     title: string;
