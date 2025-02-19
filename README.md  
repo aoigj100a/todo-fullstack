@@ -1,10 +1,8 @@
 # Todo Full Stack Project
 
 ## 專案目標
-
 - 建立一個前後端分離的 Todo List 應用，練習完整的全端開發流程。
 - 這不是一個單純的 Todo List 應用，而是輕量級專案管理工具，用於：任務追蹤與管理、團隊協作、進度可視化、簡單的工作流程管理
-- 實作 JWT 身份驗證系統，採用 MongoDB 作為資料庫，使用 React Query/SWR 管理前端資料狀態
 
 ## 技術選擇
 ### 前端（Next.js）
@@ -145,21 +143,23 @@ frontend/
 
 ## 5. 後端架構 (apps/backend)
 
-── backend/
-    ├── src/
-    |   ├── config/       # 所有配置文件
-    |   ├── controllers/  # 控制器
-    |   ├── middlewares/  # 中間件
-    |   ├── models/       # 數據模型
-    |   ├── routes/       # 路由
-    |   ├── utils/        # 工具函數
-    |   ├── app.ts        # Express 應用
-    |   └── server.ts     # 服務器入口
-    ├── dist/             # 編譯輸出
-    ├── node_modules/     # 依賴包
-    ├── nodemon.json      # Nodemon 配置
-    ├── package.json      # 項目配置
-    └── tsconfig.json     # TS 配置
+```
+backend/
+├── src/
+│   ├── config/       # 所有配置文件
+│   ├── controllers/  # 控制器
+│   ├── middlewares/  # 中間件
+│   ├── models/       # 數據模型
+│   ├── routes/       # 路由
+│   ├── utils/        # 工具函數
+│   ├── app.ts        # Express 應用
+│   └── server.ts     # 服務器入口
+├── dist/             # 編譯輸出
+├── node_modules/     # 依賴包
+├── nodemon.json      # Nodemon 配置
+├── package.json      # 項目配置
+└── tsconfig.json     # TS 配置
+```
 
 ### 6. 資料庫設定
 
@@ -176,11 +176,11 @@ frontend/
 - [x] 建立 Todo Model
 - [x] 實作 Todo Routes
 - [x] 實作 Todo Controller
-- [ ] API 端點：
-  - [ ] GET /api/todos (取得所有)
-  - [ ] POST /api/todos (新增)
-  - [ ] PUT /api/todos/:id (更新)
-  - [ ] DELETE /api/todos/:id (刪除)
+- [x] API 端點：
+  - [x] GET /api/todos (取得所有)
+  - [x] POST /api/todos (新增)
+  - [x] PUT /api/todos/:id (更新)
+  - [x] DELETE /api/todos/:id (刪除)
 
 ### 8. 資料驗證
 
