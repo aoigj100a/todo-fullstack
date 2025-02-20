@@ -1,12 +1,16 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+// app/layout.tsx
+import type { Metadata } from "next";
 
-const inter = Inter({ subsets: ['latin'] });
+import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Todo App',
-  description: 'A full-stack todo application built with Next.js and Express.js',
+  title: "Todo App",
+  description:
+    "A full-stack todo application built with Next.js and Express.js",
 };
 
 export default function RootLayout({
@@ -18,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {children}
+        <Toaster />
       </body>
     </html>
   );

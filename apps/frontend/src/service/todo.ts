@@ -1,5 +1,4 @@
 // src/services/todo.ts
-
 const mockTodos = [
   {
     _id: "1",
@@ -50,15 +49,14 @@ const mockTodos = [
 
 export const todoService = {
   getTodos: async () => {
-    // 模擬 API 延遲
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log('Service: Fetching todos');
+    await new Promise(resolve => setTimeout(resolve, 1000));
     return mockTodos;
   },
 
-  createTodo: async (
-    todo: Omit<(typeof mockTodos)[0], "_id" | "createdAt" | "updatedAt">
-  ) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  createTodo: async (todo: Omit<(typeof mockTodos)[0], "_id" | "createdAt" | "updatedAt">) => {
+    console.log('Service: Creating todo');
+    await new Promise(resolve => setTimeout(resolve, 500));
     const newTodo = {
       _id: Math.random().toString(36).substr(2, 9),
       createdAt: new Date().toISOString(),
@@ -70,24 +68,29 @@ export const todoService = {
   },
 
   deleteTodo: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    console.log('Service: Starting delete in mock service');
+    // 確保模擬服務至少需要 5 秒才能完成刪除
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
     const index = mockTodos.findIndex((todo) => todo._id === id);
-    if (index !== -1) {
-      mockTodos.splice(index, 1);
-      return true;
+    if (index === -1) {
+      throw new Error("Todo not found");
     }
-    throw new Error("Todo not found");
+    
+    mockTodos.splice(index, 1);
+    console.log('Service: Completing delete in mock service');
+    return true;
   },
 
-  updateTodo: async (
-    id: string,
-    updates: Partial<Omit<(typeof mockTodos)[0], "_id" | "createdAt">>
-  ) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  updateTodo: async (id: string, updates: Partial<Omit<(typeof mockTodos)[0], "_id" | "createdAt">>) => {
+    console.log('Service: Updating todo');
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
     const todo = mockTodos.find((todo) => todo._id === id);
     if (!todo) {
       throw new Error("Todo not found");
     }
+    
     Object.assign(todo, { ...updates, updatedAt: new Date().toISOString() });
     return todo;
   },
