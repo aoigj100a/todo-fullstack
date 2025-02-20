@@ -11,7 +11,6 @@ import { TodoCard } from "@/components/todos/TodoCard";
 import { Todo } from "@/types/todo";
 import { todoService } from "@/service/todo";
 
-
 function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -66,17 +65,20 @@ function TodosPage() {
         <div className="space-y-4">
           {todos.length === 0 ? (
             <Card className="p-6 text-center text-gray-500">
-              <p className="text-lg">No todos yet. Create one to get started!</p>
+              <p className="text-lg">
+                No todos yet. Create one to get started!
+              </p>
             </Card>
           ) : (
             todos.map((todo) => (
               <TodoCard
+                _id={todo._id}
                 key={todo._id}
                 title={todo.title}
                 description={todo.description}
                 status={todo.status}
                 onDelete={() => handleDelete(todo._id)}
-                onEdit={() => console.log('edit', todo._id)}
+                onEdit={() => console.log("edit", todo._id)}
               />
             ))
           )}

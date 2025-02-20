@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import TodoStatusIcon from "@/components/shared/TodoStatusIcon";
 
 interface TodoCardProps {
+  _id: string;
   title: string;
   description?: string;
   status: "pending" | "in-progress" | "completed";
@@ -14,6 +16,7 @@ interface TodoCardProps {
 }
 
 export function TodoCard({
+  _id,
   title,
   description,
   status,
@@ -21,12 +24,24 @@ export function TodoCard({
   onEdit,
 }: TodoCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const router = useRouter();
+
+  // 使用 useCallback 來優化性能，並確保可以訪問到 _id
+  const handleClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('button')) {
+      e.stopPropagation(); // 阻止事件冒泡
+      return;
+    }
+    router.push(`/todos/${_id}`);
+  };
 
   return (
     <Card
-      className="group relative overflow-hidden transition-all duration-200 hover:shadow-md"
+      className="group relative overflow-hidden transition-all duration-200 hover:shadow-md cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleClick}
     >
       <div className="flex gap-6 p-6">
         <div className="flex items-center">
@@ -38,7 +53,9 @@ export function TodoCard({
             <h3 className="font-medium text-lg line-clamp-1">{title}</h3>
 
             <div
-              className={`flex gap-2 transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}
+              className={`flex gap-2 transition-opacity duration-200 ${
+                isHovered ? "opacity-100" : "opacity-0"
+              }`}
             >
               <Button
                 variant="ghost"
@@ -64,17 +81,6 @@ export function TodoCard({
           )}
         </div>
       </div>
-
-      {/* <div
-          className={`absolute bottom-0 left-0 h-1 w-full
-            ${
-              status === "completed"
-                ? "bg-green-500"
-                : status === "in-progress"
-                  ? "bg-blue-500"
-                  : "bg-gray-300"
-            }`}
-        /> */}
     </Card>
   );
 }
