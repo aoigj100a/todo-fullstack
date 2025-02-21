@@ -9,18 +9,26 @@ import { TodoCard } from "@/components/todos/TodoCard";
 import { Todo } from "@/types/todo";
 import { todoService } from "@/service/todo";
 import { CreateTodoDialog } from "@/components/todos/CreateTodoDialog";
+import { EditTodoDialog } from "@/components/todos/EditTodoDialog";
 
 const UNDO_TIMEOUT = 5000; // 5 seconds for undo window
 
 function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
-  const pendingDeletions = useRef<Map<string, {
-    todo: Todo;
-    timeoutId: NodeJS.Timeout;
-    toastId?: string;
-  }>>(new Map());
+  const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const pendingDeletions = useRef<
+    Map<
+      string,
+      {
+        todo: Todo;
+        timeoutId: NodeJS.Timeout;
+        toastId?: string;
+      }
+    >
+  >(new Map());
 
   useEffect(() => {
     loadTodos();
@@ -34,9 +42,9 @@ function TodosPage() {
   const loadTodos = async () => {
     try {
       const data = await todoService.getTodos();
-      setTodos(prevTodos => {
+      setTodos((prevTodos) => {
         const pendingTodoIds = Array.from(pendingDeletions.current.keys());
-        return data.filter(todo => !pendingTodoIds.includes(todo._id));
+        return data.filter((todo) => !pendingTodoIds.includes(todo._id));
       });
     } catch (error) {
       toast.error("Failed to load todos");
@@ -46,9 +54,9 @@ function TodosPage() {
   };
 
   const handleDelete = async (todoId: string) => {
-    console.log('Starting delete process for:', todoId);
-    
-    const todoToDelete = todos.find(t => t._id === todoId);
+    console.log("Starting delete process for:", todoId);
+
+    const todoToDelete = todos.find((t) => t._id === todoId);
     if (!todoToDelete) return;
 
     // Clear any existing timeout
@@ -59,8 +67,8 @@ function TodosPage() {
     }
 
     // Optimistically remove from UI
-    setTodos(currentTodos => 
-      currentTodos.filter(todo => todo._id !== todoId)
+    setTodos((currentTodos) =>
+      currentTodos.filter((todo) => todo._id !== todoId)
     );
 
     // Show toast with undo button
@@ -76,12 +84,12 @@ function TodosPage() {
     // Set deletion timeout
     const timeoutId = setTimeout(async () => {
       try {
-        console.log('Executing final delete for:', todoId);
+        console.log("Executing final delete for:", todoId);
         await todoService.deleteTodo(todoId);
-        console.log('Delete completed successfully');
+        console.log("Delete completed successfully");
         pendingDeletions.current.delete(todoId);
       } catch (error) {
-        console.error('Delete failed:', error);
+        console.error("Delete failed:", error);
         handleUndo(todoId);
         toast.error("Failed to delete todo");
       }
@@ -105,14 +113,29 @@ function TodosPage() {
     }
     pendingDeletions.current.delete(todoId);
 
-    setTodos(currentTodos => {
-      if (currentTodos.some(t => t._id === todoId)) return currentTodos;
+    setTodos((currentTodos) => {
+      if (currentTodos.some((t) => t._id === todoId)) return currentTodos;
       return [...currentTodos, pendingDeletion.todo];
     });
 
     toast.success("Todo restored", {
       description: `"${pendingDeletion.todo.title}" has been restored`,
     });
+  };
+
+  const handleEdit = (todo: Todo) => {
+    setEditingTodo(todo);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setEditingTodo(null);
+    setIsEditDialogOpen(false);
+  };
+
+  const handleEditSuccess = () => {
+    loadTodos();
+    handleEditClose();
   };
 
   return (
@@ -138,9 +161,17 @@ function TodosPage() {
                 key={todo._id}
                 {...todo}
                 onDelete={() => handleDelete(todo._id)}
-                onEdit={() => console.log("edit", todo._id)}
+                onEdit={() => handleEdit(todo)}
               />
             ))
+          )}
+          {editingTodo && (
+            <EditTodoDialog
+              todo={editingTodo}
+              open={isEditDialogOpen}
+              onClose={handleEditClose}
+              onSuccess={handleEditSuccess}
+            />
           )}
         </div>
       )}
