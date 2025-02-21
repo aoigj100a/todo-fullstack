@@ -5,11 +5,10 @@ import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { TodosLoadingState } from "@/components/todos/TodosLoadingState";
 import { TodoCard } from "@/components/todos/TodoCard";
-import { Button } from "@/components/ui/button";
+import { CreateTodoDialog } from "@/components/todos/CreateTodoDialog";
 
 import { Todo } from "@/types/todo";
 import { todoService } from "@/service/todo";
-import { CreateTodoDialog } from "@/components/todos/CreateTodoDialog";
 
 const UNDO_TIMEOUT = 5000; // 5 seconds for undo window
 
@@ -47,24 +46,19 @@ function TodosPage() {
   };
 
   const handleDelete = async (todoId: string) => {
-    console.log('Starting delete process for:', todoId);
-    
     const todoToDelete = todos.find(t => t._id === todoId);
     if (!todoToDelete) return;
 
-    // Clear any existing timeout
     if (pendingDeletions.current.has(todoId)) {
       const { timeoutId, toastId } = pendingDeletions.current.get(todoId)!;
       clearTimeout(timeoutId);
       if (toastId) toast.dismiss(toastId);
     }
 
-    // Optimistically remove from UI
     setTodos(currentTodos => 
       currentTodos.filter(todo => todo._id !== todoId)
     );
 
-    // Show toast with undo button
     const toastId = toast("Todo deleted", {
       action: {
         label: "Undo",
@@ -74,21 +68,16 @@ function TodosPage() {
       description: `"${todoToDelete.title}" has been removed`,
     });
 
-    // Set deletion timeout
     const timeoutId = setTimeout(async () => {
       try {
-        console.log('Executing final delete for:', todoId);
         await todoService.deleteTodo(todoId);
-        console.log('Delete completed successfully');
         pendingDeletions.current.delete(todoId);
       } catch (error) {
-        console.error('Delete failed:', error);
         handleUndo(todoId);
         toast.error("Failed to delete todo");
       }
     }, UNDO_TIMEOUT);
 
-    // Store in pending deletions
     pendingDeletions.current.set(todoId, {
       todo: todoToDelete,
       timeoutId,
@@ -116,10 +105,16 @@ function TodosPage() {
     });
   };
 
+  const handleEdit = (todo: Todo) => {
+    console.log("Edit todo:", todo);
+    // TODO: Implement edit functionality
+  };
+
   return (
     <div className="p-8">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-3xl font-bold">My Todos</h1>
+        <CreateTodoDialog onSuccess={loadTodos} />
       </div>
 
       {isLoading ? (
@@ -138,7 +133,7 @@ function TodosPage() {
                 key={todo._id}
                 {...todo}
                 onDelete={() => handleDelete(todo._id)}
-                onEdit={() => console.log("edit", todo._id)}
+                onEdit={() => handleEdit(todo)}
               />
             ))
           )}
