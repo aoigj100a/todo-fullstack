@@ -40,4 +40,15 @@ const UserSchema = new Schema(
   }
 );
 
+// Add password comparison method
+UserSchema.methods.comparePassword = async function (
+  candidatePassword: string
+): Promise<boolean> {
+  try {
+    return await bcrypt.compare(candidatePassword, this.password);
+  } catch (error) {
+    throw new Error("Password comparison failed");
+  }
+};
+
 export const User = mongoose.model<IUser>("User", UserSchema);

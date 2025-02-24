@@ -1,5 +1,6 @@
 import express from 'express';
 import todoRoutes from './routes/todo.routes';
+import authRoutes from './routes/auth.routes';
 
 // 建立 Express 應用程式
 const app = express();
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // 應用程式路由
 app.use('/api/todos', todoRoutes);
-
+app.use('/api/auth', authRoutes);
 
 // 健康檢查路由 - 直接在根層級設定
 app.get('/api/health', (req, res) => {
