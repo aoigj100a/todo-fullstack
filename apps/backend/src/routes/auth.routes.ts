@@ -1,3 +1,4 @@
+// backend/src/routes/auth.routes.ts
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 
@@ -37,11 +38,8 @@ router.post("/login", (req, res) => {
     });
   }
 
-  // 認證失敗
-  return res.status(401).json({
-    success: false,
-    error: "Invalid credentials",
-  });
+  // 如果不是測試帳號，則使用正常的登入流程
+  return login(req, res);
 });
 
 export default router;

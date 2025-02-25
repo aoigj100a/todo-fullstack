@@ -1,6 +1,5 @@
 // src/server.ts
 import dotenv from 'dotenv';
-import cors from 'cors';
 import app from './app';
 import { connectDB } from './configs/database';
 
@@ -9,13 +8,6 @@ dotenv.config();
 
 // 設定伺服器埠號
 const PORT = process.env.PORT || 5001;
-// const PORT = 4000;
-
-// Middleware
-app.use(cors({
-  origin: 'http://localhost:3000', // 允許前端訪問
-  credentials: true // 允許帶認證信息的請求
-}));
 
 const startServer = async () => {
   try {
