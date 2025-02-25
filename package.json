@@ -11,8 +11,8 @@
     "test": "pnpm -r test",
     "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules",
     "lint": "pnpm -r lint",
-    "lint:fix": "pnpm -r run lint:fix"
-    
+    "lint:fix": "pnpm -r run lint:fix",
+    "seed": "cd apps/backend && node src/scripts/seed-data.js"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
