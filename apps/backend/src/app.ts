@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'; // 這行很重要！需要導入 cors 模組
 import todoRoutes from './routes/todo.routes';
 import authRoutes from './routes/auth.routes';
 
@@ -6,6 +7,15 @@ import authRoutes from './routes/auth.routes';
 const app = express();
 
 // 設定中間件
+// 確保這是第一個中間件
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+
 // 解析 JSON 請求體
 app.use(express.json());
 
