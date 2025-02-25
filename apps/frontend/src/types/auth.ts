@@ -1,27 +1,23 @@
 // src/types/auth.ts
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  createdAt: string;
-}
 
 export interface LoginInput {
   email: string;
   password: string;
 }
 
-export interface RegisterInput extends LoginInput {
+export interface RegisterInput {
+  email: string;
+  password: string;
   name: string;
-  confirmPassword: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
 }
 
 export interface AuthResponse {
-  user: User;
   token: string;
-}
-
-export interface AuthError {
-  message: string;
-  errors?: Record<string, string[]>;
+  user: User;
 }
