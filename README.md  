@@ -4,6 +4,11 @@
 - 建立一個前後端分離的 Todo List 應用，練習完整的全端開發流程。
 - 這不是一個單純的 Todo List 應用，而是輕量級專案管理工具，用於：任務追蹤與管理、團隊協作、進度可視化、簡單的工作流程管理
 
+## 測試帳號
+
+- email: demo@example.com
+- password: demo1234
+
 ## 技術選擇
 ### 前端（Next.js）
 - TypeScript
