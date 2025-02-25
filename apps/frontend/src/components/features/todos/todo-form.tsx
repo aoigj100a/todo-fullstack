@@ -50,8 +50,7 @@ export default function TodoForm({ todo, onSubmit, onCancel }: TodoFormProps) {
       let result: Todo;
       if (todo) {
         // 更新現有的 todo
-        result = await todoService.updateTodo({
-          id: todo.id,
+        result = await todoService.updateTodo(todo._id, {
           ...formData,
         });
       } else {

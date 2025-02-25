@@ -40,7 +40,7 @@ export default function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await onDelete(todo.id);
+      await onDelete(todo._id);
     } finally {
       setIsDeleting(false);
     }
