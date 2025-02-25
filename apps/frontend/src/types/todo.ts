@@ -1,6 +1,6 @@
 // src/types/todo.ts
 export interface Todo {
-  _id: string;
+  _id: string;          // MongoDB 使用 _id
   title: string;
   description?: string;
   status: "pending" | "in-progress" | "completed";
@@ -19,6 +19,10 @@ export type TodoStatus = "pending" | "in-progress" | "completed";
   }
   
   export interface UpdateTodoInput extends Partial<CreateTodoInput> {
+    id: string;
+  }
+
+  export interface DeleteTodoInput {
     id: string;
   }
   
