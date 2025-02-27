@@ -2,7 +2,7 @@
 
 ## 專案目標
 - 建立一個前後端分離的 Todo List 應用，實際走一次完整的全端開發流程
-- 並非單純的 Todo List 應用，而是輕量級專案管理工具，用於：任務追蹤與管理、團隊協作、進度可視化、簡單的工作流程管理
+- 輕量級任務管理工具，用於：任務追蹤與管理、狀態更新、進度可視化
 
 ## 測試帳號
 
@@ -12,7 +12,6 @@
 ## 技術選擇
 ### 前端（Next.js）
 - TypeScript
-- React Query/SWR 資料處理
 - Tailwind CSS 樣式
 - shadcn/ui 元件庫
 
@@ -20,9 +19,10 @@
 - TypeScript
 - MongoDB 資料庫
 - JWT 身份驗證
-- Express Validator 資料驗證
 
-### 1. 專案初始設定
+## 專案進度
+
+### 1. 專案初始設定 ✅
 - [x] 建立基本的 Express 應用程式
 - [x] 設定 TypeScript
 - [x] 加入 CORS
@@ -32,13 +32,10 @@
 - [x] 建立資料夾結構
 - [x] 設置共用ESLint配置
 - [x] 加入 ESLint 規則
-- [ ] 配置TypeScript項目引用
 
-### 2. 基礎架構 (進行中)
+### 2. 專案架構 ✅
 
 ```
-根目錄 monorepo 設置
-
 todo-fullstack/
 ├── apps/                    # 應用程式
 │   ├── frontend/           # Next.js 前端
@@ -49,188 +46,116 @@ todo-fullstack/
 └── README.md
 ```
 
-## 3. 前端架構 (apps/frontend)
+### 3. 前端功能
 
-```
-frontend/
-├── public/                # 靜態資源
-├── src/
-│   ├── app/              # Next.js 13+ App Router
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
-│   │   ├── (auth)/    
-│   │   │    ├── login/
-│   │   │    └── register/
-│   │   ├── todos/   
-│   │   └── profile/   
-│   ├── components/       # React 元件
-│   │   ├── ui/          # 基礎 UI 元件
-│   │   └── features/    # 功能元件
-│   ├── hooks/           # 自定義 Hooks
-│   ├── lib/             # 工具函式
-│   ├── services/        # API 服務
-│   ├── styles/          # 樣式檔案
-│   └── types/           # 型別定義
-├── .env                  # 環境變數
-├── next.config.ts        # Next.js 配置
-├── tailwind.config.ts    # Tailwind CSS 配置
-└── tsconfig.json        # TypeScript 配置
-```
+#### 3.1 基礎頁面建置 ✅
+- [x] 登入頁面 (/login)
+- [x] 註冊頁面 (/register)
+- [x] 待辦事項主頁面 (/todos)
+- [x] 待辦事項詳情頁面 (/todos/:id)
 
-### 4. 基礎頁面建置
+#### 3.2 Todo 列表介面 ✅
+- [x] 列表容器與卡片設計
+- [x] Todo 項目的展示樣式
+- [x] 空列表提示狀態
+- [x] 載入狀態
 
-4.1 基礎頁面建置
+#### 3.3 Todo 操作介面 ✅
+- [x] 新增 Todo 對話框
+- [x] 編輯 Todo 對話框
+- [x] 刪除 Todo 功能
+- [x] 刪除撤銷功能
 
-- [x] 建立頁面路由結構：
-  - [x] /login (登入頁面)
-  - [x] /register (註冊頁面)
-  - [x] /todos (待辦事項主頁面)
-  - [x] /profile (個人資料頁面)
+#### 3.4 UI 元件整合 ✅
+- [x] shadcn/ui 元件配置
+- [x] 響應式基本支援
 
-4.2 Todo 列表介面
+### 4. 後端功能
 
-- [ ] 實作 Todo 列表元件：
-  - [x] 列表容器與卡片設計
-  - [x] Todo 項目的展示樣式
-  - [ ] 完成狀態切換功能
-  - [ ] 批量操作功能列
-  - [x] 空列表提示狀態
+#### 4.1 資料庫設定 ✅
+- [x] MongoDB 連接設定
+- [x] 資料庫錯誤處理
+- [x] 請求日誌功能
+- [x] 健康檢查路由 (/api/health)
 
-4.3 Todo 操作介面
-
-- [ ] 實作新增/編輯表單：
-  - [x] 刪除 todo 的軟修改機制 UI
-  - [ ] 表單驗證機制
-  - [ ] 日期選擇器整合
-  - [ ] 優先級選擇器
-  - [x] 提交與取消按鈕
-
-4.4 篩選與排序功能
-
-- [ ] 實作篩選功能：
-  - [ ] 狀態篩選（全部/進行中/已完成）
-  - [ ] 日期範圍篩選
-  - [ ] 優先級篩選
-  - [ ] 分類篩選
-
-4.5 使用者介面
-
-- [ ] 實作登入/註冊表單：
-  - [ ] 表單驗證
-  - [ ] 錯誤提示
-  - [ ] 登入狀態保持
-  - [ ] 密碼重設功能
-
-4.6 回饋與通知
-
-- [ ] 實作通知系統：
-  - [ ] 操作成功提示
-  - [ ] 錯誤提示
-  - [ ] 載入狀態指示
-  - [ ] 確認對話框
-
-4.7 UI 元件開發
-
-- [ ] 整合 shadcn/ui 元件：
-  - [x] 基本元件配置
-  - [ ] Button 元件客製化
-  - [ ] Input 元件樣式調整
-  - [ ] Select 元件整合
-  - [ ] DatePicker 元件設定
-
-4.8 響應式設計
-
-- [ ] 實作 RWD 佈局：
-  - [ ] 手機版面配置
-  - [ ] 平板版面配置
-  - [ ] 桌機版面配置
-  - [ ] 側邊欄收合功能
-
-## 5. 後端架構 (apps/backend)
-
-```
-backend/
-├── src/
-│   ├── config/       # 所有配置文件
-│   ├── controllers/  # 控制器
-│   ├── middlewares/  # 中間件
-│   ├── models/       # 數據模型
-│   ├── routes/       # 路由
-│   ├── utils/        # 工具函數
-│   ├── app.ts        # Express 應用
-│   └── server.ts     # 服務器入口
-├── dist/             # 編譯輸出
-├── node_modules/     # 依賴包
-├── nodemon.json      # Nodemon 配置
-├── package.json      # 項目配置
-└── tsconfig.json     # TS 配置
-```
-
-### 6. 資料庫設定
-
-- [x] 安裝 MongoDB 相關套件
-- [x] 建立資料庫連線設定
-- [x] 建立資料庫錯誤處理機制
-- [x] 設定資料庫連線池
-- [x] 設定錯誤處理中間件
-- [x] 加入請求日誌功能
-- [x] 設定健康檢查路由 (`/api/health`)
-
-### 7. Todo 功能實作
-
-- [x] 建立 Todo Model
-- [x] 實作 Todo Routes
-- [x] 實作 Todo Controller
-- [x] API 端點：
+#### 4.2 Todo API ✅
+- [x] Todo Model
+- [x] Todo Routes
+- [x] Todo Controllers
+- [x] CRUD API端點:
   - [x] GET /api/todos (取得所有)
   - [x] POST /api/todos (新增)
   - [x] PUT /api/todos/:id (更新)
   - [x] DELETE /api/todos/:id (刪除)
 
-### 8. 資料驗證
+#### 4.3 認證功能 ✅
+- [x] User Model
+- [x] JWT身份驗證
+- [x] 登入/註冊API
+- [x] 測試帳號支援
 
-- [ ] 安裝 express-validator
-- [ ] 建立驗證中間件
-- [ ] 加入請求資料驗證
+#### 4.4 安全性設定 ✅
+- [x] CORS規則
+- [x] 基本錯誤處理
 
-### 9. 安全性設定
+### 5. 種子資料 ✅
+- [x] 測試用 Todo 資料
 
-- [x] 設定適當的 CORS 規則
-- [x] 加入 helmet 安全標頭
-- [ ] 設定速率限制
-- [ ] 設定輸入資料清理
+## 快速開始
 
-### 10. 效能優化
+### 開發環境設定
 
-- [ ] 設定資料壓縮
-- [ ] 實作快取機制
-- [ ] 優化資料庫查詢
-- [ ] 設定適當的超時處理
+1. 安裝依賴套件
+```bash
+pnpm install
+```
 
-### 11. 測試
+2. 啟動後端
+```bash
+cd apps/backend
+pnpm dev
+```
 
-- [ ] 設定測試環境
-- [ ] 撰寫單元測試
-- [ ] 撰寫整合測試
-- [ ] 設定CI/CD流程
-- [ ] 建立共用測試環境
-- [ ] 設定 Jest 配置
-- [ ] 建立產品正式環境
+3. 啟動前端
+```bash
+cd apps/frontend
+pnpm dev
+```
 
-### 12. 文件
+4. 瀏覽應用
+```
+前端: http://localhost:3000
+API: http://localhost:5001/api
+```
 
-- [ ] API 文件
-- [ ] 使用說明
-- [ ] 部署說明
+### 後端環境變數 (.env)
+```
+PORT=5001
+MONGO_URI=mongodb://localhost:27017/todo-app
+JWT_SECRET=your-secret-key
+```
 
-### 13. 部署準備
+### 前端環境變數 (.env.local)
+```
+NEXT_PUBLIC_API_URL=http://localhost:5001/api
+```
 
-- [ ] 設定 production 環境變數
-- [ ] 建立 Docker 配置
-- [ ] 設定錯誤監控
-- [ ] 設定日誌系統
+## 功能說明
 
-### 14. Demo 相關更新
+1. **用戶認證**
+   - 使用 JWT 身份驗證
+   - 登入/註冊功能
+   - 提供測試帳號
 
-- [x] 新增測試帳號
-- [x] 新增測試用種子資料
+2. **Todo 管理**
+   - 查看所有 Todo
+   - 新增 Todo
+   - 編輯 Todo
+   - 刪除 Todo (含撤銷功能)
+   - Todo 詳情頁面
+
+3. **UI/UX**
+   - shadcn/ui 組件庫
+   - 回饋通知系統
+   - 載入狀態
+   - 錯誤處理
