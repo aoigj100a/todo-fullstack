@@ -2,16 +2,17 @@
 
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
+
 import { Card } from "@/components/ui/card";
 import { TodosLoadingState } from "@/components/todos/TodosLoadingState";
 import { TodoCard } from "@/components/todos/TodoCard";
-
-import { Todo } from "@/types/todo";
-import { todoService } from "@/service/todo";
 import { CreateTodoDialog } from "@/components/todos/CreateTodoDialog";
 import { EditTodoDialog } from "@/components/todos/EditTodoDialog";
 
-const UNDO_TIMEOUT = 5000; // 5 seconds for undo window
+import { Todo } from "@/types/todo";
+import { todoService } from "@/service/todo";
+
+const UNDO_TIMEOUT = 5000;
 
 function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -44,7 +45,7 @@ function TodosPage() {
       const data = await todoService.getTodos();
       setTodos((prevTodos) => {
         const pendingTodoIds = Array.from(pendingDeletions.current.keys());
-        return data.filter((todo) => !pendingTodoIds.includes(todo._id));
+        return data.filter((todo: Todo) => !pendingTodoIds.includes(todo._id));
       });
     } catch (error) {
       toast.error("Failed to load todos");
@@ -99,7 +100,7 @@ function TodosPage() {
     pendingDeletions.current.set(todoId, {
       todo: todoToDelete,
       timeoutId,
-      toastId,
+      toastId: toastId?.toString(),
     });
   };
 
@@ -138,6 +139,10 @@ function TodosPage() {
     handleEditClose();
   };
 
+  const handleStatusChange = async () => {
+    await loadTodos();
+  };
+
   return (
     <div className="p-8">
       <div className="mb-8 flex items-center justify-between">
@@ -162,6 +167,7 @@ function TodosPage() {
                 {...todo}
                 onDelete={() => handleDelete(todo._id)}
                 onEdit={() => handleEdit(todo)}
+                onStatusChange={handleStatusChange}
               />
             ))
           )}

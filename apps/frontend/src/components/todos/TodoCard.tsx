@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { Trash2, Pencil } from "lucide-react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import TodoStatusIcon from "../shared/TodoStatusIcon";
-import { useRouter } from "next/navigation";
 
+import { todoService } from "@/service/todo";
+import { TodoStatus } from "@/types/todo";
 
 interface TodoCardProps {
   _id: string;
@@ -13,6 +17,7 @@ interface TodoCardProps {
   status: "pending" | "in-progress" | "completed";
   onDelete: () => void;
   onEdit: () => void;
+  onStatusChange: () => void;
 }
 
 export function TodoCard({
@@ -22,9 +27,28 @@ export function TodoCard({
   _id,
   onDelete,
   onEdit,
+  onStatusChange,
 }: TodoCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
+
+  // 處理點擊狀態圖標的事件
+  const handleStatusToggle = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // 阻止事件冒泡
+    if (isUpdating) return;
+
+    setIsUpdating(true);
+    try {
+      await todoService.toggleTodoStatus(_id, status);
+      toast.success("Status updated");
+      onStatusChange(); // 通知父組件狀態已更新
+    } catch (error) {
+      toast.error("Failed to update status");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   // 使用 useCallback 來優化性能，並確保可以訪問到 _id
   const handleClick = (e: React.MouseEvent) => {
@@ -44,7 +68,9 @@ export function TodoCard({
       onClick={handleClick}
     >
       <div className="flex items-center gap-4 p-4">
-        <TodoStatusIcon status={status} />
+        <div onClick={handleStatusToggle} className="cursor-pointer">
+          <TodoStatusIcon status={status} />
+        </div>
         <div className="min-w-0 flex-1">
           <h3 className="text-base font-semibold">{title}</h3>
           {description && (
