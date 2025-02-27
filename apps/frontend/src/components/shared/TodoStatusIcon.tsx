@@ -1,11 +1,21 @@
 import React from 'react';
-import { X, Minus, Check } from 'lucide-react';
+import { X, Minus, Check, Loader2 } from 'lucide-react';
 
 interface TodoStatusIconProps {
   status: 'pending' | 'in-progress' | 'completed';
+  isUpdating?: boolean; // 添加更新中狀態
 }
 
-const TodoStatusIcon: React.FC<TodoStatusIconProps> = ({ status }) => {
+const TodoStatusIcon: React.FC<TodoStatusIconProps> = ({ status, isUpdating = false }) => {
+  // 如果正在更新，顯示加載圖標
+  if (isUpdating) {
+    return (
+      <div className="text-blue-500 rounded-[16px] p-1 bg-blue-100">
+        <Loader2 size={32} className="animate-spin" />
+      </div>
+    );
+  }
+
   const getStatusIcon = () => {
     switch (status) {
       case 'pending':
