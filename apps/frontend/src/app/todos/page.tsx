@@ -8,6 +8,8 @@ import { TodosLoadingState } from "@/components/todos/TodosLoadingState";
 import { TodoCard } from "@/components/todos/TodoCard";
 import { CreateTodoDialog } from "@/components/todos/CreateTodoDialog";
 import { EditTodoDialog } from "@/components/todos/EditTodoDialog";
+import { TodosFilterBar } from "@/components/todos/TodosFilterBar";
+import { TodosStatusFilter } from "@/components/todos/TodosStatusFilter";
 
 import { Todo } from "@/types/todo";
 import { todoService } from "@/service/todo";
@@ -145,9 +147,14 @@ function TodosPage() {
 
   return (
     <div className="p-8">
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">My Todos</h1>
-        <CreateTodoDialog onSuccess={loadTodos} />
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-3xl font-bold">My Todos</h1>
+          <CreateTodoDialog onSuccess={loadTodos} />
+        </div>
+
+        <TodosFilterBar className="mb-4" />
+        <TodosStatusFilter />
       </div>
 
       {isLoading ? (
