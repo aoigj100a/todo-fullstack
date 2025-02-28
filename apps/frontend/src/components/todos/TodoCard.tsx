@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import TodoStatusIcon from "../shared/TodoStatusIcon";
-
 import { todoService } from "@/service/todo";
 import { TodoStatus } from "@/types/todo";
 
@@ -60,12 +59,42 @@ export function TodoCard({
     router.push(`/todos/${_id}`);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // 支持空格或回車觸發點擊
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault();
+      router.push(`/todos/${_id}`);
+    }
+
+    // 支持 Delete 鍵觸發刪除
+    if (e.key === "Delete") {
+      e.preventDefault();
+      onDelete();
+    }
+
+    // 支持 E 鍵觸發編輯
+    if (e.key === "e" || e.key === "E") {
+      e.preventDefault();
+      onEdit();
+    }
+
+    // 支持 Space 鍵切換狀態
+    if (e.key === "s" || e.key === "S") {
+      e.preventDefault();
+      handleStatusToggle(e as any);
+    }
+  };
+
   return (
     <Card
       className="group relative overflow-hidden transition-all duration-200 hover:shadow-md cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0} // 使元素可以獲得焦點
+      role="button" // 告訴屏幕閱讀器這是一個可點擊元素
+      aria-label={`Todo: ${title}`} // 可訪問性標籤
     >
       <div className="flex items-center gap-4 p-4">
         <div onClick={handleStatusToggle} className="cursor-pointer">

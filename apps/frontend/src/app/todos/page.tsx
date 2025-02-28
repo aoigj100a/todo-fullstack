@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Card } from "@/components/ui/card";
@@ -16,6 +17,9 @@ import { TodosEmptyState } from "@/components/todos/TodosEmptyState";
 
 import { Todo } from "@/types/todo";
 import { todoService } from "@/service/todo";
+import { FadePresence } from "@/components/ui/nimated-presence";
+import { AnimatePresence, motion } from "framer-motion";
+import { TodosHelpInfo } from "@/components/todos/TodosHelpInfo";
 
 const UNDO_TIMEOUT = 5000;
 
@@ -29,8 +33,37 @@ function TodosPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
-  const [viewType, setViewType] = useState<ViewType>("list");
-  const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [viewType, setViewType] = useState<ViewType>(() => {
+    const viewParam = searchParams.get("view") as ViewType | null;
+    if (viewParam === "list" || viewParam === "board") {
+      return viewParam;
+    }
+
+    const savedView = localStorage.getItem(
+      "todoViewPreference"
+    ) as ViewType | null;
+    if (savedView === "list" || savedView === "board") {
+      return savedView;
+    }
+
+    return "list";
+  });
+
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>(() => {
+    const statusParam = searchParams.get("status") as FilterStatus | null;
+    if (
+      statusParam === "all" ||
+      statusParam === "pending" ||
+      statusParam === "in-progress" ||
+      statusParam === "completed"
+    ) {
+      return statusParam;
+    }
+    return "all";
+  });
 
   const filteredTodos = useMemo(() => {
     if (filterStatus === "all") {
@@ -164,19 +197,45 @@ function TodosPage() {
     await loadTodos();
   };
 
-const handleViewChange = useCallback((view: ViewType) => {
-  setViewType(view);
-  // 使用 localStorage，可以保存用戶偏好
-  localStorage.setItem("todoViewPreference", view);
-}, []);
+  const handleViewChange = useCallback(
+    (view: ViewType) => {
+      setViewType(view);
+      // 保存到 localStorage
+      localStorage.setItem("todoViewPreference", view);
 
-  const handleFilterChange = useCallback((status: FilterStatus) => {
-    setFilterStatus(status);
-  }, []);
-  
+      // 更新 URL 參數
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("view", view);
+
+      router.push(`?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams]
+  );
+
+  const handleFilterChange = useCallback(
+    (status: FilterStatus) => {
+      setFilterStatus(status);
+
+      // 更新 URL 參數
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("status", status);
+
+      router.push(`?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams]
+  );
+
+  // 清除篩選時也需要更新 URL
   const handleClearFilter = useCallback(() => {
     setFilterStatus("all");
-  }, []);
+
+    // 更新 URL 參數
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("status", "all");
+
+    // 使用 Next.js App Router 的方式更新 URL
+    router.push(`?${params.toString()}`, { scroll: false });
+  }, [router, searchParams]);
 
   const handleOpenCreateDialog = useCallback(() => {
     setIsCreateDialogOpen(true);
@@ -187,100 +246,117 @@ const handleViewChange = useCallback((view: ViewType) => {
   }, []);
 
   // 在 useEffect 中讀取用戶的視圖偏好
-useEffect(() => {
-  // 從 localStorage 讀取用戶偏好的視圖類型
-  const savedViewPreference = localStorage.getItem("todoViewPreference") as ViewType | null;
-  if (savedViewPreference && (savedViewPreference === "list" || savedViewPreference === "board")) {
-    setViewType(savedViewPreference);
-  }
-  
-  loadTodos();
-  
-  return () => {
-    pendingDeletions.current.forEach(({ timeoutId }) => {
-      clearTimeout(timeoutId);
-    });
-  };
-}, []);
-  
-useEffect(() => {
-  loadTodos();
-  return () => {
-    pendingDeletions.current.forEach(({ timeoutId }) => {
-      clearTimeout(timeoutId);
-    });
-  };
-}, []);
+  useEffect(() => {
+    // 從 localStorage 讀取用戶偏好的視圖類型
+    const savedViewPreference = localStorage.getItem(
+      "todoViewPreference"
+    ) as ViewType | null;
+    if (
+      savedViewPreference &&
+      (savedViewPreference === "list" || savedViewPreference === "board")
+    ) {
+      setViewType(savedViewPreference);
+    }
 
-return (
-  <div className="p-4 sm:p-8">
-    <div className="mb-6">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl sm:text-3xl font-bold">My Todos</h1>
+    loadTodos();
+
+    return () => {
+      pendingDeletions.current.forEach(({ timeoutId }) => {
+        clearTimeout(timeoutId);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    loadTodos();
+    return () => {
+      pendingDeletions.current.forEach(({ timeoutId }) => {
+        clearTimeout(timeoutId);
+      });
+    };
+  }, []);
+
+  return (
+    <div className="p-4 sm:p-8">
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl sm:text-3xl font-bold">My Todos</h1>
           <CreateTodoDialog onSuccess={loadTodos} />
+        </div>
       </div>
-    </div>
-    
-    <div className="space-y-4 mb-6">
-      <TodosFilterBar 
-        viewType={viewType} 
-        onViewChange={handleViewChange} 
-        className="bg-white rounded-lg shadow-sm"
-      />
-      <TodosStatusFilter 
-        currentStatus={filterStatus}
-        statusCounts={statusCounts}
-        onStatusChange={handleFilterChange}
-        className="bg-white p-4 rounded-lg shadow-sm"
-      />
-    </div>
-    
-    {isLoading ? (
-      <TodosLoadingState />
-    ) : (
-      <>
-        {filteredTodos.length === 0 ? (
-          <TodosEmptyState 
-            filterStatus={filterStatus}
-            onClearFilter={handleClearFilter}
-            onCreateTodo={handleOpenCreateDialog}
-          />
-        ) : (
-          <div className="transition-all duration-300 ease-in-out">
-            {viewType === "list" ? (
-              <div className="space-y-4">
-                {filteredTodos.map((todo) => (
-                  <TodoCard
-                    key={todo._id}
-                    {...todo}
-                    onDelete={() => handleDelete(todo._id)}
-                    onEdit={() => handleEdit(todo)}
+
+      <div className="space-y-4 mb-6">
+        <TodosFilterBar
+          viewType={viewType}
+          onViewChange={handleViewChange}
+          className="bg-white rounded-lg shadow-sm"
+        />
+        <TodosStatusFilter
+          currentStatus={filterStatus}
+          statusCounts={statusCounts}
+          onStatusChange={handleFilterChange}
+          className="bg-white p-4 rounded-lg shadow-sm"
+        />
+      </div>
+
+      {isLoading ? (
+        <TodosLoadingState />
+      ) : (
+        <>
+          {filteredTodos.length === 0 ? (
+            <FadePresence>
+              <TodosEmptyState
+                filterStatus={filterStatus}
+                onClearFilter={handleClearFilter}
+                onCreateTodo={handleOpenCreateDialog}
+              />
+            </FadePresence>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={viewType}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="w-full"
+              >
+                {viewType === "list" ? (
+                  <div className="space-y-4">
+                    {filteredTodos.map((todo, index) => (
+                      <motion.div
+                        key={todo._id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05, duration: 0.2 }}
+                      >
+                        <TodoCard
+                          {...todo}
+                          onDelete={() => handleDelete(todo._id)}
+                          onEdit={() => handleEdit(todo)}
+                          onStatusChange={handleStatusChange}
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                ) : (
+                  <TodosBoardView
+                    todos={filteredTodos}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
                     onStatusChange={handleStatusChange}
                   />
-                ))}
-              </div>
-            ) : (
-              <TodosBoardView
-                todos={filteredTodos}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-                onStatusChange={handleStatusChange}
-              />
-            )}
-          </div>
-        )}
-      </>
-    )}
-    
-    {editingTodo && (
-      <EditTodoDialog
-        todo={editingTodo}
-        open={isEditDialogOpen}
-        onClose={handleEditClose}
-        onSuccess={handleEditSuccess}
-      />
-    )}
-  </div>
-)}
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
+
+          {/* 添加幫助信息 */}
+          <TodosHelpInfo />
+        </>
+      )}
+    </div>
+  );
+}
 
 export default TodosPage;
