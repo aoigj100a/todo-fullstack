@@ -1,24 +1,87 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { TodosLoadingState } from "@/components/todos/TodosLoadingState";
 import { TodoCard } from "@/components/todos/TodoCard";
 import { CreateTodoDialog } from "@/components/todos/CreateTodoDialog";
 import { EditTodoDialog } from "@/components/todos/EditTodoDialog";
+import { TodosFilterBar } from "@/components/todos/TodosFilterBar";
+import { TodosStatusFilter } from "@/components/todos/TodosStatusFilter";
+import { TodosBoardView } from "@/components/todos/TodosBoardView";
+import { TodosEmptyState } from "@/components/todos/TodosEmptyState";
 
 import { Todo } from "@/types/todo";
 import { todoService } from "@/service/todo";
+import { FadePresence } from "@/components/ui/nimated-presence";
+import { AnimatePresence, motion } from "framer-motion";
+import { TodosHelpInfo } from "@/components/todos/TodosHelpInfo";
 
 const UNDO_TIMEOUT = 5000;
+
+type ViewType = "list" | "board";
+type FilterStatus = "all" | "pending" | "in-progress" | "completed";
 
 function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [viewType, setViewType] = useState<ViewType>(() => {
+    const viewParam = searchParams.get("view") as ViewType | null;
+    if (viewParam === "list" || viewParam === "board") {
+      return viewParam;
+    }
+
+    const savedView = localStorage.getItem(
+      "todoViewPreference"
+    ) as ViewType | null;
+    if (savedView === "list" || savedView === "board") {
+      return savedView;
+    }
+
+    return "list";
+  });
+
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>(() => {
+    const statusParam = searchParams.get("status") as FilterStatus | null;
+    if (
+      statusParam === "all" ||
+      statusParam === "pending" ||
+      statusParam === "in-progress" ||
+      statusParam === "completed"
+    ) {
+      return statusParam;
+    }
+    return "all";
+  });
+
+  const filteredTodos = useMemo(() => {
+    if (filterStatus === "all") {
+      return todos;
+    } else {
+      return todos.filter((todo) => todo.status === filterStatus);
+    }
+  }, [todos, filterStatus]);
+
+  const statusCounts = useMemo(() => {
+    return {
+      all: todos.length,
+      pending: todos.filter((todo) => todo.status === "pending").length,
+      "in-progress": todos.filter((todo) => todo.status === "in-progress")
+        .length,
+      completed: todos.filter((todo) => todo.status === "completed").length,
+    };
+  }, [todos]);
 
   const pendingDeletions = useRef<
     Map<
@@ -30,15 +93,6 @@ function TodosPage() {
       }
     >
   >(new Map());
-
-  useEffect(() => {
-    loadTodos();
-    return () => {
-      pendingDeletions.current.forEach(({ timeoutId }) => {
-        clearTimeout(timeoutId);
-      });
-    };
-  }, []);
 
   const loadTodos = async () => {
     try {
@@ -143,43 +197,163 @@ function TodosPage() {
     await loadTodos();
   };
 
+  const handleViewChange = useCallback(
+    (view: ViewType) => {
+      setViewType(view);
+      // 保存到 localStorage
+      localStorage.setItem("todoViewPreference", view);
+
+      // 更新 URL 參數
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("view", view);
+
+      router.push(`?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams]
+  );
+
+  const handleFilterChange = useCallback(
+    (status: FilterStatus) => {
+      setFilterStatus(status);
+
+      // 更新 URL 參數
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("status", status);
+
+      router.push(`?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams]
+  );
+
+  // 清除篩選時也需要更新 URL
+  const handleClearFilter = useCallback(() => {
+    setFilterStatus("all");
+
+    // 更新 URL 參數
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("status", "all");
+
+    // 使用 Next.js App Router 的方式更新 URL
+    router.push(`?${params.toString()}`, { scroll: false });
+  }, [router, searchParams]);
+
+  const handleOpenCreateDialog = useCallback(() => {
+    setIsCreateDialogOpen(true);
+  }, []);
+
+  const handleCreateDialogClose = useCallback(() => {
+    setIsCreateDialogOpen(false);
+  }, []);
+
+  // 在 useEffect 中讀取用戶的視圖偏好
+  useEffect(() => {
+    // 從 localStorage 讀取用戶偏好的視圖類型
+    const savedViewPreference = localStorage.getItem(
+      "todoViewPreference"
+    ) as ViewType | null;
+    if (
+      savedViewPreference &&
+      (savedViewPreference === "list" || savedViewPreference === "board")
+    ) {
+      setViewType(savedViewPreference);
+    }
+
+    loadTodos();
+
+    return () => {
+      pendingDeletions.current.forEach(({ timeoutId }) => {
+        clearTimeout(timeoutId);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    loadTodos();
+    return () => {
+      pendingDeletions.current.forEach(({ timeoutId }) => {
+        clearTimeout(timeoutId);
+      });
+    };
+  }, []);
+
   return (
-    <div className="p-8">
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">My Todos</h1>
-        <CreateTodoDialog onSuccess={loadTodos} />
+    <div className="p-4 sm:p-8">
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl sm:text-3xl font-bold">My Todos</h1>
+          <CreateTodoDialog onSuccess={loadTodos} />
+        </div>
+      </div>
+
+      <div className="space-y-4 mb-6">
+        <TodosFilterBar
+          viewType={viewType}
+          onViewChange={handleViewChange}
+          className="bg-white rounded-lg shadow-sm"
+        />
+        <TodosStatusFilter
+          currentStatus={filterStatus}
+          statusCounts={statusCounts}
+          onStatusChange={handleFilterChange}
+          className="bg-white p-4 rounded-lg shadow-sm"
+        />
       </div>
 
       {isLoading ? (
         <TodosLoadingState />
       ) : (
-        <div className="space-y-4">
-          {todos.length === 0 ? (
-            <Card className="p-6 text-center text-gray-500">
-              <p className="text-lg">
-                No todos yet. Create one to get started!
-              </p>
-            </Card>
-          ) : (
-            todos.map((todo) => (
-              <TodoCard
-                key={todo._id}
-                {...todo}
-                onDelete={() => handleDelete(todo._id)}
-                onEdit={() => handleEdit(todo)}
-                onStatusChange={handleStatusChange}
+        <>
+          {filteredTodos.length === 0 ? (
+            <FadePresence>
+              <TodosEmptyState
+                filterStatus={filterStatus}
+                onClearFilter={handleClearFilter}
+                onCreateTodo={handleOpenCreateDialog}
               />
-            ))
+            </FadePresence>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={viewType}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="w-full"
+              >
+                {viewType === "list" ? (
+                  <div className="space-y-4">
+                    {filteredTodos.map((todo, index) => (
+                      <motion.div
+                        key={todo._id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05, duration: 0.2 }}
+                      >
+                        <TodoCard
+                          {...todo}
+                          onDelete={() => handleDelete(todo._id)}
+                          onEdit={() => handleEdit(todo)}
+                          onStatusChange={handleStatusChange}
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                ) : (
+                  <TodosBoardView
+                    todos={filteredTodos}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
+                    onStatusChange={handleStatusChange}
+                  />
+                )}
+              </motion.div>
+            </AnimatePresence>
           )}
-          {editingTodo && (
-            <EditTodoDialog
-              todo={editingTodo}
-              open={isEditDialogOpen}
-              onClose={handleEditClose}
-              onSuccess={handleEditSuccess}
-            />
-          )}
-        </div>
+
+          {/* 添加幫助信息 */}
+          <TodosHelpInfo />
+        </>
       )}
     </div>
   );
