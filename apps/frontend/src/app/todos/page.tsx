@@ -4,8 +4,6 @@ import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { TodosLoadingState } from "@/components/todos/TodosLoadingState";
 import { TodoCard } from "@/components/todos/TodoCard";
 import { CreateTodoDialog } from "@/components/todos/CreateTodoDialog";
@@ -295,7 +293,7 @@ function TodosPage() {
           currentStatus={filterStatus}
           statusCounts={statusCounts}
           onStatusChange={handleFilterChange}
-          className="bg-white p-4 rounded-lg shadow-sm"
+          className="bg-white rounded-lg shadow-sm"
         />
       </div>
 

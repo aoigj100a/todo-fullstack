@@ -16,7 +16,7 @@ export function TodosFilterBar({
   onViewChange 
 }: TodosFilterBarProps) {
   return (
-    <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 rounded-lg shadow-sm ${className}`}>
+    <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white rounded-lg shadow-sm ${className}`}>
       <div className="flex gap-2 border rounded-md p-1 bg-muted/20">
         <Button
           size="sm"
