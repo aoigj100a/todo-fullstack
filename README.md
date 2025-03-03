@@ -1,21 +1,25 @@
 # Todo Full Stack Project
 
 ## 專案目標
+
 - 建立一個前後端分離的 Todo List 應用，實際走一次完整的全端開發流程
 - 輕量級任務管理工具，用於：任務追蹤與管理、狀態更新、進度可視化
 
 ## 測試帳號
 
-- email: demo@example.com
+- email: <demo@example.com>
 - password: demo1234
 
 ## 技術選擇
+
 ### 前端（Next.js）
+
 - TypeScript
 - Tailwind CSS 樣式
 - shadcn/ui 元件庫
 
 ### 後端（Express.js）
+
 - TypeScript
 - MongoDB 資料庫
 - JWT 身份驗證
@@ -23,6 +27,7 @@
 ## 專案進度
 
 ### 1. 專案初始設定 ✅
+
 - [x] 建立基本的 Express 應用程式
 - [x] 設定 TypeScript
 - [x] 加入 CORS
@@ -36,6 +41,7 @@
 ### 2. 專案架構 ✅
 
 ```
+
 todo-fullstack/
 ├── apps/                    # 應用程式
 │   ├── frontend/           # Next.js 前端
@@ -49,18 +55,21 @@ todo-fullstack/
 ### 3. 前端功能
 
 #### 3.1 基礎頁面建置 ✅
+
 - [x] 登入頁面 (/login)
 - [x] 註冊頁面 (/register)
 - [x] 待辦事項主頁面 (/todos)
 - [x] 待辦事項詳情頁面 (/todos/:id)
 
 #### 3.2 Todo 列表介面 ✅
+
 - [x] 列表容器與卡片設計
 - [x] Todo 項目的展示樣式
 - [x] 空列表提示狀態
 - [x] 載入狀態
 
 #### 3.3 Todo 操作介面 ✅
+
 - [x] 新增 Todo 對話框
 - [x] 編輯 Todo 對話框
 - [x] 刪除 Todo 功能
@@ -75,16 +84,19 @@ todo-fullstack/
 - [x] 實現即時的 UI 更新反饋
 
 ### 3.5 Todo 篩選功能 ✅
+
 - [x] 添加篩選狀態的狀態管理
 - [x] 創建切換視圖的控制
 - [x] 實現看板視圖 (Board View) - 按狀態分組顯示
 - [x] 實現列表視圖 (List View) - 只顯示選中狀態的項目
 
 #### 3.6 UI 元件整合 ✅
+
 - [x] shadcn/ui 元件配置
 - [x] 響應式基本支援
 
 ### 3.7 數據視覺化儀表板 🚧
+
 - [ ] 設計任務完成率圖表
 - [ ] 加入時間趨勢分析(每日/週/月完成量)
 - [ ] 創建任務分類分佈圖
@@ -94,12 +106,14 @@ todo-fullstack/
 ### 4. 後端功能
 
 #### 4.1 資料庫設定 ✅
+
 - [x] MongoDB 連接設定
 - [x] 資料庫錯誤處理
 - [x] 請求日誌功能
 - [x] 健康檢查路由 (/api/health)
 
 #### 4.2 Todo API ✅
+
 - [x] Todo Model
 - [x] Todo Routes
 - [x] Todo Controllers
@@ -110,21 +124,25 @@ todo-fullstack/
   - [x] DELETE /api/todos/:id (刪除)
 
 #### 4.3 認證功能 ✅
+
 - [x] User Model
 - [x] JWT身份驗證
 - [x] 登入/註冊API
 - [x] 測試帳號支援
 
 #### 4.4 安全性設定 ✅
+
 - [x] CORS規則
 - [x] 基本錯誤處理
 
 #### 4.5 數據統計 API 🚧
+
 - [ ] 任務完成率統計端點
 - [ ] 時間趨勢分析資料端點
 - [ ] 任務分類分佈資料端點
 
 ### 5. 種子資料 ✅
+
 - [x] 測試用 Todo 資料
 
 ## 快速開始
@@ -132,29 +150,34 @@ todo-fullstack/
 ### 開發環境設定
 
 1. 安裝依賴套件
+
 ```bash
 pnpm install
 ```
 
 2. 啟動後端
+
 ```bash
 cd apps/backend
 pnpm dev
 ```
 
 3. 啟動前端
+
 ```bash
 cd apps/frontend
 pnpm dev
 ```
 
 4. 瀏覽應用
+
 ```
 前端: http://localhost:3000
 API: http://localhost:5001/api
 ```
 
 ### 後端環境變數 (.env)
+
 ```
 PORT=5001
 MONGO_URI=mongodb://localhost:27017/todo-app
@@ -162,6 +185,7 @@ JWT_SECRET=your-secret-key
 ```
 
 ### 前端環境變數 (.env.local)
+
 ```
 NEXT_PUBLIC_API_URL=http://localhost:5001/api
 ```
