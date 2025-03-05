@@ -103,6 +103,7 @@ function MyComponent() {
 ```
 
 主要 React 規則：
+
 - Hooks 規則強制執行
 - 組件命名必須使用 PascalCase
 - Props 傳遞檢查
