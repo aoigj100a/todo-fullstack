@@ -7,6 +7,7 @@ export interface Todo {
   assignedTo: string;
   createdAt: string;
   updatedAt: string;
+  completedAt?:string;
 }
 
 export type TodoStatus = "pending" | "in-progress" | "completed";

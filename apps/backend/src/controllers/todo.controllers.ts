@@ -1,7 +1,6 @@
 // src/controllers/todo.controllers.ts
-import { Request, Response } from 'express';
-import { Todo } from '../models/Todo';
-// import { AppError, ErrorCode } from "../utils/errors";
+import { Request, Response } from "express";
+import { Todo } from "../models/Todo";
 
 export const getTodos = async (req: Request, res: Response) => {
   try {
@@ -10,7 +9,7 @@ export const getTodos = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch todos',
+      error: "Failed to fetch todos",
     });
   }
 };
@@ -23,16 +22,16 @@ export const createTodo = async (req: Request, res: Response) => {
     if (!title?.trim()) {
       return res.status(400).json({
         success: false,
-        error: 'Title is required',
+        error: "Title is required",
       });
     }
 
     // 驗證 status 欄位
-    const validStatuses = ['pending', 'in-progress', 'completed'];
+    const validStatuses = ["pending", "in-progress", "completed"];
     if (status && !validStatuses.includes(status)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid status value',
+        error: "Invalid status value",
         validValues: validStatuses,
       });
     }
@@ -41,7 +40,7 @@ export const createTodo = async (req: Request, res: Response) => {
     const todo = new Todo({
       title,
       description,
-      status: status || 'pending', // 預設為 pending
+      status: status || "pending", // 預設為 pending
       assignedTo,
     });
 
@@ -54,10 +53,10 @@ export const createTodo = async (req: Request, res: Response) => {
       data: todo,
     });
   } catch (error) {
-    console.error('Error creating todo:', error);
+    console.error("Error creating todo:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to create todo',
+      error: "Failed to create todo",
     });
   }
 };
@@ -70,14 +69,14 @@ export const updateTodo = async (req: Request, res: Response) => {
     if (!id) {
       return res.status(400).json({
         success: false,
-        error: 'Todo ID is required',
+        error: "Todo ID is required",
       });
     }
     // 檢查 id 格式是否有效
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid todo ID format',
+        error: "Invalid todo ID format",
       });
     }
 
@@ -85,7 +84,7 @@ export const updateTodo = async (req: Request, res: Response) => {
     if (!title && !description && !status && !assignedTo) {
       return res.status(400).json({
         success: false,
-        error: 'No update data provided',
+        error: "No update data provided",
       });
     }
     // 建立更新物件
@@ -96,16 +95,24 @@ export const updateTodo = async (req: Request, res: Response) => {
     if (description !== undefined) updateData.description = description.trim();
     if (status) {
       // 驗證 status 欄位
-      const validStatuses = ['pending', 'in-progress', 'completed'];
+      const validStatuses = ["pending", "in-progress", "completed"];
       if (!validStatuses.includes(status)) {
         return res.status(400).json({
           success: false,
-          error: 'Invalid status value',
+          error: "Invalid status value",
           validValues: validStatuses,
         });
       }
       updateData.status = status;
     }
+    // 如果狀態改為已完成，設置 completedAt
+    if (status === "completed") {
+      updateData.completedAt = new Date();
+    } else {
+      // 如果狀態從已完成變為其他狀態，清除 completedAt
+      updateData.completedAt = null;
+    }
+
     if (assignedTo !== undefined) updateData.assignedTo = assignedTo;
 
     // 使用 { new: true } 來返回更新後的文件
@@ -117,20 +124,20 @@ export const updateTodo = async (req: Request, res: Response) => {
     if (!updatedTodo) {
       return res.status(404).json({
         success: false,
-        error: 'Todo not found',
+        error: "Todo not found",
       });
     }
     // 回傳更新後的資料
     res.json({
       success: true,
-      message: 'Todo updated successfully',
+      message: "Todo updated successfully",
       data: updatedTodo,
     });
   } catch (error) {
-    console.error('Error updating todo:', error);
+    console.error("Error updating todo:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to update todo',
+      error: "Failed to update todo",
     });
   }
 };
@@ -143,7 +150,7 @@ export const deleteTodo = async (req: Request, res: Response) => {
     if (!id) {
       return res.status(400).json({
         success: false,
-        error: 'Todo ID is required',
+        error: "Todo ID is required",
       });
     }
 
@@ -151,7 +158,7 @@ export const deleteTodo = async (req: Request, res: Response) => {
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid todo ID format',
+        error: "Invalid todo ID format",
       });
     }
 
@@ -162,21 +169,21 @@ export const deleteTodo = async (req: Request, res: Response) => {
     if (!deletedTodo) {
       return res.status(404).json({
         success: false,
-        error: 'Todo not found',
+        error: "Todo not found",
       });
     }
 
     // 回傳成功訊息
     res.json({
       success: true,
-      message: 'Todo deleted successfully',
+      message: "Todo deleted successfully",
       data: deletedTodo,
     });
   } catch (error) {
-    console.error('Error deleting todo:', error);
+    console.error("Error deleting todo:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to delete todo',
+      error: "Failed to delete todo",
     });
   }
 };

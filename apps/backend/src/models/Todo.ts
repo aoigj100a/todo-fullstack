@@ -8,6 +8,7 @@ export interface ITodo extends Document {
   assignedTo: string;
   createdAt: Date;
   updatedAt: Date;
+  completeAt:Date;
 }
 
 const TodoSchema = new Schema(
@@ -38,6 +39,10 @@ const TodoSchema = new Schema(
       type: String,
       required: false,
     },
+    completedAt:{
+      type:Date,
+      default:null,
+    }
   },
   {
     timestamps: true,
