@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors'; // 這行很重要！需要導入 cors 模組
 import todoRoutes from './routes/todo.routes';
 import authRoutes from './routes/auth.routes';
+import statsRoutes from './routes/stats.routes';
 
 // 建立 Express 應用程式
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // 應用程式路由
 app.use('/api/todos', todoRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/stats', statsRoutes); // 統計API有自己的路由前綴
 
 // 健康檢查路由 - 直接在根層級設定
 app.get('/api/health', (req, res) => {
