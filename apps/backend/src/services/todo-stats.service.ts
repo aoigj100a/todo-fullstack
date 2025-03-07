@@ -1,4 +1,4 @@
-import { Todo } from "@/models/Todo";
+import { Todo } from "../models/Todo";
 
 // 計算任務平均完成時間（從創建到完成的毫秒數）
 export const calculateAverageCompletionTime = async () => {
