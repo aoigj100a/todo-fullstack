@@ -5,7 +5,9 @@ module.exports = {
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
       'plugin:react/recommended',
+      'prettier' // 必須放在最後
     ],
+    plugins: ['prettier'],
     // 基本規則 - 所有人都必須遵守的
     rules: {
       // 錯誤防護 - 必要規則
@@ -28,7 +30,8 @@ module.exports = {
       
       // 允許特定註解來停用規則
       'eslint-disable': 'off',
-      'eslint-disable-next-line': 'off'
+      'eslint-disable-next-line': 'off',
+      'prettier/prettier': 'error',
     },
     // 允許在特定目錄使用更嚴格的規則
     overrides: [
