@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
-import { TodosLoadingState } from "@/components/todos/TodosLoadingState";
-import { TodoCard } from "@/components/todos/TodoCard";
-import { CreateTodoDialog } from "@/components/todos/CreateTodoDialog";
-import { EditTodoDialog } from "@/components/todos/EditTodoDialog";
-import { TodosFilterBar } from "@/components/todos/TodosFilterBar";
-import { TodosStatusFilter } from "@/components/todos/TodosStatusFilter";
-import { TodosBoardView } from "@/components/todos/TodosBoardView";
-import { TodosEmptyState } from "@/components/todos/TodosEmptyState";
+import { TodosLoadingState } from '@/components/todos/TodosLoadingState';
+import { TodoCard } from '@/components/todos/TodoCard';
+import { CreateTodoDialog } from '@/components/todos/CreateTodoDialog';
+import { EditTodoDialog } from '@/components/todos/EditTodoDialog';
+import { TodosFilterBar } from '@/components/todos/TodosFilterBar';
+import { TodosStatusFilter } from '@/components/todos/TodosStatusFilter';
+import { TodosBoardView } from '@/components/todos/TodosBoardView';
+import { TodosEmptyState } from '@/components/todos/TodosEmptyState';
 
-import { Todo } from "@/types/todo";
-import { todoService } from "@/service/todo";
-import { FadePresence } from "@/components/ui/nimated-presence";
-import { AnimatePresence, motion } from "framer-motion";
-import { TodosHelpInfo } from "@/components/todos/TodosHelpInfo";
+import { Todo } from '@/types/todo';
+import { todoService } from '@/service/todo';
+import { FadePresence } from '@/components/ui/nimated-presence';
+import { AnimatePresence, motion } from 'framer-motion';
+import { TodosHelpInfo } from '@/components/todos/TodosHelpInfo';
 
 const UNDO_TIMEOUT = 5000;
 
-type ViewType = "list" | "board";
-type FilterStatus = "all" | "pending" | "in-progress" | "completed";
+type ViewType = 'list' | 'board';
+type FilterStatus = 'all' | 'pending' | 'in-progress' | 'completed';
 
 function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -31,40 +31,42 @@ function TodosPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
+  const [viewType, setViewType] = useState<ViewType>('list');
+
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [viewType, setViewType] = useState<ViewType>(() => {
-    const viewParam = searchParams.get("view") as ViewType | null;
-    if (viewParam === "list" || viewParam === "board") {
-      return viewParam;
-    }
+  // const [viewType, setViewType] = useState<ViewType>(() => {
+  //   const viewParam = searchParams.get("view") as ViewType | null;
+  //   if (viewParam === "list" || viewParam === "board") {
+  //     return viewParam;
+  //   }
 
-    const savedView = localStorage.getItem(
-      "todoViewPreference"
-    ) as ViewType | null;
-    if (savedView === "list" || savedView === "board") {
-      return savedView;
-    }
+  //   const savedView = localStorage.getItem(
+  //     "todoViewPreference"
+  //   ) as ViewType | null;
+  //   if (savedView === "list" || savedView === "board") {
+  //     return savedView;
+  //   }
 
-    return "list";
-  });
+  //   return "list";
+  // });
 
   const [filterStatus, setFilterStatus] = useState<FilterStatus>(() => {
-    const statusParam = searchParams.get("status") as FilterStatus | null;
+    const statusParam = searchParams.get('status') as FilterStatus | null;
     if (
-      statusParam === "all" ||
-      statusParam === "pending" ||
-      statusParam === "in-progress" ||
-      statusParam === "completed"
+      statusParam === 'all' ||
+      statusParam === 'pending' ||
+      statusParam === 'in-progress' ||
+      statusParam === 'completed'
     ) {
       return statusParam;
     }
-    return "all";
+    return 'all';
   });
 
   const filteredTodos = useMemo(() => {
-    if (filterStatus === "all") {
+    if (filterStatus === 'all') {
       return todos;
     } else {
       return todos.filter((todo) => todo.status === filterStatus);
@@ -74,10 +76,9 @@ function TodosPage() {
   const statusCounts = useMemo(() => {
     return {
       all: todos.length,
-      pending: todos.filter((todo) => todo.status === "pending").length,
-      "in-progress": todos.filter((todo) => todo.status === "in-progress")
-        .length,
-      completed: todos.filter((todo) => todo.status === "completed").length,
+      pending: todos.filter((todo) => todo.status === 'pending').length,
+      'in-progress': todos.filter((todo) => todo.status === 'in-progress').length,
+      completed: todos.filter((todo) => todo.status === 'completed').length,
     };
   }, [todos]);
 
@@ -100,14 +101,14 @@ function TodosPage() {
         return data.filter((todo: Todo) => !pendingTodoIds.includes(todo._id));
       });
     } catch (error) {
-      toast.error("Failed to load todos");
+      toast.error('Failed to load todos');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleDelete = async (todoId: string) => {
-    console.log("Starting delete process for:", todoId);
+    console.log('Starting delete process for:', todoId);
 
     const todoToDelete = todos.find((t) => t._id === todoId);
     if (!todoToDelete) return;
@@ -120,14 +121,12 @@ function TodosPage() {
     }
 
     // Optimistically remove from UI
-    setTodos((currentTodos) =>
-      currentTodos.filter((todo) => todo._id !== todoId)
-    );
+    setTodos((currentTodos) => currentTodos.filter((todo) => todo._id !== todoId));
 
     // Show toast with undo button
-    const toastId = toast("Todo deleted", {
+    const toastId = toast('Todo deleted', {
       action: {
-        label: "Undo",
+        label: 'Undo',
         onClick: () => handleUndo(todoId),
       },
       duration: UNDO_TIMEOUT,
@@ -137,14 +136,14 @@ function TodosPage() {
     // Set deletion timeout
     const timeoutId = setTimeout(async () => {
       try {
-        console.log("Executing final delete for:", todoId);
+        console.log('Executing final delete for:', todoId);
         await todoService.deleteTodo(todoId);
-        console.log("Delete completed successfully");
+        console.log('Delete completed successfully');
         pendingDeletions.current.delete(todoId);
       } catch (error) {
-        console.error("Delete failed:", error);
+        console.error('Delete failed:', error);
         handleUndo(todoId);
-        toast.error("Failed to delete todo");
+        toast.error('Failed to delete todo');
       }
     }, UNDO_TIMEOUT);
 
@@ -171,7 +170,7 @@ function TodosPage() {
       return [...currentTodos, pendingDeletion.todo];
     });
 
-    toast.success("Todo restored", {
+    toast.success('Todo restored', {
       description: `"${pendingDeletion.todo.title}" has been restored`,
     });
   };
@@ -199,15 +198,15 @@ function TodosPage() {
     (view: ViewType) => {
       setViewType(view);
       // 保存到 localStorage
-      localStorage.setItem("todoViewPreference", view);
+      localStorage.setItem('todoViewPreference', view);
 
       // 更新 URL 參數
       const params = new URLSearchParams(searchParams.toString());
-      params.set("view", view);
+      params.set('view', view);
 
       router.push(`?${params.toString()}`, { scroll: false });
     },
-    [router, searchParams]
+    [router, searchParams],
   );
 
   const handleFilterChange = useCallback(
@@ -216,20 +215,20 @@ function TodosPage() {
 
       // 更新 URL 參數
       const params = new URLSearchParams(searchParams.toString());
-      params.set("status", status);
+      params.set('status', status);
 
       router.push(`?${params.toString()}`, { scroll: false });
     },
-    [router, searchParams]
+    [router, searchParams],
   );
 
   // 清除篩選時也需要更新 URL
   const handleClearFilter = useCallback(() => {
-    setFilterStatus("all");
+    setFilterStatus('all');
 
     // 更新 URL 參數
     const params = new URLSearchParams(searchParams.toString());
-    params.set("status", "all");
+    params.set('status', 'all');
 
     // 使用 Next.js App Router 的方式更新 URL
     router.push(`?${params.toString()}`, { scroll: false });
@@ -246,12 +245,10 @@ function TodosPage() {
   // 在 useEffect 中讀取用戶的視圖偏好
   useEffect(() => {
     // 從 localStorage 讀取用戶偏好的視圖類型
-    const savedViewPreference = localStorage.getItem(
-      "todoViewPreference"
-    ) as ViewType | null;
+    const savedViewPreference = localStorage.getItem('todoViewPreference') as ViewType | null;
     if (
       savedViewPreference &&
-      (savedViewPreference === "list" || savedViewPreference === "board")
+      (savedViewPreference === 'list' || savedViewPreference === 'board')
     ) {
       setViewType(savedViewPreference);
     }
@@ -273,6 +270,20 @@ function TodosPage() {
       });
     };
   }, []);
+
+  useEffect(() => {
+    // 這部分代碼只在瀏覽器中執行
+    const viewParam = searchParams.get('view') as ViewType | null;
+    if (viewParam === 'list' || viewParam === 'board') {
+      setViewType(viewParam);
+      return;
+    }
+
+    const savedView = localStorage.getItem('todoViewPreference') as ViewType | null;
+    if (savedView === 'list' || savedView === 'board') {
+      setViewType(savedView);
+    }
+  }, [searchParams]);
 
   return (
     <div className="p-4 sm:p-8">
@@ -319,7 +330,7 @@ function TodosPage() {
                 transition={{ duration: 0.3 }}
                 className="w-full"
               >
-                {viewType === "list" ? (
+                {viewType === 'list' ? (
                   <div className="space-y-4">
                     {filteredTodos.map((todo, index) => (
                       <motion.div

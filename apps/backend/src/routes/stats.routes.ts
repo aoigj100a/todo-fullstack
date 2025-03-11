@@ -1,9 +1,9 @@
 // src/routes/stats.routes.ts
 import { Router } from 'express';
-import { 
-  getTodoStats, 
-  getCompletionTimeStats, 
-  getProductivityStats 
+import {
+  getTodoStats,
+  getCompletionTimeStats,
+  getProductivityStats,
 } from '../controllers/stats.controllers';
 
 const router = Router();

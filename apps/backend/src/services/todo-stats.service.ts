@@ -1,4 +1,4 @@
-import { Todo } from "../models/Todo";
+import { Todo } from '../models/Todo';
 
 // 計算任務平均完成時間（從創建到完成的毫秒數）
 export const calculateAverageCompletionTime = async () => {
@@ -6,7 +6,7 @@ export const calculateAverageCompletionTime = async () => {
     // 只選擇已完成且有 completedAt 的任務
     {
       $match: {
-        status: "completed",
+        status: 'completed',
         completedAt: { $exists: true, $ne: null },
       },
     },
@@ -14,7 +14,7 @@ export const calculateAverageCompletionTime = async () => {
     {
       $project: {
         completionTime: {
-          $subtract: ["$completedAt", "$createdAt"],
+          $subtract: ['$completedAt', '$createdAt'],
         },
         title: 1, // 可選：保留標題用於調試
       },
@@ -23,9 +23,9 @@ export const calculateAverageCompletionTime = async () => {
     {
       $group: {
         _id: null,
-        averageTime: { $avg: "$completionTime" },
-        fastestTime: { $min: "$completionTime" },
-        slowestTime: { $max: "$completionTime" },
+        averageTime: { $avg: '$completionTime' },
+        fastestTime: { $min: '$completionTime' },
+        slowestTime: { $max: '$completionTime' },
         totalTasks: { $sum: 1 },
       },
     },
@@ -42,10 +42,7 @@ export const calculateAverageCompletionTime = async () => {
 };
 
 // 獲取按日期分組的已完成任務數量
-export const getCompletedTasksByDate = async (
-  startDate: Date,
-  endDate: Date
-) => {
+export const getCompletedTasksByDate = async (startDate: Date, endDate: Date) => {
   const result = await Todo.aggregate([
     {
       $match: {
@@ -59,8 +56,8 @@ export const getCompletedTasksByDate = async (
       $group: {
         _id: {
           $dateToString: {
-            format: "%Y-%m-%d",
-            date: "$completedAt",
+            format: '%Y-%m-%d',
+            date: '$completedAt',
           },
         },
         count: { $sum: 1 },
@@ -78,11 +75,7 @@ export const getCompletedTasksByDate = async (
 };
 
 // 輔助函數：填充沒有數據的日期
-export const fillMissingDates = (
-  data: any[],
-  startDate: Date,
-  endDate: Date
-) => {
+export const fillMissingDates = (data: any[], startDate: Date, endDate: Date) => {
   const dateMap = new Map();
 
   // 將現有數據放入 Map
@@ -110,7 +103,7 @@ export const fillMissingDates = (
 
 // 輔助函數：格式化日期為 YYYY-MM-DD
 export const formatDate = (date: Date): string => {
-  return date.toISOString().split("T")[0];
+  return date.toISOString().split('T')[0];
 };
 
 // 按小時分析完成的任務，找出高效時段
@@ -118,14 +111,14 @@ export const getProductivityByHour = async () => {
   const result = await Todo.aggregate([
     {
       $match: {
-        status: "completed",
+        status: 'completed',
         completedAt: { $exists: true, $ne: null },
       },
     },
     {
       $group: {
         _id: {
-          $hour: "$completedAt",
+          $hour: '$completedAt',
         },
         count: { $sum: 1 },
       },
@@ -135,7 +128,7 @@ export const getProductivityByHour = async () => {
     },
     {
       $project: {
-        hour: "$_id",
+        hour: '$_id',
         count: 1,
         _id: 0,
       },
@@ -156,7 +149,7 @@ export const getProductivityByHour = async () => {
   // 找出最高效時段
   const mostProductiveHour = hourlyData.reduce(
     (max, current) => (current.count > max.count ? current : max),
-    { hour: 0, count: 0 }
+    { hour: 0, count: 0 },
   );
 
   return {
@@ -171,7 +164,7 @@ export const calculateTaskTurnoverRates = async () => {
   const completedTasksTime = await Todo.aggregate([
     {
       $match: {
-        status: "completed",
+        status: 'completed',
         completedAt: { $exists: true, $ne: null },
       },
     },
@@ -179,7 +172,7 @@ export const calculateTaskTurnoverRates = async () => {
       $project: {
         totalTime: {
           $divide: [
-            { $subtract: ["$completedAt", "$createdAt"] },
+            { $subtract: ['$completedAt', '$createdAt'] },
             3600000, // 轉換為小時
           ],
         },
@@ -188,7 +181,7 @@ export const calculateTaskTurnoverRates = async () => {
     {
       $group: {
         _id: null,
-        averageTime: { $avg: "$totalTime" },
+        averageTime: { $avg: '$totalTime' },
         count: { $sum: 1 },
       },
     },
@@ -208,15 +201,12 @@ export const calculateTaskTurnoverRates = async () => {
   });
 
   const completionRate =
-    tasksCreatedThisWeek > 0
-      ? (tasksCompletedThisWeek / tasksCreatedThisWeek) * 100
-      : 0;
+    tasksCreatedThisWeek > 0 ? (tasksCompletedThisWeek / tasksCreatedThisWeek) * 100 : 0;
 
   return {
     averageCompletionTimeHours:
       completedTasksTime.length > 0 ? completedTasksTime[0].averageTime : 0,
-    completedTaskCount:
-      completedTasksTime.length > 0 ? completedTasksTime[0].count : 0,
+    completedTaskCount: completedTasksTime.length > 0 ? completedTasksTime[0].count : 0,
     weeklyCompletionRate: completionRate,
     tasksCompletedThisWeek,
     tasksCreatedThisWeek,
