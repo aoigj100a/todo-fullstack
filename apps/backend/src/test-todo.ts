@@ -36,7 +36,7 @@ const testCreateTodo = async () => {
       status: 'pending',
       createdBy: mockUserId,
       assignedTo: mockAssigneeId,
-      dueDate: new Date('2025-03-01')
+      dueDate: new Date('2025-03-01'),
     });
 
     const savedTodo = await newTodo.save();
@@ -67,9 +67,9 @@ const testUpdateTodo = async (todoId: string) => {
       todoId,
       {
         status: 'in-progress',
-        description: 'Updated description'
+        description: 'Updated description',
       },
-      { new: true }
+      { new: true },
     );
     console.log('Updated Todo:', JSON.stringify(updatedTodo, null, 2));
     return updatedTodo;
@@ -94,21 +94,21 @@ const testDeleteTodo = async (todoId: string) => {
 // 執行測試
 const runTests = async () => {
   await connectDB();
-  
+
   try {
     console.log('\n--- Cleaning up database ---');
     await cleanup();
 
     console.log('\n--- Testing Todo Creation ---');
     const createdTodo = await testCreateTodo();
-    
+
     console.log('\n--- Testing Todo Retrieval ---');
     await testGetTodos();
 
     if (createdTodo) {
       console.log('\n--- Testing Todo Update ---');
       await testUpdateTodo(createdTodo._id.toString());
-      
+
       console.log('\n--- Testing Todo Deletion ---');
       await testDeleteTodo(createdTodo._id.toString());
 

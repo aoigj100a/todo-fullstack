@@ -1,11 +1,11 @@
 // src/controllers/auth.controller.ts
-import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import { User } from "../models/User";
+import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { User } from '../models/User';
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
-const JWT_EXPIRES_IN = "24h";
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_EXPIRES_IN = '24h';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -16,7 +16,7 @@ export const register = async (req: Request, res: Response) => {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        error: "Email already registered",
+        error: 'Email already registered',
       });
     }
 
@@ -50,10 +50,10 @@ export const register = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    console.error("Register error:", error);
+    console.error('Register error:', error);
     res.status(500).json({
       success: false,
-      error: "Failed to register user",
+      error: 'Failed to register user',
     });
   }
 };
@@ -63,11 +63,11 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     // Find user and include password for comparison
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return res.status(401).json({
         success: false,
-        error: "Invalid credentials",
+        error: 'Invalid credentials',
       });
     }
 
@@ -76,7 +76,7 @@ export const login = async (req: Request, res: Response) => {
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        error: "Invalid credentials",
+        error: 'Invalid credentials',
       });
     }
 
@@ -97,10 +97,10 @@ export const login = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error('Login error:', error);
     res.status(500).json({
       success: false,
-      error: "Failed to login",
+      error: 'Failed to login',
     });
   }
 };

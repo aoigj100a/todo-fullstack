@@ -53,7 +53,7 @@ function example() {
 主要風格規則：
 
 - 使用 2 個空格縮排
-- 使用單引號
+- 使用雙引號
 - 語句結尾使用分號
 - 運算符周圍使用空格
 
@@ -84,7 +84,7 @@ function getData(id: string): Promise<Data> {
 // ❌ 不正確的 Hook 使用
 function MyComponent() {
   if (condition) {
-    const [state, setState] = useState('');
+    const [state, setState] = useState("");
   }
   
   useEffect(() => {
@@ -94,7 +94,7 @@ function MyComponent() {
 
 // ✅ 正確的 Hook 使用
 function MyComponent() {
-  const [state, setState] = useState('');
+  const [state, setState] = useState("");
   
   useEffect(() => {
     // 完整的依賴項

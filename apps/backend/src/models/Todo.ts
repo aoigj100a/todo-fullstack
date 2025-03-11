@@ -8,7 +8,7 @@ export interface ITodo extends Document {
   assignedTo: string;
   createdAt: Date;
   updatedAt: Date;
-  completeAt:Date;
+  completeAt: Date;
 }
 
 const TodoSchema = new Schema(
@@ -39,14 +39,14 @@ const TodoSchema = new Schema(
       type: String,
       required: false,
     },
-    completedAt:{
-      type:Date,
-      default:null,
-    }
+    completedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export const Todo = mongoose.model<ITodo>('Todo', TodoSchema);

@@ -33,7 +33,6 @@ const startServer = async () => {
     // 監聽終止信號
     process.on('SIGTERM', gracefulShutdown);
     process.on('SIGINT', gracefulShutdown);
-
   } catch (error) {
     console.error('Failed to start server:', error);
     process.exit(1);

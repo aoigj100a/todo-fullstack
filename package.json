@@ -12,7 +12,8 @@
     "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r run lint:fix",
-    "seed": "cd apps/backend && node src/scripts/seed-data.js"
+    "seed": "cd apps/backend && node src/scripts/seed-data.js",
+    "format": "prettier --write \"**/*.{js,ts,tsx,json,md}\""
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

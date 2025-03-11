@@ -1,9 +1,17 @@
+// apps/frontend/.eslintrc.js
 module.exports = {
-    extends: ['../../.eslintrc.js'],
-    parserOptions: {
-      project: './tsconfig.json',
+  extends: ['../../.eslintrc.js'],
+  parserOptions: {
+    project: './tsconfig.json',
+  },
+  rules: {
+    // 前端特定覆寫規則
+    'react/display-name': 'off',
+    'react/no-unescaped-entities': 'off',
+  },
+  settings: {
+    react: {
+      version: 'detect',
     },
-    rules: {
-      'react/react-in-jsx-scope': 'off'
-    }
-  };
+  },
+};
