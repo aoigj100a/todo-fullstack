@@ -359,7 +359,16 @@ function TodosPage() {
               </motion.div>
             </AnimatePresence>
           )}
-
+          {/* 在這裡添加EditTodoDialog */}
+          {editingTodo && isEditDialogOpen && (
+            <EditTodoDialog
+              todo={editingTodo}
+              open={isEditDialogOpen}
+              onClose={handleEditClose}
+              onSuccess={handleEditSuccess}
+            />
+          )}
+          {isCreateDialogOpen && <CreateTodoDialog onSuccess={loadTodos} />}
           {/* 添加幫助信息 */}
           <TodosHelpInfo />
         </>
