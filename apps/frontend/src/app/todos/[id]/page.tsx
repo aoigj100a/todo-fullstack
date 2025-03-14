@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Loader2, ArrowLeft, Calendar, Clock } from "lucide-react";
-import { format } from "date-fns";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { Loader2, ArrowLeft, Calendar, Clock } from 'lucide-react';
+import { format } from 'date-fns';
+import Link from 'next/link';
 
-import { todoService } from "@/service/todo";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
-import { Todo } from "@/types/todo";
+import { todoService } from '@/service/todo';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
+import { Todo } from '@/types/todo';
 
 const statusColorMap = {
-  pending: "bg-gray-500",
-  "in-progress": "bg-blue-500",
-  completed: "bg-green-500",
+  pending: 'bg-gray-500',
+  'in-progress': 'bg-blue-500',
+  completed: 'bg-green-500',
 } as const;
 
 export default function TodoDetailPage() {
@@ -28,25 +28,25 @@ export default function TodoDetailPage() {
 
   useEffect(() => {
     const id = params.id as string;
-    
+
     const loadTodo = async () => {
       try {
         const data = await todoService.getTodos();
-        const foundTodo = data.find(t => t._id === id);
+        const foundTodo = data.find((todo: Todo) => todo._id === id);
         if (foundTodo) {
           setTodo(foundTodo);
         } else {
           toast({
-            title: "Error",
-            description: "Todo not found",
-            variant: "destructive",
+            title: 'Error',
+            description: 'Todo not found',
+            variant: 'destructive',
           });
         }
       } catch (error) {
         toast({
-          title: "Error",
-          description: "Failed to load todo details",
-          variant: "destructive",
+          title: 'Error',
+          description: 'Failed to load todo details',
+          variant: 'destructive',
         });
       } finally {
         setIsLoading(false);
@@ -58,19 +58,19 @@ export default function TodoDetailPage() {
 
   const handleDelete = async () => {
     if (!todo) return;
-    
+
     try {
       await todoService.deleteTodo(todo._id);
       toast({
-        title: "Success",
-        description: "Todo deleted successfully",
+        title: 'Success',
+        description: 'Todo deleted successfully',
       });
       router.push('/todos');
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to delete todo",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to delete todo',
+        variant: 'destructive',
       });
     }
   };
@@ -131,11 +131,11 @@ export default function TodoDetailPage() {
             <div className="flex flex-col space-y-2">
               <div className="flex items-center text-gray-600">
                 <Calendar className="mr-2 h-4 w-4" />
-                Created: {format(new Date(todo.createdAt), "PPP")}
+                Created: {format(new Date(todo.createdAt), 'PPP')}
               </div>
               <div className="flex items-center text-gray-600">
                 <Clock className="mr-2 h-4 w-4" />
-                Last Updated: {format(new Date(todo.updatedAt), "PPP")}
+                Last Updated: {format(new Date(todo.updatedAt), 'PPP')}
               </div>
               {todo.assignedTo && (
                 <div className="flex items-center text-gray-600">
@@ -146,18 +146,14 @@ export default function TodoDetailPage() {
             </div>
 
             <div className="mt-6 flex items-center gap-4">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="w-full"
                 onClick={() => router.push(`/todos/${todo._id}/edit`)}
               >
                 Edit Todo
               </Button>
-              <Button
-                variant="destructive"
-                className="w-full"
-                onClick={handleDelete}
-              >
+              <Button variant="destructive" className="w-full" onClick={handleDelete}>
                 Delete Todo
               </Button>
             </div>
