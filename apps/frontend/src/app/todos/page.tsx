@@ -226,47 +226,27 @@ function TodosPage() {
     setIsCreateDialogOpen(false);
   }, []);
 
-  // 在 useEffect 中讀取用戶的視圖偏好
   useEffect(() => {
-    // 從 localStorage 讀取用戶偏好的視圖類型
-    const savedViewPreference = localStorage.getItem('todoViewPreference') as ViewType | null;
-    if (
-      savedViewPreference &&
-      (savedViewPreference === 'list' || savedViewPreference === 'board')
-    ) {
-      setViewType(savedViewPreference);
-    }
-
+    // 載入 Todos
     loadTodos();
 
-    return () => {
-      pendingDeletions.current.forEach(({ timeoutId }) => {
-        clearTimeout(timeoutId);
-      });
-    };
-  }, []);
-
-  useEffect(() => {
-    loadTodos();
-    return () => {
-      pendingDeletions.current.forEach(({ timeoutId }) => {
-        clearTimeout(timeoutId);
-      });
-    };
-  }, []);
-
-  useEffect(() => {
-    // 這部分代碼只在瀏覽器中執行
+    // 從 URL 參數或 localStorage 載入視圖類型
     const viewParam = searchParams.get('view') as ViewType | null;
     if (viewParam === 'list' || viewParam === 'board') {
       setViewType(viewParam);
-      return;
+    } else {
+      const savedView = localStorage.getItem('todoViewPreference') as ViewType | null;
+      if (savedView === 'list' || savedView === 'board') {
+        setViewType(savedView);
+      }
     }
 
-    const savedView = localStorage.getItem('todoViewPreference') as ViewType | null;
-    if (savedView === 'list' || savedView === 'board') {
-      setViewType(savedView);
-    }
+    // 清理函數
+    return () => {
+      pendingDeletions.current.forEach(({ timeoutId }) => {
+        clearTimeout(timeoutId);
+      });
+    };
   }, [searchParams]);
 
   return (
