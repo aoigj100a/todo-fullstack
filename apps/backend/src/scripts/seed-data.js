@@ -9,9 +9,9 @@ dotenv.config();
 // 連接 MongoDB
 mongoose
   .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/todo-app')
-  .then(() => console.log('MongoDB connected successfully for seeding'))
+  .then(() => console.log('MongoDB 連接成功，準備植入資料'))
   .catch((err) => {
-    console.error('MongoDB connection error:', err);
+    console.error('MongoDB 連接錯誤:', err);
     process.exit(1);
   });
 
@@ -20,22 +20,22 @@ const TodoSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Title is required'],
+      required: [true, '標題為必填欄位'],
       trim: true,
-      minlength: [3, 'Title too short'],
-      maxlength: [100, 'Title too long'],
+      minlength: [3, '標題太短'],
+      maxlength: [100, '標題太長'],
     },
     description: {
       type: String,
       trim: true,
-      maxlength: [500, 'Description too long'],
+      maxlength: [500, '描述太長'],
       default: '',
     },
     status: {
       type: String,
       enum: {
         values: ['pending', 'in-progress', 'completed'],
-        message: '{VALUE} is not a valid status',
+        message: '{VALUE} 不是有效的狀態',
       },
       default: 'pending',
       required: true,
@@ -54,20 +54,21 @@ const TodoSchema = new mongoose.Schema(
 const Todo = mongoose.model('Todo', TodoSchema);
 
 // 示範用戶
-const demoUser = 'Demo User';
+const demoUser = '測試用戶';
 
+// 預設的 Todo 種子資料
 // 預設的 Todo 種子資料
 const todoSeedData = [
   {
     title: '完成前端登入頁面',
-    description: '實作 JWT 身份驗證並整合到登入表單',
+    description: '實作 JWT 身份驗證並整合到登入表單，包含記住我功能',
     status: 'completed',
     assignedTo: demoUser,
     createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7天前
   },
   {
     title: '設計 Todo 卡片元件',
-    description: '使用 Tailwind CSS 建立響應式卡片設計',
+    description: '使用 Tailwind CSS 和 shadcn/ui 建立響應式卡片設計',
     status: 'completed',
     assignedTo: demoUser,
     createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), // 6天前
@@ -80,43 +81,57 @@ const todoSeedData = [
     createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5天前
   },
   {
+    title: '實作 Todo 狀態切換功能',
+    description: '實現點擊圖標切換待辦事項狀態，並添加狀態變更動畫',
+    status: 'completed',
+    assignedTo: demoUser,
+    createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000), // 4天前
+  },
+  {
     title: '整合 React Query',
     description: '在前端使用 React Query 管理 API 請求與資料狀態',
-    status: 'in-progress',
+    status: 'completed',
     assignedTo: demoUser,
     createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3天前
   },
   {
-    title: '實作刪除確認對話框',
-    description: '新增刪除前的確認機制，避免誤刪',
+    title: '實作篩選與看板視圖',
+    description: '實現按狀態分組顯示的看板視圖及列表視圖',
     status: 'in-progress',
     assignedTo: demoUser,
     createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2天前
   },
   {
-    title: '優化錯誤處理',
-    description: '改善前端錯誤處理機制，提供更友善的錯誤提示',
-    status: 'pending',
+    title: '設計數據統計 API',
+    description: '開發任務完成率和時間趨勢分析的後端 API',
+    status: 'in-progress',
     assignedTo: demoUser,
     createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1天前
   },
   {
-    title: '新增拖曳排序功能',
-    description: '允許使用者通過拖曳改變 Todo 項目的排序',
+    title: '實作數據視覺化儀表板',
+    description: '設計任務完成率圖表和時間趨勢分析圖表',
     status: 'pending',
     assignedTo: demoUser,
     createdAt: new Date(), // 今天
   },
   {
-    title: '實作主題切換功能',
-    description: '新增深色模式與淺色模式的切換',
+    title: '優化 MongoDB 查詢效能',
+    description: '新增索引並優化資料庫查詢',
     status: 'pending',
     assignedTo: demoUser,
     createdAt: new Date(), // 今天
   },
   {
-    title: '加入資料視覺化儀表板',
-    description: '建立統計圖表展示任務完成情況',
+    title: '設定 CI/CD 流程',
+    description: '配置 GitHub Actions 自動化測試和部署流程',
+    status: 'pending',
+    assignedTo: demoUser,
+    createdAt: new Date(), // 今天
+  },
+  {
+    title: '實作容器化部署',
+    description: '使用 Docker 打包應用程式，準備生產環境部署',
     status: 'pending',
     assignedTo: demoUser,
     createdAt: new Date(), // 今天
@@ -128,22 +143,22 @@ async function seedDatabase() {
   try {
     // 清除現有 Todo 數據
     await Todo.deleteMany({});
-    console.log('Existing todos deleted');
+    console.log('已刪除現有待辦事項資料');
 
     // 插入種子數據
     const createdTodos = await Todo.insertMany(todoSeedData);
-    console.log(`${createdTodos.length} todos successfully seeded!`);
+    console.log(`成功植入 ${createdTodos.length} 筆待辦事項！`);
 
     // 顯示插入的數據
-    console.log('Seeded todos:');
+    console.log('已植入的待辦事項:');
     createdTodos.forEach((todo) => {
       console.log(`- ${todo.title} (${todo.status})`);
     });
 
     mongoose.connection.close();
-    console.log('Database connection closed');
+    console.log('資料庫連接已關閉');
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error('植入資料時發生錯誤:', error);
     mongoose.connection.close();
     process.exit(1);
   }
