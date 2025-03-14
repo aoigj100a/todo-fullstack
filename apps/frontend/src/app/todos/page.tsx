@@ -12,12 +12,12 @@ import { TodosFilterBar } from '@/components/todos/TodosFilterBar';
 import { TodosStatusFilter } from '@/components/todos/TodosStatusFilter';
 import { TodosBoardView } from '@/components/todos/TodosBoardView';
 import { TodosEmptyState } from '@/components/todos/TodosEmptyState';
+import { FadePresence } from '@/components/ui/nimated-presence';
+import { TodosHelpInfo } from '@/components/todos/TodosHelpInfo';
 
 import { Todo } from '@/types/todo';
 import { todoService } from '@/service/todo';
-import { FadePresence } from '@/components/ui/nimated-presence';
 import { AnimatePresence, motion } from 'framer-motion';
-import { TodosHelpInfo } from '@/components/todos/TodosHelpInfo';
 
 const UNDO_TIMEOUT = 5000;
 
@@ -35,22 +35,6 @@ function TodosPage() {
 
   const searchParams = useSearchParams();
   const router = useRouter();
-
-  // const [viewType, setViewType] = useState<ViewType>(() => {
-  //   const viewParam = searchParams.get("view") as ViewType | null;
-  //   if (viewParam === "list" || viewParam === "board") {
-  //     return viewParam;
-  //   }
-
-  //   const savedView = localStorage.getItem(
-  //     "todoViewPreference"
-  //   ) as ViewType | null;
-  //   if (savedView === "list" || savedView === "board") {
-  //     return savedView;
-  //   }
-
-  //   return "list";
-  // });
 
   const [filterStatus, setFilterStatus] = useState<FilterStatus>(() => {
     const statusParam = searchParams.get('status') as FilterStatus | null;
@@ -359,7 +343,7 @@ function TodosPage() {
               </motion.div>
             </AnimatePresence>
           )}
-          {/* 在這裡添加EditTodoDialog */}
+
           {editingTodo && isEditDialogOpen && (
             <EditTodoDialog
               todo={editingTodo}
@@ -369,7 +353,7 @@ function TodosPage() {
             />
           )}
           {isCreateDialogOpen && <CreateTodoDialog onSuccess={loadTodos} />}
-          {/* 添加幫助信息 */}
+
           <TodosHelpInfo />
         </>
       )}
