@@ -1,56 +1,182 @@
+// apps/frontend/src/app/page.tsx
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { ArrowRight, CheckCircle, Clock, List, UserCircle } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { authService } from '@/service/auth';
+import { useToast } from '@/hooks/use-toast';
+
 export default function Home() {
+  const [email, setEmail] = useState('demo@example.com');
+  const [password, setPassword] = useState('demo1234');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const handleQuickLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+
+    try {
+      const response = await authService.login({ email, password });
+      authService.setToken(response.token);
+      authService.setUser(response.user);
+
+      toast({
+        title: 'Login successful',
+        description: 'Redirecting to your todos...',
+      });
+
+      router.push('/todos');
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Login failed',
+        description: error instanceof Error ? error.message : 'Failed to login',
+      });
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-100 to-white">
-      <div className="container mx-auto px-4 py-16">
-        {/* 標題區塊 */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Todo App
-          </h1>
-          <p className="text-lg text-gray-600">
-            Manage your tasks efficiently
-          </p>
-        </div>
-
-        {/* 功能展示區 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* 卡片 1 */}
-          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">
-              Task Management
-            </h2>
-            <p className="text-gray-600">
-              Create, organize, and track your tasks with ease
+    <main className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
+      <div className="max-w-6xl mx-auto px-4 py-12 sm:py-20">
+        {/* Hero Section */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+          {/* Left Content */}
+          <div className="w-full md:w-1/2 space-y-6">
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
+              <span className="text-teal-600">輕鬆地</span>管理大家的任務
+            </h1>
+            <p className="text-lg text-gray-600 max-w-lg">
+              A simple, intuitive task management app that helps you stay organized and productive.
             </p>
+
+            {/* Quick Login Card */}
+            <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 mt-8">
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+                <UserCircle className="mr-2 h-5 w-5 text-teal-500" />
+                快速登入
+              </h2>
+              <form onSubmit={handleQuickLogin} className="space-y-4">
+                <div>
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-gray-50"
+                  />
+                </div>
+                <div>
+                  <Input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="bg-gray-50"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full bg-teal-600 hover:bg-teal-700"
+                  disabled={isLoggingIn}
+                >
+                  {isLoggingIn ? 'Logging in...' : 'Login & Go to Dashboard'}
+                </Button>
+                <p className="text-xs text-center text-gray-500">
+                  Using demo account: demo@example.com / demo1234
+                </p>
+              </form>
+            </div>
+
+            <div className="flex gap-4 pt-4">
+              <Button asChild variant="outline" className="rounded-full">
+                <Link href="/register">Create Account</Link>
+              </Button>
+              <Button asChild className="rounded-full bg-teal-600 hover:bg-teal-700">
+                <Link href="/guide">
+                  View Guide
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
 
-          {/* 卡片 2 */}
-          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">
-              Progress Tracking
-            </h2>
-            <p className="text-gray-600">
-              Monitor your progress and stay on top of deadlines
-            </p>
-          </div>
+          {/* Right Image/Illustration */}
+          <div className="w-full md:w-1/2">
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+              <div className="relative overflow-hidden rounded-lg bg-gray-50 p-6">
+                {/* Stylized Todo List UI Example */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm">
+                    <div className="h-5 w-5 rounded-full bg-green-500 flex items-center justify-center text-white">
+                      <CheckCircle className="h-4 w-4" />
+                    </div>
+                    <span className="font-medium">Complete homepage design</span>
+                  </div>
 
-          {/* 卡片 3 */}
-          <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">
-              Team Collaboration
-            </h2>
-            <p className="text-gray-600">
-              Work together efficiently with team features
-            </p>
+                  <div className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm">
+                    <div className="h-5 w-5 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                      <Clock className="h-4 w-4" />
+                    </div>
+                    <span className="font-medium">Implement user authentication</span>
+                  </div>
+
+                  <div className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm">
+                    <div className="h-5 w-5 rounded-full bg-yellow-400 flex items-center justify-center text-white">
+                      <List className="h-4 w-4" />
+                    </div>
+                    <span className="font-medium">Design dashboard UI components</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* 開始使用按鈕 */}
-        <div className="text-center mt-12">
-          <button className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-colors">
-            Get Started
-          </button>
+        {/* Features Section */}
+        <div className="mt-20">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12">Key Features</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+              <div className="bg-teal-100 text-teal-700 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Task Management</h3>
+              <p className="text-gray-600">Create, organize, and track your tasks with ease</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+              <div className="bg-blue-100 text-blue-700 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                <Clock className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Progress Tracking</h3>
+              <p className="text-gray-600">Monitor your progress and stay on top of deadlines</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+              <div className="bg-purple-100 text-purple-700 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                <List className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Multiple Views</h3>
+              <p className="text-gray-600">
+                Switch between list and board views for different perspectives
+              </p>
+            </div>
+          </div>
         </div>
+
+        {/* Footer */}
+        <footer className="mt-20 text-center text-gray-500 text-sm">
+          <p>© {new Date().getFullYear()} Todo App. All rights reserved.</p>
+        </footer>
       </div>
     </main>
   );
