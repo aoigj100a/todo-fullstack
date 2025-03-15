@@ -2,7 +2,10 @@
 
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
+
+import { Todo } from '@/types/todo';
 
 import { TodosLoadingState } from '@/components/todos/TodosLoadingState';
 import { TodoCard } from '@/components/todos/TodoCard';
@@ -15,11 +18,8 @@ import { TodosEmptyState } from '@/components/todos/TodosEmptyState';
 import { FadePresence } from '@/components/ui/nimated-presence';
 import { TodosHelpInfo } from '@/components/todos/TodosHelpInfo';
 
-import { Todo } from '@/types/todo';
 import { todoService } from '@/service/todo';
-import { AnimatePresence, motion } from 'framer-motion';
-
-const UNDO_TIMEOUT = 5000;
+import { useSoftDelete } from '@/hooks/useSoftDelete';
 
 type ViewType = 'list' | 'board';
 type FilterStatus = 'all' | 'pending' | 'in-progress' | 'completed';
@@ -49,6 +49,33 @@ function TodosPage() {
     return 'all';
   });
 
+  // 使用 useSoftDelete hook
+  const { handleDelete, clearPendingDeletions, getPendingDeletionIds } = useSoftDelete<Todo>(
+    todos,
+    setTodos,
+    {
+      onDelete: async (id: string) => {
+        await todoService.deleteTodo(id);
+      },
+      timeout: 5000,
+      getItemTitle: (todo: Todo) => todo.title,
+    },
+  );
+
+  const loadTodos = async () => {
+    try {
+      const data = await todoService.getTodos();
+      setTodos((prevTodos) => {
+        const pendingTodoIds = getPendingDeletionIds();
+        return data.filter((todo: Todo) => !pendingTodoIds.includes(todo._id));
+      });
+    } catch (error) {
+      toast.error('Failed to load todos');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const filteredTodos = useMemo(() => {
     if (filterStatus === 'all') {
       return todos;
@@ -65,99 +92,6 @@ function TodosPage() {
       completed: todos.filter((todo) => todo.status === 'completed').length,
     };
   }, [todos]);
-
-  const pendingDeletions = useRef<
-    Map<
-      string,
-      {
-        todo: Todo;
-        timeoutId: NodeJS.Timeout;
-        toastId?: string;
-      }
-    >
-  >(new Map());
-
-  const loadTodos = async () => {
-    try {
-      const data = await todoService.getTodos();
-      setTodos((prevTodos) => {
-        const pendingTodoIds = Array.from(pendingDeletions.current.keys());
-        return data.filter((todo: Todo) => !pendingTodoIds.includes(todo._id));
-      });
-    } catch (error) {
-      toast.error('Failed to load todos');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleDelete = async (todoId: string) => {
-    console.log('Starting delete process for:', todoId);
-
-    const todoToDelete = todos.find((t) => t._id === todoId);
-    if (!todoToDelete) return;
-
-    // Clear any existing timeout
-    if (pendingDeletions.current.has(todoId)) {
-      const { timeoutId, toastId } = pendingDeletions.current.get(todoId)!;
-      clearTimeout(timeoutId);
-      if (toastId) toast.dismiss(toastId);
-    }
-
-    // Optimistically remove from UI
-    setTodos((currentTodos) => currentTodos.filter((todo) => todo._id !== todoId));
-
-    // Show toast with undo button
-    const toastId = toast('Todo deleted', {
-      action: {
-        label: 'Undo',
-        onClick: () => handleUndo(todoId),
-      },
-      duration: UNDO_TIMEOUT,
-      description: `"${todoToDelete.title}" has been removed`,
-    });
-
-    // Set deletion timeout
-    const timeoutId = setTimeout(async () => {
-      try {
-        console.log('Executing final delete for:', todoId);
-        await todoService.deleteTodo(todoId);
-        console.log('Delete completed successfully');
-        pendingDeletions.current.delete(todoId);
-      } catch (error) {
-        console.error('Delete failed:', error);
-        handleUndo(todoId);
-        toast.error('Failed to delete todo');
-      }
-    }, UNDO_TIMEOUT);
-
-    // Store in pending deletions
-    pendingDeletions.current.set(todoId, {
-      todo: todoToDelete,
-      timeoutId,
-      toastId: toastId?.toString(),
-    });
-  };
-
-  const handleUndo = (todoId: string) => {
-    const pendingDeletion = pendingDeletions.current.get(todoId);
-    if (!pendingDeletion) return;
-
-    clearTimeout(pendingDeletion.timeoutId);
-    if (pendingDeletion.toastId) {
-      toast.dismiss(pendingDeletion.toastId);
-    }
-    pendingDeletions.current.delete(todoId);
-
-    setTodos((currentTodos) => {
-      if (currentTodos.some((t) => t._id === todoId)) return currentTodos;
-      return [...currentTodos, pendingDeletion.todo];
-    });
-
-    toast.success('Todo restored', {
-      description: `"${pendingDeletion.todo.title}" has been restored`,
-    });
-  };
 
   const handleEdit = (todo: Todo) => {
     setEditingTodo(todo);
@@ -243,11 +177,9 @@ function TodosPage() {
 
     // 清理函數
     return () => {
-      pendingDeletions.current.forEach(({ timeoutId }) => {
-        clearTimeout(timeoutId);
-      });
+      clearPendingDeletions();
     };
-  }, [searchParams]);
+  }, [searchParams, clearPendingDeletions]);
 
   return (
     <div className="p-4 sm:p-8">
