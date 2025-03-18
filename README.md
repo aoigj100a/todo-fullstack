@@ -179,6 +179,22 @@ todo-fullstack/
 - [ ] 建立資料庫備份策略
 - [ ] 性能監控整合
 
+### 多國語言功能 🚧
+
+- [x] 首頁完整支援多語言顯示
+- [x] 語言上下文設定 (LanguageContext.tsx)
+- [x] 建立 LanguageSwitcher 組件
+- [x] 使用 localStorage 儲存語言偏好
+- [x] 實作 useLanguage hook 讓組件可以存取語言上下文
+- [x] 建立 ClientProviders 在應用程式層級提供語言上下文
+- [ ] 實作基於語言的 URL 路由 (如 /en/todos, /zh-TW/todos)
+- [ ] Todo 列表頁面的多語言支援
+- [ ] 登入和註冊頁面的多語言整合
+- [ ] 任務詳情頁面的多語言支援
+- [ ] 實作翻譯的自動化管理工具
+- [ ] 完善瀏覽器語言檢測與設定邏輯
+- [ ] 確保 URL 參數在語言變更時保持一致
+
 ## 快速開始
 
 ### 開發環境設定
