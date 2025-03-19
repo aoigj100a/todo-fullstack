@@ -18,6 +18,7 @@ import { TodosEmptyState } from '@/components/todos/TodosEmptyState';
 import { FadePresence } from '@/components/ui/nimated-presence';
 import { TodosHelpInfo } from '@/components/todos/TodosHelpInfo';
 
+import { useLanguage } from '@/contexts/LanguageContext';
 import { todoService } from '@/service/todo';
 import { useSoftDelete } from '@/hooks/useSoftDelete';
 
@@ -25,6 +26,8 @@ type ViewType = 'list' | 'board';
 type FilterStatus = 'all' | 'pending' | 'in-progress' | 'completed';
 
 function TodosPage() {
+  const { t } = useLanguage();
+
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
@@ -185,7 +188,7 @@ function TodosPage() {
     <div className="p-4 sm:p-8">
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl sm:text-3xl font-bold">My Todos</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">{t('hero.title')}My Todos</h1>
           <CreateTodoDialog onSuccess={loadTodos} />
         </div>
       </div>
