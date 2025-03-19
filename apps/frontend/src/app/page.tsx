@@ -3,15 +3,16 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { ArrowRight, CheckCircle, Clock, List, UserCircle } from 'lucide-react';
+import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+
 import { authService } from '@/service/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 export default function Home() {
   const [email, setEmail] = useState('demo@example.com');
@@ -60,7 +61,7 @@ export default function Home() {
           {/* Left Content */}
           <div className="w-full md:w-1/2 space-y-6">
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
-              <span className="text-teal-600">{t('hero.title')}</span>
+              <span className="text-teal-600">{t('todos.title')}</span>
             </h1>
             <p className="text-lg text-gray-600 max-w-lg">{t('hero.subtitle')}</p>
 
