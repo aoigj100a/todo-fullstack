@@ -1,25 +1,27 @@
-import { useState, useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
+// src/components/todos/EditTodoDialog.tsx
+import { useState, useEffect } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { todoService } from "@/service/todo";
-import { Todo } from "@/types/todo";
+} from '@/components/ui/select';
+import { todoService } from '@/service/todo';
+import { Todo } from '@/types/todo';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface EditTodoDialogProps {
   todo: Todo;
@@ -29,19 +31,20 @@ interface EditTodoDialogProps {
 }
 
 export function EditTodoDialog({ todo, open, onClose, onSuccess }: EditTodoDialogProps) {
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState(todo.title);
-  const [description, setDescription] = useState(todo.description || "");
-  const [status, setStatus] = useState<"pending" | "in-progress" | "completed">(
-    todo.status as "pending" | "in-progress" | "completed"
+  const [description, setDescription] = useState(todo.description || '');
+  const [status, setStatus] = useState<'pending' | 'in-progress' | 'completed'>(
+    todo.status as 'pending' | 'in-progress' | 'completed',
   );
   const { toast } = useToast();
 
   // 當 todo 改變時更新表單
   useEffect(() => {
     setTitle(todo.title);
-    setDescription(todo.description || "");
-    setStatus(todo.status as "pending" | "in-progress" | "completed");
+    setDescription(todo.description || '');
+    setStatus(todo.status as 'pending' | 'in-progress' | 'completed');
   }, [todo]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -49,9 +52,9 @@ export function EditTodoDialog({ todo, open, onClose, onSuccess }: EditTodoDialo
 
     if (!title.trim()) {
       toast({
-        title: "Error",
-        description: "Title is required",
-        variant: "destructive",
+        title: 'Error',
+        description: t('toast.validation.title'),
+        variant: 'destructive',
       });
       return;
     }
@@ -66,17 +69,17 @@ export function EditTodoDialog({ todo, open, onClose, onSuccess }: EditTodoDialo
       });
 
       toast({
-        title: "Success",
-        description: "Todo updated successfully",
+        title: 'Success',
+        description: t('toast.updateSuccess'),
       });
 
       onSuccess();
       onClose();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to update todo",
-        variant: "destructive",
+        title: 'Error',
+        description: t('toast.error.update'),
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -88,61 +91,50 @@ export function EditTodoDialog({ todo, open, onClose, onSuccess }: EditTodoDialo
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Todo</DialogTitle>
+            <DialogTitle>{t('dialog.editTitle')}</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="title">Title</Label>
+              <Label htmlFor="title">{t('form.title')}</Label>
               <Input
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter todo title"
+                placeholder={t('form.titlePlaceholder')}
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('form.description')}</Label>
               <Textarea
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Enter todo description"
+                placeholder={t('form.descriptionPlaceholder')}
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status">{t('form.status')}</Label>
               <Select
                 value={status}
-                onValueChange={(
-                  value: "pending" | "in-progress" | "completed"
-                ) => setStatus(value)}
+                onValueChange={(value: 'pending' | 'in-progress' | 'completed') => setStatus(value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select status" />
+                  <SelectValue placeholder={t('form.selectStatus')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="in-progress">In Progress</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="pending">{t('status.pending')}</SelectItem>
+                  <SelectItem value="in-progress">{t('status.inProgress')}</SelectItem>
+                  <SelectItem value="completed">{t('status.completed')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <DialogFooter>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={onClose}
-              disabled={isLoading}
-            >
-              Cancel
+            <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
+              {t('button.cancel')}
             </Button>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="bg-teal-500 hover:bg-teal-600"
-            >
-              {isLoading ? "Updating..." : "Update Todo"}
+            <Button type="submit" disabled={isLoading} className="bg-teal-500 hover:bg-teal-600">
+              {isLoading ? 'Updating...' : t('button.updateTodo')}
             </Button>
           </DialogFooter>
         </form>

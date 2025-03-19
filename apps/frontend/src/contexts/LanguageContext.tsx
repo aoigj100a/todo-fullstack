@@ -101,6 +101,9 @@ const translations = {
       'Tip: You can view tasks in both List and Board views. Filtered views only show matching tasks.',
     'help.viewHelp': 'View Help',
     'help.hideHelp': 'Hide Help',
+    // 按鈕
+    'button.creating': 'Creating...',
+    'button.updating': 'Updating...',
   },
   'zh-TW': {
     'hero.title': '輕鬆地管理大家的任務',
@@ -186,6 +189,9 @@ const translations = {
     'help.tip': '提示：您可以在列表視圖和看板視圖中查看任務。篩選視圖僅顯示匹配的任務。',
     'help.viewHelp': '查看幫助',
     'help.hideHelp': '隱藏幫助',
+    // 按鈕
+    'button.creating': '建立中...',
+    'button.updating': '更新中...',
   },
 };
 
