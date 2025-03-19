@@ -188,7 +188,7 @@ function TodosPage() {
     <div className="p-4 sm:p-8">
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl sm:text-3xl font-bold">{t('hero.title')}My Todos</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">{t('todos.title')}</h1>
           <CreateTodoDialog onSuccess={loadTodos} />
         </div>
       </div>
