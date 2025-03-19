@@ -32,6 +32,11 @@ const translations = {
     'features.multipleViews': 'Multiple Views',
     'features.multipleViews.desc': 'Switch between list and board views for different perspectives',
     'footer.copyright': '© {year} Todo App. All rights reserved.',
+    // Todo 頁面標題
+    'todos.title': 'My Todos',
+    'todos.emptyState': "You don't have any todos yet. Create one to get started!",
+    'todos.emptyStateFiltered': 'No matching tasks',
+    'todos.noTasks': 'No tasks in this status',
   },
   'zh-TW': {
     'hero.title': '輕鬆地管理大家的任務',
@@ -49,6 +54,11 @@ const translations = {
     'features.multipleViews': '多種視圖',
     'features.multipleViews.desc': '在列表和看板視圖之間切換，獲得不同的視角',
     'footer.copyright': '© {year} Todo 應用程式。保留所有權利。',
+    // Todo 頁面標題
+    'todos.title': '我的待辦事項',
+    'todos.emptyState': '您還沒有任何待辦事項。建立一個開始吧！',
+    'todos.emptyStateFiltered': '沒有符合條件的任務',
+    'todos.noTasks': '此狀態沒有任務',
   },
 };
 
