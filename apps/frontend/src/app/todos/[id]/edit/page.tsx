@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Save } from 'lucide-react';
 import Link from 'next/link';
 
-import { todoService } from '@/service/todo';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,8 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+
 import { useToast } from '@/hooks/use-toast';
 import { Todo } from '@/types/todo';
+import { todoService } from '@/service/todo';
 
 export default function EditTodoPage() {
   const params = useParams();
@@ -115,75 +116,89 @@ export default function EditTodoPage() {
   if (isLoading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-teal-500" />
       </div>
     );
   }
 
   if (!todo) {
     return (
-      <Card className="mx-auto max-w-2xl p-6">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-gray-900">Todo not found</h2>
-          <p className="mt-2 text-gray-600">The requested todo does not exist.</p>
-          <Button asChild className="mt-4">
-            <Link href="/todos">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Todos
-            </Link>
-          </Button>
-        </div>
-      </Card>
+      <div className="container max-w-2xl mx-auto py-8 px-4">
+        <Card className="text-center p-6">
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-900">Todo not found</h2>
+            <p className="text-gray-600">The requested todo does not exist.</p>
+            <Button asChild className="mt-4 bg-teal-500 hover:bg-teal-600">
+              <Link href="/todos">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Todos
+              </Link>
+            </Button>
+          </div>
+        </Card>
+      </div>
     );
   }
 
   return (
-    <div className="container py-8">
+    <div className="container max-w-2xl mx-auto py-8 px-4">
       <div className="mb-6 flex items-center">
-        <Button asChild variant="ghost" className="mr-4">
+        <Button
+          asChild
+          variant="ghost"
+          className="mr-4 text-teal-600 hover:text-teal-700 hover:bg-teal-50"
+        >
           <Link href={`/todos/${todo._id}`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Link>
         </Button>
-        <h1 className="text-2xl font-bold">Edit Todo</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Edit Todo</h1>
       </div>
 
-      <Card className="max-w-2xl">
-        <CardHeader>
-          <CardTitle>Edit Todo Details</CardTitle>
+      <Card className="overflow-hidden border-gray-200 shadow-md">
+        <CardHeader className="bg-gradient-to-r from-teal-50 to-white border-b border-gray-100">
+          <CardTitle className="text-xl font-bold text-gray-800">Edit Todo Details</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="title">Title</Label>
+              <Label htmlFor="title" className="text-gray-700">
+                Title
+              </Label>
               <Input
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter todo title"
                 required
+                className="border-gray-300 focus:border-teal-500 focus:ring-teal-500"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description" className="text-gray-700">
+                Description
+              </Label>
               <Textarea
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Enter todo description (optional)"
                 rows={4}
+                className="border-gray-300 focus:border-teal-500 focus:ring-teal-500"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status" className="text-gray-700">
+                Status
+              </Label>
               <Select
                 value={status}
                 onValueChange={(value: 'pending' | 'in-progress' | 'completed') => setStatus(value)}
               >
-                <SelectTrigger id="status">
+                <SelectTrigger id="status" className="border-gray-300 focus:ring-teal-500">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -194,22 +209,30 @@ export default function EditTodoPage() {
               </Select>
             </div>
 
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-4 pt-4">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => router.push(`/todos/${todo._id}`)}
+                className="flex-1 border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700"
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSaving} className="bg-teal-500 hover:bg-teal-600">
+              <Button
+                type="submit"
+                disabled={isSaving}
+                className="flex-1 bg-teal-500 hover:bg-teal-600"
+              >
                 {isSaving ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Saving...
                   </>
                 ) : (
-                  'Save Changes'
+                  <>
+                    <Save className="mr-2 h-4 w-4" />
+                    Save Changes
+                  </>
                 )}
               </Button>
             </div>
