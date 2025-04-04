@@ -1,17 +1,13 @@
-// src/components/ui/animated-presence.tsx
+// src/components/ui/nimated-presence.tsx
 'use client';
 
+import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { AnimatePresence, motion, Variant, VariantLabels, Variants } from 'framer-motion';
+import { AnimatePresence, motion, AnimationProps } from 'framer-motion';
 
-interface AnimatedContainerProps {
+interface AnimatedContainerProps extends Omit<AnimationProps, 'className'> {
   children: React.ReactNode;
   className?: string;
-  variants?: Variants;
-  initial?: boolean | Variant | VariantLabels;
-  animate?: boolean | Variant | VariantLabels;
-  exit?: boolean | Variant | VariantLabels;
-  transition?: object;
 }
 
 export function AnimatedContainer({
@@ -22,6 +18,7 @@ export function AnimatedContainer({
   animate = 'visible',
   exit = 'exit',
   transition = { duration: 0.2 },
+  ...props
 }: AnimatedContainerProps) {
   return (
     <motion.div
@@ -31,6 +28,7 @@ export function AnimatedContainer({
       animate={animate}
       exit={exit}
       transition={transition}
+      {...props}
     >
       {children}
     </motion.div>
