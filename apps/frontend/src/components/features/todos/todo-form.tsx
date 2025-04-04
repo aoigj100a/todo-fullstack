@@ -18,7 +18,7 @@ import { Todo, CreateTodoInput } from '@/types/todo';
 import { todoService } from '@/service/todo';
 
 interface TodoFormProps {
-  todo?: Todo;  // 如果是編輯模式，會傳入現有的 todo
+  todo?: Todo; // 如果是編輯模式，會傳入現有的 todo
   onSubmit: (todo: Todo) => void;
   onCancel: () => void;
 }
@@ -58,7 +58,7 @@ export default function TodoForm({ todo, onSubmit, onCancel }: TodoFormProps) {
         result = await todoService.createTodo(formData);
       }
 
-      onSubmit(result);
+      onSubmit(result as Todo);
       toast({
         title: 'Success',
         description: `Todo ${todo ? 'updated' : 'created'} successfully`,
@@ -86,7 +86,7 @@ export default function TodoForm({ todo, onSubmit, onCancel }: TodoFormProps) {
             <Input
               id="title"
               value={formData.title}
-              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+              onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
               placeholder="Enter todo title"
               disabled={isSubmitting}
             />
@@ -97,7 +97,7 @@ export default function TodoForm({ todo, onSubmit, onCancel }: TodoFormProps) {
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
               placeholder="Enter todo description (optional)"
               disabled={isSubmitting}
             />
@@ -107,7 +107,7 @@ export default function TodoForm({ todo, onSubmit, onCancel }: TodoFormProps) {
             <Label htmlFor="status">Status</Label>
             <Select
               value={formData.status}
-              onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as any }))}
+              onValueChange={(value) => setFormData((prev) => ({ ...prev, status: value as any }))}
               disabled={isSubmitting}
             >
               <SelectTrigger>
@@ -122,12 +122,7 @@ export default function TodoForm({ todo, onSubmit, onCancel }: TodoFormProps) {
           </div>
 
           <div className="flex justify-end space-x-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onCancel}
-              disabled={isSubmitting}
-            >
+            <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>

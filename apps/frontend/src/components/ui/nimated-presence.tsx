@@ -1,16 +1,16 @@
 // src/components/ui/animated-presence.tsx
-"use client"
+'use client';
 
-import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { cn } from '@/lib/utils';
+import { AnimatePresence, motion, Variant, VariantLabels, Variants } from 'framer-motion';
 
 interface AnimatedContainerProps {
   children: React.ReactNode;
   className?: string;
-  variants?: any;
-  initial?: string | object;
-  animate?: string | object;
-  exit?: string | object;
+  variants?: Variants;
+  initial?: boolean | Variant | VariantLabels;
+  animate?: boolean | Variant | VariantLabels;
+  exit?: boolean | Variant | VariantLabels;
   transition?: object;
 }
 
@@ -18,9 +18,9 @@ export function AnimatedContainer({
   children,
   className,
   variants,
-  initial = "hidden",
-  animate = "visible",
-  exit = "exit",
+  initial = 'hidden',
+  animate = 'visible',
+  exit = 'exit',
   transition = { duration: 0.2 },
 }: AnimatedContainerProps) {
   return (
@@ -37,11 +37,11 @@ export function AnimatedContainer({
   );
 }
 
-export function FadePresence({ 
-  children, 
-  className 
-}: { 
-  children: React.ReactNode; 
+export function FadePresence({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
   className?: string;
 }) {
   const variants = {
@@ -52,10 +52,7 @@ export function FadePresence({
 
   return (
     <AnimatePresence mode="wait">
-      <AnimatedContainer 
-        variants={variants} 
-        className={className}
-      >
+      <AnimatedContainer variants={variants} className={className}>
         {children}
       </AnimatedContainer>
     </AnimatePresence>
