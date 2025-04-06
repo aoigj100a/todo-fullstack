@@ -34,7 +34,7 @@ export function TodosFilterBar({ className, viewType, onViewChange }: TodosFilte
           onClick={() => onViewChange('board')}
         >
           <LayoutGrid className="h-4 w-4" />
-          <span className="hidden sm:inline-block">Board</span>
+          <span className="hidden sm:inline-block">{t('view.board')}</span>
         </Button>
       </div>
     </div>
