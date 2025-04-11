@@ -44,10 +44,10 @@ export function TodoCard({
   };
 
   // 定義狀態顯示名稱
-  const statusName = {
-    pending: 'Pending',
-    'in-progress': 'In Progress',
-    completed: 'Completed',
+  const statusTranslationKeys = {
+    pending: 'status.pending',
+    'in-progress': 'status.inProgress',
+    completed: 'status.completed',
   };
 
   // 處理點擊狀態圖標的事件
@@ -120,7 +120,9 @@ export function TodoCard({
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between mb-1">
             <h3 className="text-base font-semibold">{title}</h3>
-            <Badge className={`${statusColor[status]} ml-2`}>{t(statusName[status])}</Badge>
+            <Badge className={`${statusColor[status]} ml-2`}>
+              {t(statusTranslationKeys[status])}
+            </Badge>
           </div>
           {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
         </div>
