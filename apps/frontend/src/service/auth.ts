@@ -1,7 +1,7 @@
 // src/services/auth.ts
-import { LoginInput, RegisterInput, AuthResponse } from "@/types/auth";
+import { LoginInput, RegisterInput, AuthResponse } from '@/types/auth';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
 export const authService = {
   async login(input: LoginInput): Promise<AuthResponse> {
@@ -9,25 +9,25 @@ export const authService = {
 
     try {
       const response = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(input),
         // 確保傳遞 credentials
-        credentials: "include",
+        credentials: 'include',
       });
 
       console.log(`Login response status: ${response.status}`);
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Login error response:", errorData);
-        throw new Error(errorData.error || "Failed to login");
+        console.error('Login error response:', errorData);
+        throw new Error(errorData.error || 'Failed to login');
       }
 
       const data = await response.json();
-      console.log("Login success response:", data);
+      console.log('Login success response:', data);
 
       // 確保返回格式一致
       return {
@@ -35,55 +35,65 @@ export const authService = {
         user: data.user,
       };
     } catch (error) {
-      console.error("Login fetch error:", error);
+      console.error('Login fetch error:', error);
       throw error;
     }
   },
 
   async register(input: RegisterInput): Promise<AuthResponse> {
     const response = await fetch(`${API_URL}/auth/register`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(input),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || "Failed to register");
+      throw new Error(error.message || 'Failed to register');
     }
 
     return response.json();
   },
 
-  async logout(): Promise<void> {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  logout(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
   },
 
   getToken(): string | null {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("token");
+    if (typeof window !== 'undefined') {
+      // 先檢查 localStorage，再檢查 sessionStorage
+      return localStorage.getItem('token') || sessionStorage.getItem('token');
     }
     return null;
   },
 
-  setToken(token: string): void {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("token", token);
+  setToken(token: string, remember: boolean = false): void {
+    if (typeof window !== 'undefined') {
+      // 如果 remember 為 true，則使用 localStorage 存儲 token
+      // 否則使用 sessionStorage (瀏覽器關閉時會自動清除)
+      if (remember) {
+        localStorage.setItem('token', token);
+      } else {
+        sessionStorage.setItem('token', token);
+      }
     }
   },
 
   setUser(user: any): void {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("user", JSON.stringify(user));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('user', JSON.stringify(user));
     }
   },
 
   getUser(): any | null {
-    if (typeof window !== "undefined") {
-      const user = localStorage.getItem("user");
+    if (typeof window !== 'undefined') {
+      const user = localStorage.getItem('user');
       return user ? JSON.parse(user) : null;
     }
     return null;
