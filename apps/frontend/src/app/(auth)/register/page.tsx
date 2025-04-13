@@ -4,11 +4,18 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
+import { UserPlus } from 'lucide-react';
 
 import { RegisterInput } from '@/types/auth';
 import { useToast } from '@/hooks/use-toast';
@@ -18,25 +25,30 @@ export default function RegisterPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const input: RegisterInput = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      password: formData.get('password') as string,
-      confirmPassword: formData.get('confirmPassword') as string,
-    };
+    const input: RegisterInput = { ...formData };
 
     // 基本的密碼驗證
     if (input.password !== input.confirmPassword) {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Passwords do not match",
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Passwords do not match',
       });
       setIsLoading(false);
       return;
@@ -46,18 +58,18 @@ export default function RegisterPage() {
       const response = await authService.register(input);
       authService.setToken(response.token);
       authService.setUser(response.user);
-      
+
       toast({
-        title: "Registration successful",
-        description: "Redirecting to dashboard...",
+        title: 'Registration successful',
+        description: 'Redirecting to dashboard...',
       });
 
       router.push('/todos');
     } catch (error) {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to register",
+        variant: 'destructive',
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to register',
       });
     } finally {
       setIsLoading(false);
@@ -65,61 +77,90 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Register</CardTitle>
-          <CardDescription>Create your account to get started</CardDescription>
+    <div className="flex min-h-screen items-center justify-center">
+      <Card className="w-full max-w-md mx-auto shadow-lg">
+        <CardHeader className="text-center pb-6">
+          <CardTitle className="text-3xl font-bold text-gray-800 flex items-center justify-center gap-2">
+            <UserPlus className="h-8 w-8 text-teal-500" />
+            <span>Register</span>
+          </CardTitle>
+          <CardDescription className="text-base text-gray-600">
+            Create your account to get started
+          </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+          <CardContent className="space-y-6">
+            <div className="space-y-3">
+              <Label htmlFor="name" className="text-base">
+                Name
+              </Label>
               <Input
                 id="name"
                 name="name"
+                value={formData.name}
+                onChange={handleChange}
                 placeholder="Enter your name"
+                className="h-12 text-base"
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-3">
+              <Label htmlFor="email" className="text-base">
+                Email
+              </Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="Enter your email"
+                className="h-12 text-base"
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+            <div className="space-y-3">
+              <Label htmlFor="password" className="text-base">
+                Password
+              </Label>
               <Input
                 id="password"
                 name="password"
                 type="password"
+                value={formData.password}
+                onChange={handleChange}
                 placeholder="Create a password"
+                className="h-12 text-base"
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <div className="space-y-3">
+              <Label htmlFor="confirmPassword" className="text-base">
+                Confirm Password
+              </Label>
               <Input
                 id="confirmPassword"
                 name="confirmPassword"
                 type="password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
                 placeholder="Confirm your password"
+                className="h-12 text-base"
                 required
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Creating account..." : "Register"}
+          <CardFooter className="flex flex-col space-y-5 pb-6">
+            <Button
+              type="submit"
+              className="w-full h-12 text-lg bg-teal-500 hover:bg-teal-600"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Creating account...' : 'Register'}
             </Button>
-            <p className="text-sm text-center text-muted-foreground">
+            <p className="text-base text-center text-gray-600">
               Already have an account?{' '}
-              <Link href="/login" className="text-primary hover:underline">
+              <Link href="/login" className="text-teal-500 hover:underline font-medium">
                 Login
               </Link>
             </p>
