@@ -105,12 +105,6 @@ export default function Home() {
               <Button asChild variant="outline" className="rounded-full">
                 <Link href="/register">{t('button.createAccount')}</Link>
               </Button>
-              <Button asChild className="rounded-full bg-teal-600 hover:bg-teal-700">
-                <Link href="/guide">
-                  {t('button.viewGuide')}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
             </div>
           </div>
 

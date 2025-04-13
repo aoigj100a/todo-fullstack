@@ -23,7 +23,6 @@ const translations = {
     'login.button': 'Login & Go to Dashboard',
     'login.demo': 'Using demo account: demo@example.com / demo1234',
     'button.createAccount': 'Create Account',
-    'button.viewGuide': 'View Guide',
     'features.title': 'Key Features',
     'features.taskManagement': 'Task Management',
     'features.taskManagement.desc': 'Create, organize, and track your tasks with ease',
@@ -120,7 +119,7 @@ const translations = {
     'features.progressTracking.desc': '監控您的進度並掌握截止日期',
     'features.multipleViews': '多種視圖',
     'features.multipleViews.desc': '在列表和看板視圖之間切換，獲得不同的視角',
-    'footer.copyright': '© {year} Todo 應用程式。保留所有權利。',
+    'footer.copyright': '© {year} Todo App 保留所有權利',
     // Todo 頁面標題
     'todos.title': '我的待辦事項',
     'todos.emptyState': '您還沒有任何待辦事項。建立一個開始吧！',
