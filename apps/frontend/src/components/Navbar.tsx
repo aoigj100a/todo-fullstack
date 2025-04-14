@@ -42,8 +42,8 @@ export function Navbar() {
   ];
 
   return (
-    <header className="border-b bg-white">
-      <div className="container flex h-16 items-center justify-between">
+    <header className="border-b bg-white flex justify-center">
+      <div className="w-10/12 flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/todos" className="font-semibold text-lg flex items-center">
             <CheckSquare className="h-5 w-5 mr-2 text-teal-500" />
