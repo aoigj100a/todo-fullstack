@@ -58,10 +58,10 @@ export function TodoCard({
     setIsUpdating(true);
     try {
       await todoService.toggleTodoStatus(_id, status);
-      toast.success('Status updated');
+      toast.success(t('toast.statusUpdated'));
       onStatusChange(); // 通知父組件狀態已更新
     } catch (error) {
-      toast.error('Failed to update status');
+      toast.error(t('toast.error.update'));
     } finally {
       setIsUpdating(false);
     }
@@ -76,42 +76,12 @@ export function TodoCard({
     router.push(`/todos/${_id}`);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    // 支持空格或回車觸發點擊
-    if (e.key === ' ' || e.key === 'Enter') {
-      e.preventDefault();
-      router.push(`/todos/${_id}`);
-    }
-
-    // 支持 Delete 鍵觸發刪除
-    if (e.key === 'Delete') {
-      e.preventDefault();
-      onDelete();
-    }
-
-    // 支持 E 鍵觸發編輯
-    if (e.key === 'e' || e.key === 'E') {
-      e.preventDefault();
-      onEdit();
-    }
-
-    // 支持 Space 鍵切換狀態
-    if (e.key === 's' || e.key === 'S') {
-      e.preventDefault();
-      handleStatusToggle(e as any);
-    }
-  };
-
   return (
     <Card
       className="group relative overflow-hidden transition-all duration-200 hover:shadow-md cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-      role="button"
-      aria-label={`Todo: ${title}`}
     >
       <div className="flex items-center gap-4 p-4">
         <div onClick={handleStatusToggle} className="cursor-pointer">
