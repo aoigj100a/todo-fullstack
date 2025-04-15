@@ -1,4 +1,4 @@
-// src/components/todos/TodosHelpInfo.tsx
+// src/components/todos/TodosHelpInfo.tsx (簡化版本)
 import { Info } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -28,23 +28,13 @@ export function TodosHelpInfo() {
       {isVisible && (
         <Card className="mt-2 bg-muted/30 border-dashed">
           <CardHeader className="py-3">
-            <CardTitle className="text-sm font-medium">{t('help.title')}</CardTitle>
+            <CardTitle className="text-sm font-medium">使用指南</CardTitle>
           </CardHeader>
           <CardContent className="py-0">
-            <ul className="text-xs space-y-1 text-muted-foreground">
-              <li>
-                <span className="font-semibold">Enter/Space</span> - {t('help.shortcut.open')}
-              </li>
-              <li>
-                <span className="font-semibold">E</span> - {t('help.shortcut.edit')}
-              </li>
-              <li>
-                <span className="font-semibold">S</span> - {t('help.shortcut.status')}
-              </li>
-              <li>
-                <span className="font-semibold">Delete</span> - {t('help.shortcut.delete')}
-              </li>
-            </ul>
+            <p className="text-xs text-muted-foreground">
+              您可以通過點擊待辦事項卡片查看詳情，使用狀態圖標切換任務狀態，
+              或者使用編輯和刪除按鈕管理您的任務。
+            </p>
           </CardContent>
           <CardFooter className="py-3">
             <p className="text-xs text-muted-foreground">{t('help.tip')}</p>
