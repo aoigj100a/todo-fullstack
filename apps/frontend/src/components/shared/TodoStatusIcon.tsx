@@ -41,11 +41,7 @@ const TodoStatusIcon: React.FC<TodoStatusIconProps> = ({ status, isUpdating = fa
     }
   };
 
-  return (
-    <div className="inline-flex items-center">
-      {getStatusIcon()}
-    </div>
-  );
+  return <div className="inline-flex items-center">{getStatusIcon()}</div>;
 };
 
 export default TodoStatusIcon;

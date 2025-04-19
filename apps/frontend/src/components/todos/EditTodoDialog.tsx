@@ -32,13 +32,14 @@ interface EditTodoDialogProps {
 
 export function EditTodoDialog({ todo, open, onClose, onSuccess }: EditTodoDialogProps) {
   const { t } = useLanguage();
-  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
   const [title, setTitle] = useState(todo.title);
   const [description, setDescription] = useState(todo.description || '');
   const [status, setStatus] = useState<'pending' | 'in-progress' | 'completed'>(
     todo.status as 'pending' | 'in-progress' | 'completed',
   );
-  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   // 當 todo 改變時更新表單
   useEffect(() => {

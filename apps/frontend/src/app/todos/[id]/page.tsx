@@ -24,7 +24,9 @@ export default function TodoDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
+
   const [todo, setTodo] = useState<Todo | null>(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -83,7 +85,7 @@ export default function TodoDetailPage() {
   if (isLoading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-teal-500" />
+        <Loader2 className="h-4 w-4 animate-spin text-teal-500" />
       </div>
     );
   }
@@ -172,7 +174,7 @@ export default function TodoDetailPage() {
             <div className="mt-8 flex gap-4">
               <Button
                 variant="outline"
-                className="flex-1 border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700"
+                className="flex-1 border-teal-200 text-teal-500 hover:bg-teal-50 hover:text-teal-600"
                 onClick={() => router.push(`/todos/${todo._id}/edit`)}
               >
                 <Edit className="mr-2 h-4 w-4" />
@@ -185,7 +187,7 @@ export default function TodoDetailPage() {
                 disabled={isDeleting}
               >
                 {isDeleting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin text-teal-500" />
                 ) : (
                   <Trash2 className="mr-2 h-4 w-4" />
                 )}

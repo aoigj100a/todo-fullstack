@@ -128,7 +128,7 @@ export default function LoginPage() {
           <CardFooter className="flex flex-col space-y-5 pb-6">
             <Button
               type="submit"
-              className="w-full h-12 text-lg bg-teal-500 hover:bg-teal-600"
+              className="w-full h-12 text-lg bg-teal-500 hover:bg-teal-600 text-white"
               disabled={isLoading}
             >
               {isLoading ? 'Logging in...' : 'Login'}

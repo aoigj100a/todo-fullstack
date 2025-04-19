@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, CheckCircle, Clock, List, UserCircle } from 'lucide-react';
+import { CheckCircle, Clock, List, UserCircle } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -15,12 +15,14 @@ import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Home() {
-  const [email, setEmail] = useState('demo@example.com');
-  const [password, setPassword] = useState('demo1234');
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const router = useRouter();
   const { toast } = useToast();
   const { t } = useLanguage();
+  const router = useRouter();
+
+  const [email, setEmail] = useState('demo@example.com');
+  const [password, setPassword] = useState('demo1234');
+
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const handleQuickLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,7 +94,7 @@ export default function Home() {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full bg-teal-600 hover:bg-teal-700"
+                  className="w-full bg-teal-600 hover:bg-teal-700 text-white"
                   disabled={isLoggingIn}
                 >
                   {isLoggingIn ? 'Logging in...' : t('login.button')}
@@ -115,7 +117,7 @@ export default function Home() {
                 {/* Stylized Todo List UI Example */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm">
-                    <div className="h-5 w-5 rounded-full bg-green-500 flex items-center justify-center text-white">
+                    <div className="bg-teal-100 text-teal-700 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                       <CheckCircle className="h-4 w-4" />
                     </div>
                     <span className="font-medium">Complete homepage design</span>
