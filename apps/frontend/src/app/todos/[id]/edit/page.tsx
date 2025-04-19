@@ -116,7 +116,7 @@ export default function EditTodoPage() {
   if (isLoading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-teal-500" />
+        <Loader2 className="h-4 w-4 animate-spin text-teal-500" />
       </div>
     );
   }
@@ -225,7 +225,7 @@ export default function EditTodoPage() {
               >
                 {isSaving ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin text-teal-500" />
                     Saving...
                   </>
                 ) : (

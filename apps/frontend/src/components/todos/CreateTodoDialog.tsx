@@ -29,12 +29,14 @@ interface CreateTodoDialogProps {
 
 export function CreateTodoDialog({ onSuccess }: CreateTodoDialogProps) {
   const { t } = useLanguage();
+  const { toast } = useToast();
+
   const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<'pending' | 'in-progress' | 'completed'>('pending');
-  const { toast } = useToast();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,7 +85,7 @@ export function CreateTodoDialog({ onSuccess }: CreateTodoDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" className="bg-teal-500 hover:bg-teal-600">
+        <Button variant="default" className="bg-teal-500 hover:bg-teal-600 text-white">
           {t('button.addTodo')}
         </Button>
       </DialogTrigger>
@@ -129,7 +131,11 @@ export function CreateTodoDialog({ onSuccess }: CreateTodoDialogProps) {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" disabled={isLoading} className="bg-teal-500 hover:bg-teal-600">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="bg-teal-500 hover:bg-teal-600 text-white"
+            >
               {isLoading ? 'Creating...' : t('button.createTodo')}
             </Button>
           </DialogFooter>
