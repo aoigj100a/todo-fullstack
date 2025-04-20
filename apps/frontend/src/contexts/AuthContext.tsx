@@ -53,13 +53,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         if (isValidToken && storedUser) {
           setUser(storedUser);
-        } else if (!publicRoutes.includes(pathname || '')) {
-          // 如果訪問的不是公開路由，但沒有有效的 token，則清除舊數據
+        } else if (!publicRoutes.includes(pathname || '') && !isLoading) {
+          // Only redirect if we're sure auth has failed and the page isn't public
           authService.logout();
+          router.push('/login');
         }
       } catch (error) {
         console.error('Failed to check authentication status', error);
-        // 出錯時清除可能損壞的身份驗證數據
         authService.logout();
       } finally {
         setIsLoading(false);
@@ -68,6 +68,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     checkAuth();
   }, [pathname]);
+
+  useEffect(() => {
+    if (!isLoading && !user && pathname && !publicRoutes.includes(pathname)) {
+      toast({
+        title: '需要登入',
+        description: '請先登入以訪問此頁面',
+        variant: 'destructive',
+      });
+      router.push('/login');
+    }
+  }, [isLoading, user, pathname, router, toast]);
 
   // 路由保護 - 如果用戶未登入且訪問需要身份驗證的頁面，則重定向到登入頁
   useEffect(() => {

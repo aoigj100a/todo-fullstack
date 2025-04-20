@@ -20,54 +20,27 @@ import { LockKeyhole } from 'lucide-react';
 import { LoginInput } from '@/types/auth';
 import { useToast } from '@/hooks/use-toast';
 import { authService } from '@/service/auth';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const { login } = useAuth(); // Use auth context hook
   const [isLoading, setIsLoading] = useState(false);
-  const [loginSuccess, setLoginSuccess] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  // 當登入成功狀態改變時重定向
-  useEffect(() => {
-    if (loginSuccess) {
-      // 確保 toast 有時間顯示
-      const redirectTimer = setTimeout(() => {
-        router.push('/todos');
-      }, 1000);
-
-      return () => clearTimeout(redirectTimer);
-    }
-  }, [loginSuccess, router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const input: LoginInput = { email, password };
-
     try {
-      // 驗證輸入
-      if (!input.email || !input.password) {
-        throw new Error('Email and password are required');
-      }
-
-      console.log('Submitting login with:', input.email);
-      const response = await authService.login(input);
-      console.log('Login response received:', response);
-
-      authService.setToken(response.token);
-      authService.setUser(response.user);
-
-      // 顯示成功訊息
+      await login(email, password);
+      // Don't need to manually navigate - the auth context will handle it
       toast({
         title: 'Login successful',
         description: 'Redirecting to dashboard...',
       });
-
-      // 設置成功狀態觸發重定向
-      setLoginSuccess(true);
     } catch (error) {
       console.error('Login error:', error);
       toast({

@@ -6,18 +6,19 @@ import { LayoutDashboard, CheckSquare, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { authService } from '@/service/auth';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { useAuth } from '@/contexts/AuthContext';
 
 export function Navbar() {
   const pathname = usePathname();
-
+  const { logout } = useAuth();
   // 跳過登入/註冊頁面顯示導航
   if (pathname === '/login' || pathname === '/register' || pathname === '/') {
     return null;
   }
 
   const handleLogout = () => {
-    authService.logout();
-    window.location.href = '/login';
+    logout(); // Use the context method
+    // No need to manually redirect
   };
 
   const navItems = [
