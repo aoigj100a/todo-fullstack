@@ -13,8 +13,10 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { authService } from '@/service/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Home() {
+  const { login } = useAuth();
   const { toast } = useToast();
   const { t } = useLanguage();
   const router = useRouter();
@@ -29,16 +31,15 @@ export default function Home() {
     setIsLoggingIn(true);
 
     try {
-      const response = await authService.login({ email, password });
-      authService.setToken(response.token);
-      authService.setUser(response.user);
+      // 使用 AuthContext 提供的 login 函數
+      await login(email, password);
 
       toast({
         title: 'Login successful',
         description: 'Redirecting to your todos...',
       });
 
-      router.push('/todos');
+      // 不需要手動重定向，AuthContext 會處理
     } catch (error) {
       toast({
         variant: 'destructive',
