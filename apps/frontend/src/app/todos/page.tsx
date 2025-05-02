@@ -7,16 +7,16 @@ import { toast } from 'sonner';
 
 import { Todo } from '@/types/todo';
 
-import { TodosLoadingState } from '@/components/todos/TodosLoadingState';
-import { TodoCard } from '@/components/todos/TodoCard';
-import { CreateTodoDialog } from '@/components/todos/CreateTodoDialog';
-import { EditTodoDialog } from '@/components/todos/EditTodoDialog';
-import { TodosFilterBar } from '@/components/todos/TodosFilterBar';
-import { TodosStatusFilter } from '@/components/todos/TodosStatusFilter';
-import { TodosBoardView } from '@/components/todos/TodosBoardView';
-import { TodosEmptyState } from '@/components/todos/TodosEmptyState';
+import { TodosLoadingState } from '@/components/features/todos/TodosLoadingState';
+import { TodoCard } from '@/components/features/todos/TodoCard';
+import { CreateTodoDialog } from '@/components/features/todos/CreateTodoDialog';
+import { EditTodoDialog } from '@/components/features/todos/EditTodoDialog';
+import { TodosFilterBar } from '@/components/features/todos/TodosFilterBar';
+import { TodosStatusFilter } from '@/components/features/todos/TodosStatusFilter';
+import { TodosBoardView } from '@/components/features/todos/TodosBoardView';
+import { TodosEmptyState } from '@/components/features/todos/TodosEmptyState';
 import { FadePresence } from '@/components/ui/nimated-presence';
-import { TodosHelpInfo } from '@/components/todos/TodosHelpInfo';
+import { TodosHelpInfo } from '@/components/features/todos/TodosHelpInfo';
 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { todoService } from '@/service/todo';
