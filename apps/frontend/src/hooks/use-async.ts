@@ -29,23 +29,24 @@ export function useAsync<D = any>(initialState?: State<D>) {
     });
   }, []);
 
-  const setError = useCallback((error: Error) => {
-    setState({
-      data: null,
-      error,
-      status: 'error',
-    });
-    
-    toast({
-      title: 'Error',
-      description: error.message,
-      variant: 'destructive',
-    });
-  }, [toast]);
+  const setError = useCallback(
+    (error: Error) => {
+      setState({
+        data: null,
+        error,
+        status: 'error',
+      });
 
-  const reset = useCallback(() => {
-    setState(defaultInitialState);
-  }, []);
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+    [toast],
+  );
+
+  const reset = useCallback(() => setState(defaultInitialState), []);
 
   const run = useCallback(
     async (promise: Promise<D>) => {
@@ -53,7 +54,7 @@ export function useAsync<D = any>(initialState?: State<D>) {
         throw new Error('Parameter must be a Promise');
       }
 
-      setState(prev => ({ ...prev, status: 'loading' }));
+      setState((prev) => ({ ...prev, status: 'loading' }));
 
       try {
         const data = await promise;
@@ -64,7 +65,7 @@ export function useAsync<D = any>(initialState?: State<D>) {
         return Promise.reject(error);
       }
     },
-    [setData, setError]
+    [setData, setError],
   );
 
   return {

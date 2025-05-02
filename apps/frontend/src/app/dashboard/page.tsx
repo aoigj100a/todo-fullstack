@@ -6,11 +6,11 @@ import Link from 'next/link';
 import { ArrowLeft, BarChart3, PieChart, Clock, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { StatsCards } from '@/components/dashboard/StatsCards';
-import { StatusDistributionChart } from '@/components/dashboard/StatusDistributionChart';
-import { TaskTrendsChart } from '@/components/dashboard/TaskTrendsChart';
+import { StatsCards } from '@/components/features/dashboard/StatsCards';
+import { StatusDistributionChart } from '@/components/features/dashboard/StatusDistributionChart';
+import { TaskTrendsChart } from '@/components/features/dashboard/TaskTrendsChart';
 import { todoService } from '@/service/todo';
-import { Todo } from '@/types/todo';
+import { Todo } from '@/types';
 
 export default function DashboardPage() {
   const [todos, setTodos] = useState<Todo[]>([]);

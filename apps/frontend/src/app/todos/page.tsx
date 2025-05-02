@@ -5,8 +5,6 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
 
-import { Todo } from '@/types/todo';
-
 import { TodosLoadingState } from '@/components/features/todos/TodosLoadingState';
 import { TodoCard } from '@/components/features/todos/TodoCard';
 import { CreateTodoDialog } from '@/components/features/todos/CreateTodoDialog';
@@ -21,6 +19,7 @@ import { TodosHelpInfo } from '@/components/features/todos/TodosHelpInfo';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { todoService } from '@/service/todo';
 import { useSoftDelete } from '@/hooks/useSoftDelete';
+import { Todo } from '@/types';
 
 type ViewType = 'list' | 'board';
 type FilterStatus = 'all' | 'pending' | 'in-progress' | 'completed';

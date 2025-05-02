@@ -1,15 +1,8 @@
 // src/contexts/LanguageContext.tsx
 'use client';
 
+import { Language } from '@/types/ui';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-type Language = 'en' | 'zh-TW';
-
-interface LanguageContextType {
-  language: Language;
-  setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
-}
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 

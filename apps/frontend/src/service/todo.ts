@@ -1,6 +1,5 @@
-import { CreateTodoInput, Todo, TodoStatus } from '@/types/todo';
+import { CreateTodoInput, Todo, TodoStatus } from '@/types';
 
-// src/service/todo.ts
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 export const todoService = {

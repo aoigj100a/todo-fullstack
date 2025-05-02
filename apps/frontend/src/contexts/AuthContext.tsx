@@ -5,8 +5,8 @@ import { createContext, useContext, ReactNode, useState, useEffect } from 'react
 import { useRouter, usePathname } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 
-import { User, LoginInput, RegisterInput } from '@/types/auth';
 import { authService } from '@/service/auth';
+import { LoginInput, RegisterInput, User } from '@/types';
 
 // 定義 AuthContext 的類型
 interface AuthContextType {
