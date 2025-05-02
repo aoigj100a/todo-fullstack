@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import TodoStatusIcon from '../shared/TodoStatusIcon';
+import TodoStatusIcon from '../../shared/TodoStatusIcon';
 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { todoService } from '@/service/todo';

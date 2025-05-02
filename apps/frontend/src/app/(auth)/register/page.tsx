@@ -17,9 +17,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { UserPlus } from 'lucide-react';
 
-import { RegisterInput } from '@/types/auth';
 import { useToast } from '@/hooks/use-toast';
 import { authService } from '@/service/auth';
+import { RegisterInput } from '@/types';
 
 export default function RegisterPage() {
   const router = useRouter();

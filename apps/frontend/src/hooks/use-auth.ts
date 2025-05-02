@@ -2,9 +2,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { LoginInput, RegisterInput, User } from '@/types/auth';
 import { authService } from '@/service/auth';
 import { useAsync } from './use-async';
+import { LoginInput, RegisterInput, User } from '@/types';
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);

@@ -17,7 +17,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LockKeyhole } from 'lucide-react';
 
-import { LoginInput } from '@/types/auth';
 import { useToast } from '@/hooks/use-toast';
 import { authService } from '@/service/auth';
 import { useAuth } from '@/contexts/AuthContext';
