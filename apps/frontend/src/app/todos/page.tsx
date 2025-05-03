@@ -182,9 +182,13 @@ function TodosPage() {
           if (prev === null || prev <= 0) return filteredTodos.length - 1;
           return prev - 1;
         });
+      } else if (e.key === 'Enter' && focusedTodoIndex !== null) {
+        e.preventDefault();
+        const focusedTodo = filteredTodos[focusedTodoIndex];
+        handleEdit(focusedTodo);
       }
     },
-    [filteredTodos.length],
+    [filteredTodos, focusedTodoIndex, handleEdit],
   );
 
   // 設置鍵盤事件監聽器
