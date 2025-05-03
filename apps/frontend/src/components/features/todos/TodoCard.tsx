@@ -20,6 +20,7 @@ interface TodoCardProps {
   onDelete: () => void;
   onEdit: () => void;
   onStatusChange: () => void;
+  isFocused?: boolean;
 }
 
 export function TodoCard({
@@ -30,6 +31,7 @@ export function TodoCard({
   onDelete,
   onEdit,
   onStatusChange,
+  isFocused = false,
 }: TodoCardProps) {
   const { t } = useLanguage();
   const [isHovered, setIsHovered] = useState(false);
@@ -78,10 +80,13 @@ export function TodoCard({
 
   return (
     <Card
-      className="group relative overflow-hidden transition-all duration-200 hover:shadow-md cursor-pointer"
+      className={`group relative overflow-hidden transition-all duration-200 
+      hover:shadow-md cursor-pointer
+      ${isFocused ? 'ring-2 ring-teal-500 ring-offset-2' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
+      tabIndex={isFocused ? 0 : -1}
     >
       <div className="flex items-center gap-4 p-4">
         <div onClick={handleStatusToggle} className="cursor-pointer">

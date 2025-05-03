@@ -32,6 +32,7 @@ function TodosPage() {
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [focusedTodoIndex, setFocusedTodoIndex] = useState<number | null>(null);
 
   const [viewType, setViewType] = useState<ViewType>('list');
 
@@ -162,6 +163,38 @@ function TodosPage() {
     setIsCreateDialogOpen(false);
   }, []);
 
+  // 處理鍵盤導航
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (!filteredTodos.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setFocusedTodoIndex((prev) => {
+          // 如果沒有選中項目或已是最後一項，則選中第一項
+          if (prev === null || prev >= filteredTodos.length - 1) return 0;
+          return prev + 1;
+        });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setFocusedTodoIndex((prev) => {
+          // 如果沒有選中項目或已是第一項，則選中最後一項
+          if (prev === null || prev <= 0) return filteredTodos.length - 1;
+          return prev - 1;
+        });
+      }
+    },
+    [filteredTodos.length],
+  );
+
+  // 設置鍵盤事件監聽器
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   useEffect(() => {
     // 載入 Todos
     loadTodos();
@@ -242,6 +275,7 @@ function TodosPage() {
                           onDelete={() => handleDelete(todo._id)}
                           onEdit={() => handleEdit(todo)}
                           onStatusChange={handleStatusChange}
+                          isFocused={focusedTodoIndex === index}
                         />
                       </motion.div>
                     ))}
