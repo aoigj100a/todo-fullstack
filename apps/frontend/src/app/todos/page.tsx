@@ -23,6 +23,7 @@ import { Todo } from '@/types';
 
 type ViewType = 'list' | 'board';
 type FilterStatus = 'all' | 'pending' | 'in-progress' | 'completed';
+type TodoStatus = 'pending' | 'in-progress' | 'completed';
 
 function TodosPage() {
   const { t } = useLanguage();
@@ -73,7 +74,7 @@ function TodosPage() {
         return data.filter((todo: Todo) => !pendingTodoIds.includes(todo._id));
       });
     } catch (error) {
-      toast.error('Failed to load todos');
+      toast.error(t('toast.error.load'));
     } finally {
       setIsLoading(false);
     }
@@ -155,17 +156,34 @@ function TodosPage() {
     router.push(`?${params.toString()}`, { scroll: false });
   }, [router, searchParams]);
 
-  const handleOpenCreateDialog = useCallback(() => {
-    setIsCreateDialogOpen(true);
-  }, []);
-
-  const handleCreateDialogClose = useCallback(() => {
-    setIsCreateDialogOpen(false);
-  }, []);
-
   // 處理鍵盤導航
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
+    (e: KeyboardEvent) => {
+      // 避免在輸入框、文本區域等表單元素中觸發快捷鍵
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target instanceof HTMLSelectElement ||
+        e.target instanceof HTMLButtonElement ||
+        (e.target as HTMLElement).isContentEditable
+      ) {
+        return;
+      }
+
+      // 檢查是否有對話框已打開
+      const dialogOpen = document.querySelector('[role="dialog"]');
+      if (dialogOpen) {
+        return; // 如果有對話框打開，不處理全局鍵盤事件
+      }
+
+      // N 鍵打開創建對話框
+      if ((e.key === 'n' || e.key === 'N') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        console.log('N key pressed, opening create dialog');
+        setIsCreateDialogOpen(true);
+        return;
+      }
+
       if (!filteredTodos.length) return;
       if (e.key === 'ArrowDown') {
         e.preventDefault();
@@ -202,21 +220,30 @@ function TodosPage() {
           .toggleTodoStatus(focusedTodo._id, focusedTodo.status as TodoStatus)
           .then(() => {
             handleStatusChange();
-            toast.success('Status updated');
+            toast.success(t('toast.statusUpdated'));
           })
           .catch(() => {
-            toast.error('Failed to update status');
+            toast.error(t('toast.error.update'));
           });
       }
     },
-    [filteredTodos, focusedTodoIndex, handleStatusChange],
+    [filteredTodos, focusedTodoIndex, handleStatusChange, t],
   );
 
   // 設置鍵盤事件監聽器
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
+    console.log('Setting up keyboard event listener');
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+      handleKeyDown(e);
+    };
+
+    // 使用 keydown 而非 keypress 以捕獲所有按鍵
+    document.addEventListener('keydown', handleKeyPress);
+
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      console.log('Removing keyboard event listener');
+      document.removeEventListener('keydown', handleKeyPress);
     };
   }, [handleKeyDown]);
 
@@ -273,7 +300,7 @@ function TodosPage() {
               <TodosEmptyState
                 filterStatus={filterStatus}
                 onClearFilter={handleClearFilter}
-                onCreateTodo={handleOpenCreateDialog}
+                onCreateTodo={() => setIsCreateDialogOpen(true)}
               />
             </FadePresence>
           ) : (
@@ -325,7 +352,13 @@ function TodosPage() {
               onSuccess={handleEditSuccess}
             />
           )}
-          {isCreateDialogOpen && <CreateTodoDialog onSuccess={loadTodos} />}
+
+          {/* 受控的 CreateTodoDialog */}
+          <CreateTodoDialog
+            onSuccess={loadTodos}
+            open={isCreateDialogOpen}
+            onOpenChange={setIsCreateDialogOpen}
+          />
 
           <TodosHelpInfo />
         </>
