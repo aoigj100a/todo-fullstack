@@ -167,7 +167,6 @@ function TodosPage() {
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (!filteredTodos.length) return;
-
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         setFocusedTodoIndex((prev) => {
@@ -186,9 +185,31 @@ function TodosPage() {
         e.preventDefault();
         const focusedTodo = filteredTodos[focusedTodoIndex];
         handleEdit(focusedTodo);
+      } else if (e.key === ' ' && focusedTodoIndex !== null) {
+        // 處理空格鍵 - 切換狀態
+        e.preventDefault();
+        const focusedTodo = filteredTodos[focusedTodoIndex];
+        // 顯示視覺反饋
+        const statusElement = document.querySelector(
+          `[data-todo-id="${focusedTodo._id}"] .status-icon`,
+        );
+        if (statusElement) {
+          statusElement.classList.add('animate-pulse');
+          setTimeout(() => statusElement.classList.remove('animate-pulse'), 500);
+        }
+        // 調用 toggleTodoStatus 函數
+        todoService
+          .toggleTodoStatus(focusedTodo._id, focusedTodo.status as TodoStatus)
+          .then(() => {
+            handleStatusChange();
+            toast.success('Status updated');
+          })
+          .catch(() => {
+            toast.error('Failed to update status');
+          });
       }
     },
-    [filteredTodos, focusedTodoIndex, handleEdit],
+    [filteredTodos, focusedTodoIndex, handleStatusChange],
   );
 
   // 設置鍵盤事件監聽器

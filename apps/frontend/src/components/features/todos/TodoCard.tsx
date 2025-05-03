@@ -87,6 +87,7 @@ export function TodoCard({
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
       tabIndex={isFocused ? 0 : -1}
+      data-todo-id={_id}
     >
       <div className="flex items-center gap-4 p-4">
         <div onClick={handleStatusToggle} className="cursor-pointer">
