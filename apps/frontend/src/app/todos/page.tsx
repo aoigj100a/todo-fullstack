@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
+import { Plus } from 'lucide-react';
 
 import { TodosLoadingState } from '@/components/features/todos/TodosLoadingState';
 import { TodoCard } from '@/components/features/todos/TodoCard';
@@ -15,6 +16,7 @@ import { TodosBoardView } from '@/components/features/todos/TodosBoardView';
 import { TodosEmptyState } from '@/components/features/todos/TodosEmptyState';
 import { FadePresence } from '@/components/ui/nimated-presence';
 import { TodosHelpInfo } from '@/components/features/todos/TodosHelpInfo';
+import { Button } from '@/components/ui/button';
 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { todoService } from '@/service/todo';
@@ -34,6 +36,9 @@ function TodosPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [focusedTodoIndex, setFocusedTodoIndex] = useState<number | null>(null);
+
+  // 添加對鍵盤焦點的追蹤
+  const [keyboardMode, setKeyboardMode] = useState(false);
 
   const [viewType, setViewType] = useState<ViewType>('list');
 
@@ -184,7 +189,13 @@ function TodosPage() {
         return;
       }
 
+      // 啟用鍵盤模式
+      if (!keyboardMode) {
+        setKeyboardMode(true);
+      }
+
       if (!filteredTodos.length) return;
+
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         setFocusedTodoIndex((prev) => {
@@ -215,6 +226,7 @@ function TodosPage() {
           statusElement.classList.add('animate-pulse');
           setTimeout(() => statusElement.classList.remove('animate-pulse'), 500);
         }
+
         // 調用 toggleTodoStatus 函數
         todoService
           .toggleTodoStatus(focusedTodo._id, focusedTodo.status as TodoStatus)
@@ -225,9 +237,16 @@ function TodosPage() {
           .catch(() => {
             toast.error(t('toast.error.update'));
           });
+      } else if (e.key === 'e' || e.key === 'E') {
+        // E 鍵編輯選中的 Todo
+        if (focusedTodoIndex !== null) {
+          e.preventDefault();
+          const focusedTodo = filteredTodos[focusedTodoIndex];
+          handleEdit(focusedTodo);
+        }
       }
     },
-    [filteredTodos, focusedTodoIndex, handleStatusChange, t],
+    [filteredTodos, focusedTodoIndex, handleStatusChange, t, keyboardMode],
   );
 
   // 設置鍵盤事件監聽器
@@ -246,6 +265,21 @@ function TodosPage() {
       document.removeEventListener('keydown', handleKeyPress);
     };
   }, [handleKeyDown]);
+
+  // 鼠標移動時重置鍵盤模式
+  useEffect(() => {
+    const handleMouseMove = () => {
+      if (keyboardMode) {
+        setKeyboardMode(false);
+        setFocusedTodoIndex(null);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [keyboardMode]);
 
   useEffect(() => {
     // 載入 Todos
@@ -273,7 +307,15 @@ function TodosPage() {
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl sm:text-3xl font-bold">{t('todos.title')}</h1>
-          <CreateTodoDialog onSuccess={loadTodos} />
+          <Button
+            variant="default"
+            className="bg-teal-500 hover:bg-teal-600 text-white flex gap-2 items-center"
+            onClick={() => setIsCreateDialogOpen(true)}
+          >
+            <Plus className="h-4 w-4" />
+            {t('button.addTodo')}
+            <kbd className="hidden md:flex items-center text-xs bg-teal-600 px-1 rounded">N</kbd>
+          </Button>
         </div>
       </div>
 
@@ -360,7 +402,22 @@ function TodosPage() {
             onOpenChange={setIsCreateDialogOpen}
           />
 
+          {/* 顯示鍵盤快捷鍵信息 */}
           <TodosHelpInfo />
+
+          {/* 顯示鍵盤導航提示 (當處於鍵盤模式且有選中項目時) */}
+          {keyboardMode && focusedTodoIndex !== null && (
+            <div className="fixed bottom-4 right-4 bg-black/80 text-white px-3 py-2 rounded-lg text-sm shadow-lg">
+              <p className="flex items-center gap-2">
+                <kbd className="px-2 py-0.5 bg-gray-700 rounded text-xs">↑↓</kbd>
+                <span>Navigate</span>
+                <kbd className="px-2 py-0.5 bg-gray-700 rounded text-xs">Space</kbd>
+                <span>Toggle Status</span>
+                <kbd className="px-2 py-0.5 bg-gray-700 rounded text-xs">Enter</kbd>
+                <span>Edit</span>
+              </p>
+            </div>
+          )}
         </>
       )}
     </div>
