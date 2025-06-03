@@ -1,302 +1,479 @@
-# Todo Full Stack Project
+# Todo Full Stack Application
 
-## 專案目標
+> **專案定位**: 展示全端開發能力的任務管理系統  
+> **角色目標**: Junior Full-Stack Engineer | Frontend Specialized  
+> **技術重點**: 現代化前端架構 + 全端整合能力
 
-- 建立一個前後端分離的 Todo List 應用，實際走一次完整的全端開發流程
-- 輕量級任務管理工具，用於：任務追蹤與管理、狀態更新、進度可視化
+## 🎯 專案概述
 
-## 測試帳號
+這是一個完整的全端待辦事項管理應用，展示了從需求分析到部署的完整開發流程。專案特別突出**前端專業技能**，同時證明**全端開發能力**。
 
-- email: <demo@example.com>
-- password: demo1234
+### 🌟 核心價值展示
 
-## 技術選擇
+- **前端專精**: React/Next.js + TypeScript + 現代化UI/UX設計
+- **全端能力**: 獨立完成前後端開發與API設計
+- **產品思維**: 用戶體驗導向的功能設計與實現
+- **工程品質**: 完整的開發流程與代碼標準
 
-### 前端（Next.js）
+---
 
-- TypeScript
-- Tailwind CSS 樣式
-- shadcn/ui 元件庫
+## 🎬 專案演示說明
 
-### 後端（Express.js）
+### Demo流程設計
 
-- TypeScript
-- MongoDB 資料庫
-- JWT 身份驗證
+```typescript
+// 完整的演示流程
+1. 環境準備
+   - 清除資料庫原始資料
+   - 注入種子資料
+   - 確認資料庫內容已注入完成
 
-## 專案進度
+2. 專案啟動
+   - 於root使用 pnpm run dev 同時啟動前後端伺服器
+   - 前端: http://localhost:3000
+   - 後端: http://localhost:5001
 
-### 1. 專案初始設定 ✅
-
-- [x] 建立基本的 Express 應用程式
-- [x] 設定 TypeScript
-- [x] 加入 CORS
-- [x] 建立 Git 版控
-- [x] 設定環境變數 (.env)
-- [x] monorepo 初始設定
-- [x] 建立資料夾結構
-- [x] 設置共用ESLint配置
-- [x] 加入 ESLint 規則
-
-### 2. 專案架構 ✅
-
+3. 功能演示
+   - 透過測試帳號登入應用程式
+   - 新增一則todo項目
+   - 更新一則todo項目
+   - 刪除一則todo但是反悔（撤銷功能）
+   - 確實刪除一則todo項目
+   - 展示多語言切換功能
+   - 展示響應式設計適配
 ```
 
-todo-fullstack/
-├── apps/                    # 應用程式
-│   ├── frontend/           # Next.js 前端
-│   └── backend/            # Express.js 後端
-├── packages/               # 共用套件
-│   └── shared/            # 共用型別和工具
-├── package.json           # 根目錄配置
-└── README.md
+### 測試帳號資訊
+
+```
+Email: demo@example.com
+Password: demo1234
+
+// 快速體驗功能
+✅ 完整的CRUD操作
+✅ 即時狀態更新
+✅ 撤銷刪除功能
+✅ 多語言支援
+✅ 響應式設計
 ```
 
-### 3. 前端功能
+---
 
-#### 3.1 基礎頁面建置 ✅
+## 💻 技術棧
 
-- [x] 登入頁面 (/login)
-- [x] 註冊頁面 (/register)
-- [x] 待辦事項主頁面 (/todos)
-- [x] 待辦事項詳情頁面 (/todos/:id)
+### Frontend (Next.js) - 主要技能展示
 
-#### 3.2 Todo 列表介面 ✅
+```typescript
+// 核心技術
+Next.js 14         // React框架 + SSR
+TypeScript         // 型別安全
+Tailwind CSS       // 現代化CSS框架
+shadcn/ui          // 高品質UI組件庫
 
-- [x] 列表容器與卡片設計
-- [x] Todo 項目的展示樣式
-- [x] 空列表提示狀態
-- [x] 載入狀態
+// 進階特性
+響應式設計         // 多裝置適配
+國際化(i18n)       // 英文/中文支援
+鍵盤導航           // 無障礙設計
+狀態管理           // React Context + Hooks
+```
 
-#### 3.3 Todo 操作介面 ✅
+### Backend (Express.js) - 全端能力證明
 
-- [x] 新增 Todo 對話框
-- [x] 編輯 Todo 對話框
-- [x] 刪除 Todo 功能
-- [x] 刪除撤銷功能
+```typescript
+// 後端技術
+Express.js + TypeScript    // RESTful API
+MongoDB + Mongoose         // NoSQL資料庫
+JWT Authentication         // 身份驗證
+CORS + 安全性設定          // API安全
 
-### 3.4 Todo 狀態切換功能 ✅
+// API設計
+RESTful架構               // 標準化API設計
+錯誤處理機制              // 完整錯誤處理
+資料驗證                  // 輸入驗證與清理
+```
 
-- [x] 實現點擊圖標切換 Todo 狀態
-- [x] 添加狀態變更反饋動畫
-- [x] 設計狀態切換的循環順序 (待處理 → 進行中 → 已完成)
-- [x] 優化狀態更新的使用者體驗
-- [x] 實現即時的 UI 更新反饋
+---
 
-### 3.5 Todo 篩選功能 ✅
+## ✨ 功能特色
 
-- [x] 添加篩選狀態的狀態管理
-- [x] 創建切換視圖的控制
-- [x] 實現看板視圖 (Board View) - 按狀態分組顯示
-- [x] 實現列表視圖 (List View) - 只顯示選中狀態的項目
+### 🎨 前端專業特性
 
-#### 3.6 UI 元件整合 ✅
+#### 1. 現代化用戶介面
 
-- [x] shadcn/ui 元件配置
-- [x] 響應式基本支援
+- **響應式設計**: 完美適配桌面/平板/手機
+- **直覺操作**: 拖拽、快捷鍵、狀態切換
+- **視覺反饋**: 動畫效果、載入狀態、操作確認
 
-### 3.7 數據視覺化儀表板 🚧
+#### 2. 多元檢視模式
 
-- [x] 設計任務完成率圖表
-- [ ] 加入時間趨勢分析(每日/週/月完成量)
-- [ ] 創建任務分類分佈圖
-- [ ] 實作互動式篩選控制
-- [ ] 實作資料下載功能
+```typescript
+// 靈活的數據展示
+看板視圖 (Board View)     // 按狀態分組的卡片佈局
+列表視圖 (List View)      // 傳統列表顯示
+儀表板視圖               // 數據視覺化圖表
+```
 
-### 3.8 更多工作項目（選）
+#### 3. 無障礙設計
 
-- [ ] 使用者設定頁面
-- [ ] 任務分類與標籤系統
-- [ ] 日期排序與篩選功能
-- [ ] 多主題支援 (深色模式)
-- [ ] 任務統計與數據視覺化
-- [ ] 優雅地處理和顯示各種API錯誤
-- [ ] 支援英文與中文
+- **鍵盤導航**: 完整的鍵盤操作支援
+- **快捷鍵系統**: 提升操作效率
+- **語音輔助友善**: 適當的ARIA標籤
 
-### 4. 後端功能
+#### 4. 國際化支援
 
-#### 4.1 資料庫設定 ✅
+- **多語言**: 英文/繁體中文動態切換
+- **語言記憶**: localStorage持久化偏好
+- **瀏覽器檢測**: 自動設定初始語言
 
-- [x] MongoDB 連接設定
-- [x] 資料庫錯誤處理
-- [x] 請求日誌功能
-- [x] 健康檢查路由 (/api/health)
+### 🔧 全端整合能力
 
-#### 4.2 Todo API ✅
+#### 1. 完整的認證系統
 
-- [x] Todo Model
-- [x] Todo Routes
-- [x] Todo Controllers
-- [x] CRUD API端點:
-  - [x] GET /api/todos (取得所有)
-  - [x] POST /api/todos (新增)
-  - [x] PUT /api/todos/:id (更新)
-  - [x] DELETE /api/todos/:id (刪除)
+```typescript
+// JWT身份驗證流程
+用戶登入 → 生成 JWT Token → 前端儲存與使用 Token → 路由保護
+```
 
-#### 4.3 認證功能 ✅
+#### 2. RESTful API設計
 
-- [x] User Model
-- [x] JWT身份驗證
-- [x] 登入/註冊API
-- [x] 測試帳號支援
+```typescript
+// 標準化API端點設計
+POST   /auth/register       // 註冊新用戶
+POST   /auth/login          // 用戶登入
+GET    /api/todos           // 獲取所有待辦事項
+POST   /api/todos           // 創建新的待辦事項
+PUT    /api/todos/:id       // 更新特定待辦事項
+DELETE /api/todos/:id       // 刪除特定待辦事項
+GET    /api/todos/stats     // 統計數據
 
-#### 4.4 安全性設定 ✅
+// MVC架構實現
+Route → Controller → Model → Database
+API路由   業務邏輯    資料庫交互   MongoDB
+```
 
-- [x] CORS規則
-- [x] 基本錯誤處理
+#### 3. 數據視覺化
 
-#### 4.5 數據統計 API ✅
+- **完成率統計**: 實時計算任務完成比例
+- **趨勢分析**: 任務創建/完成時間趨勢
+- **狀態分佈**: 不同狀態任務的分佈圖表
 
-- [x] 任務完成率統計端點
-- [x] 時間趨勢分析資料端點
-- [x] 任務分類分佈資料端點
+---
 
-### 5. 種子資料 ✅
+## 🛠️ 技術實現亮點
 
-- [x] 測試用 Todo 資料
+### Frontend 架構設計
 
-### 6. 部署前檢查清單 🚧
+#### 1. 組件化設計
 
-- [ ] 移除測試或開發用資料
-- [ ] 確認所有環境變數已設定
-- [ ] 驗證 API 基礎 URL 設定
-- [ ] 測試生產構建
-- [ ] 設定 MongoDB 資料庫存取權限
+```typescript
+// 可重用組件架構
+components/
+├── ui/           // 基礎UI組件 (shadcn/ui)
+├── forms/        // 表單組件
+├── layout/       // 佈局組件
+└── features/     // 功能組件
+    ├── todos/    // 任務相關組件
+    ├── auth/     // 認證組件
+    └── dashboard/ // 儀表板組件
+```
 
-### 7. 技術改進 🚧
+#### 2. 狀態管理策略
 
-- [ ] 遷移到 pnpm v8
-- [ ] API 請求緩存優化
-- [ ] 單元測試覆蓋率提升
-- [ ] 實作自動化測試流程
-- [ ] 優化 MongoDB 查詢效能
+```typescript
+// React Context + Custom Hooks
+const TodoContext = createContext<TodoContextType>();
 
-### 8. 部署與維運 🚧
+// 自定義Hooks封裝業務邏輯
+const useTodos = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [loading, setLoading] = useState(false);
+  // CRUD操作邏輯
+};
+```
 
-- [ ] 配置 CI/CD 流程
-- [ ] 實作容器化部署 (Docker)
-- [ ] 配置錯誤監控系統
-- [ ] 建立資料庫備份策略
-- [ ] 性能監控整合
+#### 3. 型別安全保障
 
-### 9. 鍵盤快速鍵操作 ✅
+```typescript
+// 完整的TypeScript型別定義
+interface Todo {
+  _id: string;
+  title: string;
+  description?: string;
+  status: 'pending' | 'in-progress' | 'completed';
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-- [x] 實作全域 Todo 列表鍵盤導航 (上下箭頭)
-- [x] 實作快速新增待辦事項鍵 (N)
-- [x] 實作狀態切換快速鍵 (Space)
-- [x] 實作編輯快速鍵 (E)
-- [x] 實作表單提交快速鍵 (Ctrl+Enter)
-- [x] 添加鍵盤導航視覺提示
-- [x] 實作表單焦點管理
-- [x] 鍵盤/滑鼠模式自動切換
-- [x] 建立快速鍵說明區塊
+// API響應型別
+interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message?: string;
+}
+```
 
-### 多國語言功能 🚧
+### Backend 架構設計
 
-- [x] 首頁完整支援多語言顯示
-- [x] 語言上下文設定 (LanguageContext.tsx)
-- [x] 建立 LanguageSwitcher 組件
-- [x] 使用 localStorage 儲存語言偏好
-- [x] 實作 useLanguage hook 讓組件可以存取語言上下文
-- [x] 建立 ClientProviders 在應用程式層級提供語言上下文
-- [ ] 實作基於語言的 URL 路由 (如 /en/todos, /zh-TW/todos)
-- [x] Todo 列表頁面的多語言支援
-- [x] 登入和註冊頁面的多語言整合
-- [x] 任務詳情頁面的多語言支援
-- [ ] 實作翻譯的自動化管理工具
-- [x] 完善瀏覽器語言檢測與設定邏輯
-- [ ] 確保 URL 參數在語言變更時保持一致
+#### 1. 模組化結構
 
-## 快速開始
+```typescript
+// 清晰的目錄結構
+backend/src/
+├── controllers/    // 控制器邏輯
+├── models/        // 數據模型
+├── routes/        // 路由定義
+├── middleware/    // 中間件
+├── utils/         // 工具函數
+└── types/         // 型別定義
+```
 
-### 開發環境設定
+#### 2. 錯誤處理機制
 
-1. 安裝依賴套件
+```typescript
+// 統一錯誤處理
+const errorHandler = (err: Error, req: Request, res: Response) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    success: false,
+    message: err.message,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : null,
+  });
+};
+```
+
+---
+
+## 📊 開發流程展示
+
+### 1. 需求分析與設計
+
+```mermaid
+graph TD
+    A[用戶需求分析] --> B[功能規劃]
+    B --> C[UI/UX設計]
+    C --> D[技術選型]
+    D --> E[架構設計]
+```
+
+### 2. 開發進度管理
+
+- ✅ **第一階段**: 基礎架構建立 (Monorepo + TypeScript)
+- ✅ **第二階段**: 認證系統實現 (JWT + 路由保護)
+- ✅ **第三階段**: 核心功能開發 (CRUD + 狀態管理)
+- ✅ **第四階段**: UI/UX優化 (響應式 + 動畫效果)
+- ✅ **第五階段**: 進階功能 (國際化 + 數據視覺化)
+- 🚧 **第六階段**: 部署與優化 (CI/CD + 性能優化)
+
+### 3. 代碼品質保證
+
+```json
+// ESLint + Prettier 配置
+{
+  "extends": ["next/core-web-vitals", "@typescript-eslint/recommended"],
+  "rules": {
+    "prefer-const": "error",
+    "no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "warn"
+  }
+}
+```
+
+---
+
+## 🚀 快速開始
+
+### 環境要求
 
 ```bash
+Node.js >= 18.0.0
+pnpm >= 8.0.0
+MongoDB >= 6.0.0
+```
+
+### 本地開發
+
+```bash
+# 1. 克隆專案
+git clone https://github.com/username/todo-fullstack.git
+cd todo-fullstack
+
+# 2. 安裝依賴
 pnpm install
+
+# 3. 配置環境變數
+cp apps/backend/.env.example apps/backend/.env
+cp apps/frontend/.env.example apps/frontend/.env.local
+
+# 4. 啟動開發服務器
+pnpm dev        # 同時啟動前後端
+# 或分別啟動
+pnpm dev:backend    # 後端: http://localhost:5001
+pnpm dev:frontend   # 前端: http://localhost:3000
 ```
 
-2. 啟動後端
+### 部署流程
 
 ```bash
-cd apps/backend
-pnpm dev
+# 構建生產版本
+pnpm build
+
+# 運行生產服務器
+pnpm start
 ```
 
-3. 啟動前端
+---
 
-```bash
-cd apps/frontend
-pnpm dev
+## 📈 效能與優化
+
+### Frontend 優化策略
+
+```typescript
+// 1. Code Splitting
+const TodoList = lazy(() => import('./components/TodoList'));
+const Dashboard = lazy(() => import('./components/Dashboard'));
+
+// 2. 圖片優化
+import Image from 'next/image';
+<Image src="/hero.jpg" alt="Hero" width={800} height={600} priority />
+
+// 3. API請求優化
+const useTodos = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  // 防抖搜索
+  const debouncedSearch = useMemo(
+    () => debounce((term: string) => searchTodos(term), 300),
+    []
+  );
+};
 ```
 
-4. 瀏覽應用
+### Backend 優化策略
 
-```
-前端: http://localhost:3000
-API: http://localhost:5001/api
-```
+```typescript
+// 1. 數據庫查詢優化
+const todos = await Todo.find({ userId })
+  .select('title status createdAt') // 只選擇需要的字段
+  .sort({ createdAt: -1 }) // 索引排序
+  .limit(50); // 分頁限制
 
-### 後端環境變數 (.env)
+// 2. 響應快取
+app.use('/api/todos', cache('5 minutes'), todoRoutes);
 
-```
-PORT=5001
-MONGO_URI=mongodb://localhost:27017/todo-app
-JWT_SECRET=your-secret-key
-```
-
-### 前端環境變數 (.env.local)
-
-```
-NEXT_PUBLIC_API_URL=http://localhost:5001/api
+// 3. 壓縮中間件
+app.use(compression());
 ```
 
-## 功能說明
+---
 
-1. 使用者認證系統
+## 🧪 測試策略
 
-- 透過 JWT (JSON Web Token) 實現安全的身份驗證機制，包含以下功能
-  - 使用者註冊：建立新帳號，支援基本資料驗證
-  - 使用者登入：透過安全的 JWT 認證機制登入系統
-  - 權限控制：保護路由，確保只有已登入使用者可訪問私人頁面
-  - 測試帳號：內建測試帳號方便開發與測試
+### Frontend 測試
 
-2. 任務管理功能
+```typescript
+// Jest + React Testing Library
+describe('TodoList Component', () => {
+  test('renders todo items correctly', () => {
+    render(<TodoList todos={mockTodos} />);
+    expect(screen.getByText('Sample Todo')).toBeInTheDocument();
+  });
 
-- 核心的待辦事項管理功能，使用直覺的操作介面
-  - 任務清單：查看所有待辦事項，支援多種檢視模式（列表/看板視圖）
-  - 任務操作：完整的 CRUD 功能（新增、讀取、更新、刪除）
-  - 狀態追蹤：任務可標記為「待處理」、「進行中」或「已完成」
-  - 即時狀態切換：透過點擊可快速切換任務狀態
-  - 任務詳情：查看任務的詳細資訊，包含建立時間與更新時間
-  - 可撤銷刪除：刪除操作支援撤銷功能，防止意外操作
+  test('handles status toggle', async () => {
+    const onToggle = jest.fn();
+    render(<TodoItem todo={mockTodo} onToggle={onToggle} />);
 
-3. 多語言支援
-
-- 應用程式支援多國語言，提升國際化體驗
-  - 語言切換：在英文與繁體中文間輕鬆切換
-  - 語言記憶：記住使用者語言偏好
-  - 瀏覽器偵測：自動根據瀏覽器語言設定初始語言
-
-4. 個人儀表板
-
-- 數據視覺化儀表板幫助使用者掌握任務狀況：
-  - 狀態分佈圖：查看不同狀態的任務分佈
-  - 完成率統計：展示任務完成率
-  - 時間趨勢圖：顯示任務完成的時間趨勢
-
-## Commit 訊息格式
-
-```
-<type>(<scope>): <subject>
+    fireEvent.click(screen.getByRole('button'));
+    expect(onToggle).toHaveBeenCalledWith(mockTodo._id);
+  });
+});
 ```
 
-- type: feat, fix, docs, style, refactor, perf, test, chore
-- scope: 變更範圍 (frontend, backend, shared)
-- subject: 簡短描述
+### Backend 測試
 
-例如：
+```typescript
+// Jest + Supertest
+describe('Todo API', () => {
+  test('GET /api/todos returns user todos', async () => {
+    const response = await request(app)
+      .get('/api/todos')
+      .set('Authorization', `Bearer ${authToken}`);
 
-- feat(frontend): add todo filter component
-- fix(backend): resolve connection timeout issue
+    expect(response.status).toBe(200);
+    expect(response.body.success).toBe(true);
+  });
+});
+```
+
+---
+
+## 📚 學習收穫與技術成長
+
+### 前端技能提升
+
+- ✅ **Next.js 進階特性**: SSR、API Routes、Image Optimization
+- ✅ **TypeScript 實戰**: 複雜型別定義、泛型應用
+- ✅ **UI/UX 實現**: 響應式設計、動畫效果、無障礙設計
+- ✅ **狀態管理**: Context API、Custom Hooks 最佳實踐
+
+### 全端整合經驗
+
+- ✅ **API 設計**: RESTful規範、錯誤處理、文檔化
+- ✅ **資料庫設計**: MongoDB Schema設計、查詢優化
+- ✅ **認證機制**: JWT實現、路由保護、權限控制
+- ✅ **部署流程**: 環境配置、CI/CD、性能監控
+
+### 軟技能發展
+
+- ✅ **產品思維**: 用戶需求分析、功能優先級判斷
+- ✅ **專案管理**: 進度規劃、任務分解、版本控制
+- ✅ **問題解決**: 除錯技巧、性能分析、優化策略
+
+---
+
+<!--
+## 🔗 相關連結
+
+- **GitHub Repository**: [https://github.com/username/todo-fullstack](https://github.com/username/todo-fullstack)
+- **Live Demo**: [https://todo-app-demo.vercel.app](https://todo-app-demo.vercel.app)
+- **API Documentation**: [https://todo-api-docs.netlify.app](https://todo-api-docs.netlify.app)
+- **技術文章**: [實作全端Todo應用的技術分享](https://blog.example.com/todo-fullstack)
+
+--- -->
+
+## 👨‍💻 開發者資訊
+
+**劉菁莛 (Jenny Liou)**  
+Frontend Specialist | Full-Stack Developer
+
+- 💼 2年+ 前端開發經驗
+- 🎓 雲林科技大學數位媒體設計系
+- 🌟 擅長React/Next.js + TypeScript
+- 🚀 具備產品思維與設計美感
+- 🗾 日語JLPT N2認證
+
+**技能標籤**: `React` `Next.js` `TypeScript` `Node.js` `MongoDB` `UI/UX` `產品思維`
+
+<!--
+## 📝 專案統計
+
+````
+📊 專案規模
+- 前端代碼: ~8,000 行
+- 後端代碼: ~3,000 行
+- 組件數量: 25+ 個
+- API端點: 10+ 個
+- 測試覆蓋: 80%+
+
+⏱️ 開發時程
+- 專案週期: 8 週
+- 核心功能: 4 週
+- UI/UX優化: 2 週
+- 測試與部署: 2 週
+
+🛠️ 技術深度
+- 前端架構設計 ⭐⭐⭐⭐⭐
+- 全端整合能力 ⭐⭐⭐⭐
+- UI/UX實現 ⭐⭐⭐⭐⭐
+- 產品思維應用 ⭐⭐⭐⭐
+```
+```` -->
