@@ -53,22 +53,26 @@ export default function DashboardPage() {
   }).length;
 
   return (
-    <div className="container py-8">
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center">
-          <Button asChild variant="ghost" className="mr-4">
+    <div className="p-4 sm:p-8">
+      <div className="mb-6">
+        <div className="flex items-center mb-4">
+          <Button
+            asChild
+            variant="ghost"
+            className="mr-4 text-teal-600 hover:text-teal-700 hover:bg-teal-50"
+          >
             <Link href="/todos">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Todos
             </Link>
           </Button>
-          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Dashboard</h1>
         </div>
       </div>
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+          <div className="animate-spin h-8 w-8 border-4 border-teal-500 rounded-full border-t-transparent"></div>
         </div>
       ) : (
         <div className="space-y-6">
@@ -81,47 +85,82 @@ export default function DashboardPage() {
             todayCompleted={todayCompleted}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-lg font-medium">Task Status Distribution</CardTitle>
-                <PieChart className="h-4 w-4 text-muted-foreground" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="shadow-sm border-gray-200">
+              <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-gray-100">
+                <CardTitle className="text-lg font-semibold text-gray-800">
+                  Task Status Distribution
+                </CardTitle>
+                <PieChart className="h-5 w-5 text-teal-500" />
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 <StatusDistributionChart statusCounts={statusCounts} />
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-lg font-medium">Recent Activity</CardTitle>
-                <Clock className="h-4 w-4 text-muted-foreground" />
+            <Card className="shadow-sm border-gray-200">
+              <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-gray-100">
+                <CardTitle className="text-lg font-semibold text-gray-800">
+                  Recent Activity
+                </CardTitle>
+                <Clock className="h-5 w-5 text-teal-500" />
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {todos.slice(0, 5).map((todo) => (
-                    <div key={todo._id} className="flex items-center">
+              <CardContent className="pt-6">
+                {todos.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>No tasks yet. Create your first todo to get started!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {todos.slice(0, 5).map((todo) => (
                       <div
-                        className={`w-2 h-2 rounded-full mr-2 ${
-                          todo.status === 'completed'
-                            ? 'bg-green-500'
-                            : todo.status === 'in-progress'
-                              ? 'bg-blue-500'
-                              : 'bg-yellow-500'
-                        }`}
-                      />
-                      <div className="flex-1 truncate">{todo.title}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {new Date(todo.updatedAt).toLocaleDateString()}
+                        key={todo._id}
+                        className="flex items-center justify-between py-2 border-b border-gray-50 last:border-b-0"
+                      >
+                        <div className="flex items-center flex-1 min-w-0">
+                          <div
+                            className={`w-3 h-3 rounded-full mr-3 flex-shrink-0 ${
+                              todo.status === 'completed'
+                                ? 'bg-green-500'
+                                : todo.status === 'in-progress'
+                                  ? 'bg-blue-500'
+                                  : 'bg-yellow-500'
+                            }`}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">
+                              {todo.title}
+                            </p>
+                            <p className="text-xs text-gray-500 capitalize">
+                              {todo.status.replace('-', ' ')}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-xs text-gray-400 ml-4 flex-shrink-0">
+                          {new Date(todo.updatedAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                    {todos.length > 5 && (
+                      <div className="text-center pt-4">
+                        <Link
+                          href="/todos"
+                          className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+                        >
+                          View all todos →
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
 
-          {/* 添加的趨勢圖表 */}
+          {/* 趨勢圖表 */}
           <TaskTrendsChart />
         </div>
       )}
