@@ -339,7 +339,146 @@
   }
   ```
 
-### 3. 取得生產力統計
+### 3. 取得狀態分布統計
+
+取得待辦事項狀態分布的統計資訊。
+
+- **路徑**: `/stats/status`
+- **方法**: `GET`
+- **認證**: 需要 Bearer Token（可選，取決於後端設定）
+- **成功回應** (200):
+
+  ```json
+  {
+    "success": true,
+    "data": {
+      "statusCounts": {
+        "pending": 3,
+        "inProgress": 2,
+        "completed": 5,
+        "total": 10
+      },
+      "completionRate": 50.0
+    }
+  }
+  ```
+
+- **錯誤回應** (500):
+
+  ```json
+  {
+    "success": false,
+    "error": "Failed to generate status statistics"
+  }
+  ```
+
+### 4. 取得時間序列統計
+
+取得指定時間範圍內的任務創建和完成趨勢數據。
+
+- **路徑**: `/stats/time-series`
+- **方法**: `GET`
+- **認證**: 需要 Bearer Token（可選，取決於後端設定）
+- **查詢參數** (可選):
+
+  - `dateFrom`: 開始日期 (YYYY-MM-DD 格式)
+  - `dateTo`: 結束日期 (YYYY-MM-DD 格式)
+
+  如果未提供日期參數，預設為過去 7 天的數據。
+
+- **成功回應** (200):
+
+  ```json
+  {
+    "success": true,
+    "data": {
+      "timeRange": {
+        "from": "2023-03-10",
+        "to": "2023-03-17"
+      },
+      "series": {
+        "created": [
+          { "date": "2023-03-10", "count": 3 },
+          { "date": "2023-03-11", "count": 4 },
+          { "date": "2023-03-12", "count": 6 },
+          { "date": "2023-03-13", "count": 2 },
+          { "date": "2023-03-14", "count": 5 },
+          { "date": "2023-03-15", "count": 3 },
+          { "date": "2023-03-16", "count": 2 },
+          { "date": "2023-03-17", "count": 1 }
+        ],
+        "completed": [
+          { "date": "2023-03-10", "count": 2 },
+          { "date": "2023-03-11", "count": 5 },
+          { "date": "2023-03-12", "count": 3 },
+          { "date": "2023-03-13", "count": 7 },
+          { "date": "2023-03-14", "count": 4 },
+          { "date": "2023-03-15", "count": 2 },
+          { "date": "2023-03-16", "count": 1 },
+          { "date": "2023-03-17", "count": 0 }
+        ]
+      }
+    }
+  }
+  ```
+
+- **錯誤回應** (400):
+
+  ```json
+  {
+    "success": false,
+    "error": "Invalid date format. Use YYYY-MM-DD format."
+  }
+  ```
+
+- **錯誤回應** (500):
+
+  ```json
+  {
+    "success": false,
+    "error": "Failed to generate time series statistics"
+  }
+  ```
+
+### 5. 取得生產力統計
+
+取得生產力分析統計。
+
+- **路徑**: `/stats/productivity`
+- **方法**: `GET`
+- **認證**: 需要 Bearer Token（可選，取決於後端設定）
+- **成功回應** (200):
+
+  ```json
+  {
+    "success": true,
+    "data": {
+      "byHour": [
+        { "hour": 0, "count": 0 },
+        { "hour": 1, "count": 0 }
+        // ...其他小時
+      ],
+      "mostProductiveHour": { "hour": 14, "count": 3 },
+      "byDayOfWeek": [
+        { "dayOfWeek": 1, "dayName": "Sunday", "count": 1 }
+        // ...其他天
+      ],
+      "mostProductiveDay": { "dayOfWeek": 3, "dayName": "Tuesday", "count": 4 },
+      "completionTime": {
+        "average": {
+          "milliseconds": 86400000,
+          "hours": 24.0,
+          "days": 1.0
+        }
+      },
+      "efficiency": {
+        "weeklyCompletionRate": 75.0,
+        "tasksCompletedThisWeek": 3,
+        "tasksCreatedThisWeek": 4
+      }
+    }
+  }
+  ```
 
 取得生產力分析統計。
 
