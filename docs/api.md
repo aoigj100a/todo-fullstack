@@ -1,8 +1,8 @@
-# Todo 全端專案 API 文件
+# Todo Full Stack Application - API 文件
 
 ## 基本資訊
 
-- **基礎 URL**: `http://localhost:5001/api`
+- **基礎 URL**: `http://localhost:4000/api`
 - **內容類型**: `application/json`
 - **認證方式**: JWT Bearer Token
 
@@ -266,7 +266,6 @@
 - **認證**: 需要 Bearer Token（可選，取決於後端設定）
 - **查詢參數** (可選):
   - `timeRange`: 時間範圍 (`7days`, `30days`, `thisMonth`)，預設為 `7days`
-  
 - **成功回應** (200):
 
   ```json
@@ -279,26 +278,26 @@
         "completed": 5,
         "total": 10
       },
-      "completionRate": 50.00,
+      "completionRate": 50.0,
       "timeSeries": {
         "completed": [
           { "date": "2023-03-10", "count": 1 },
-          { "date": "2023-03-11", "count": 0 },
+          { "date": "2023-03-11", "count": 0 }
           // ...其他日期
         ]
       },
       "productivity": {
         "byHour": [
           { "hour": 0, "count": 0 },
-          { "hour": 1, "count": 0 },
+          { "hour": 1, "count": 0 }
           // ...其他小時
         ],
         "mostProductiveHour": { "hour": 14, "count": 3 }
       },
       "averageCompletionTime": {
         "milliseconds": 86400000,
-        "hours": 24.00,
-        "days": 1.00
+        "hours": 24.0,
+        "days": 1.0
       }
     }
   }
@@ -311,7 +310,6 @@
 - **路徑**: `/stats/completion-time`
 - **方法**: `GET`
 - **認證**: 需要 Bearer Token（可選，取決於後端設定）
-  
 - **成功回應** (200):
 
   ```json
@@ -320,16 +318,16 @@
     "data": {
       "average": {
         "milliseconds": 86400000,
-        "hours": 24.00,
-        "days": 1.00
+        "hours": 24.0,
+        "days": 1.0
       },
       "fastest": {
         "milliseconds": 3600000,
-        "hours": 1.00
+        "hours": 1.0
       },
       "slowest": {
         "milliseconds": 604800000,
-        "hours": 168.00
+        "hours": 168.0
       },
       "totalCompleted": 5,
       "distribution": [
@@ -348,7 +346,6 @@
 - **路徑**: `/stats/productivity`
 - **方法**: `GET`
 - **認證**: 需要 Bearer Token（可選，取決於後端設定）
-  
 - **成功回應** (200):
 
   ```json
@@ -357,24 +354,24 @@
     "data": {
       "byHour": [
         { "hour": 0, "count": 0 },
-        { "hour": 1, "count": 0 },
+        { "hour": 1, "count": 0 }
         // ...其他小時
       ],
       "mostProductiveHour": { "hour": 14, "count": 3 },
       "byDayOfWeek": [
-        { "dayOfWeek": 1, "dayName": "Sunday", "count": 1 },
+        { "dayOfWeek": 1, "dayName": "Sunday", "count": 1 }
         // ...其他天
       ],
       "mostProductiveDay": { "dayOfWeek": 3, "dayName": "Tuesday", "count": 4 },
       "completionTime": {
         "average": {
           "milliseconds": 86400000,
-          "hours": 24.00,
-          "days": 1.00
+          "hours": 24.0,
+          "days": 1.0
         }
       },
       "efficiency": {
-        "weeklyCompletionRate": 75.00,
+        "weeklyCompletionRate": 75.0,
         "tasksCompletedThisWeek": 3,
         "tasksCreatedThisWeek": 4
       }
@@ -422,12 +419,12 @@
 
 ```typescript
 {
-  _id: string;          // MongoDB ID
-  name: string;         // 用戶名稱
-  email: string;        // 電子郵件 (唯一)
-  password: string;     // 加密密碼 (不會回傳給客戶端)
-  createdAt: Date;      // 建立時間
-  updatedAt: Date;      // 最後更新時間
+  _id: string; // MongoDB ID
+  name: string; // 用戶名稱
+  email: string; // 電子郵件 (唯一)
+  password: string; // 加密密碼 (不會回傳給客戶端)
+  createdAt: Date; // 建立時間
+  updatedAt: Date; // 最後更新時間
 }
 ```
 
@@ -436,12 +433,14 @@
 API 默認允許來自 `http://localhost:3000` 的請求，CORS 設定如下：
 
 ```javascript
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }),
+);
 ```
 
 ## 錯誤處理
@@ -462,18 +461,18 @@ app.use(cors({
 
 ## API 路由摘要
 
-| 方法 | 路徑 | 描述 | 認證 |
-|------|------|------|------|
-| POST | /api/auth/login | 使用者登入 | 否 |
-| POST | /api/auth/register | 使用者註冊 | 否 |
-| GET | /api/todos | 獲取所有待辦事項 | 視後端設定 |
-| POST | /api/todos | 建立待辦事項 | 視後端設定 |
-| PUT | /api/todos/:id | 更新待辦事項 | 視後端設定 |
-| DELETE | /api/todos/:id | 刪除待辦事項 | 視後端設定 |
-| GET | /api/stats | 取得統計概覽 | 視後端設定 |
-| GET | /api/stats/completion-time | 取得完成時間統計 | 視後端設定 |
-| GET | /api/stats/productivity | 取得生產力統計 | 視後端設定 |
-| GET | /api/health | 健康檢查 | 否 |
+| 方法   | 路徑                       | 描述             | 認證       |
+| ------ | -------------------------- | ---------------- | ---------- |
+| POST   | /api/auth/login            | 使用者登入       | 否         |
+| POST   | /api/auth/register         | 使用者註冊       | 否         |
+| GET    | /api/todos                 | 獲取所有待辦事項 | 視後端設定 |
+| POST   | /api/todos                 | 建立待辦事項     | 視後端設定 |
+| PUT    | /api/todos/:id             | 更新待辦事項     | 視後端設定 |
+| DELETE | /api/todos/:id             | 刪除待辦事項     | 視後端設定 |
+| GET    | /api/stats                 | 取得統計概覽     | 視後端設定 |
+| GET    | /api/stats/completion-time | 取得完成時間統計 | 視後端設定 |
+| GET    | /api/stats/productivity    | 取得生產力統計   | 視後端設定 |
+| GET    | /api/health                | 健康檢查         | 否         |
 
 ## 使用範例
 
@@ -485,14 +484,14 @@ async function login() {
   const response = await fetch('http://localhost:5001/api/auth/login', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       email: 'demo@example.com',
-      password: 'demo1234'
-    })
+      password: 'demo1234',
+    }),
   });
-  
+
   const data = await response.json();
   return data.token;
 }
@@ -501,10 +500,10 @@ async function login() {
 async function getTodos(token) {
   const response = await fetch('http://localhost:5001/api/todos', {
     headers: {
-      'Authorization': `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
-  
+
   return await response.json();
 }
 
@@ -527,6 +526,7 @@ async function getTodos(token) {
 2. **測試帳號**: 系統內建了測試帳號 (demo@example.com/demo1234)，方便開發測試使用。
 
 3. **環境變數**: API 伺服器依賴以下環境變數：
+
    - `MONGO_URI`: MongoDB 連接字串
    - `JWT_SECRET`: JWT 簽名密鑰
    - `PORT`: 伺服器端口 (預設 5001)
