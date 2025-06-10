@@ -1,55 +1,16 @@
 // apps/frontend/src/app/page.tsx
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { CheckCircle, Clock, List, UserCircle } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 
-import { authService } from '@/service/auth';
-import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useAuth } from '@/contexts/AuthContext';
 
 export default function Home() {
-  const { login } = useAuth();
-  const { toast } = useToast();
   const { t } = useLanguage();
-  const router = useRouter();
-
-  const [email, setEmail] = useState('demo@example.com');
-  const [password, setPassword] = useState('demo1234');
-
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
-
-  const handleQuickLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoggingIn(true);
-
-    try {
-      // 使用 AuthContext 提供的 login 函數
-      await login(email, password);
-
-      toast({
-        title: 'Login successful',
-        description: 'Redirecting to your todos...',
-      });
-
-      // 不需要手動重定向，AuthContext 會處理
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Login failed',
-        description: error instanceof Error ? error.message : 'Failed to login',
-      });
-    } finally {
-      setIsLoggingIn(false);
-    }
-  };
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
@@ -68,43 +29,10 @@ export default function Home() {
             </h1>
             <p className="text-lg text-gray-600 max-w-lg">{t('hero.subtitle')}</p>
 
-            {/* Quick Login Card */}
-            <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 mt-8">
-              <h2 className="text-xl font-semibold mb-4 flex items-center">
-                <UserCircle className="mr-2 h-5 w-5 text-teal-500" />
-                {t('login.title')}
-              </h2>
-              <form onSubmit={handleQuickLogin} className="space-y-4">
-                <div>
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="bg-gray-50"
-                  />
-                </div>
-                <div>
-                  <Input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="bg-gray-50"
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  className="w-full bg-teal-600 hover:bg-teal-700 text-white"
-                  disabled={isLoggingIn}
-                >
-                  {isLoggingIn ? 'Logging in...' : t('login.button')}
-                </Button>
-                <p className="text-xs text-center text-gray-500">{t('login.demo')}</p>
-              </form>
-            </div>
-
             <div className="flex gap-4 pt-4">
+              <Button asChild className="bg-teal-600 hover:bg-teal-700 text-white">
+                <Link href="/login">{t('login.button')}</Link>
+              </Button>
               <Button asChild variant="outline" className="rounded-full">
                 <Link href="/register">{t('button.createAccount')}</Link>
               </Button>
