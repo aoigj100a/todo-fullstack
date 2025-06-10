@@ -13,7 +13,7 @@ const translations = {
     'hero.subtitle':
       'A simple, intuitive task management app that helps you stay organized and productive.',
     'login.title': 'Quick Login',
-    'login.button': 'Login & Go to Dashboard',
+    'login.button': 'Get Started',
     'login.demo': 'Using demo account: demo@example.com / demo1234',
     'button.createAccount': 'Create Account',
     'features.title': 'Key Features',
@@ -101,7 +101,7 @@ const translations = {
     'hero.title': '輕鬆地管理大家的任務',
     'hero.subtitle': '簡單直覺的任務管理應用程式，幫助您保持組織和高效率。',
     'login.title': '快速登入',
-    'login.button': '登入並前往儀表板',
+    'login.button': '開始使用',
     'login.demo': '使用示範帳號: demo@example.com / demo1234',
     'button.createAccount': '建立帳號',
     'button.viewGuide': '查看指南',
