@@ -3,15 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import {
-  ArrowLeft,
-  BarChart3,
-  PieChart,
-  Clock,
-  CheckCircle,
-  RefreshCw,
-  AlertCircle,
-} from 'lucide-react';
+import { ArrowLeft, PieChart, Clock, RefreshCw, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StatsCards } from '@/components/features/dashboard/StatsCards';
@@ -22,6 +14,7 @@ import { statsService, TodoStats } from '@/service/stats';
 import { todoService } from '@/service/todo';
 import { Todo } from '@/types';
 import { useToast } from '@/hooks/use-toast';
+import { DashboardLoadingState } from '@/components/features/dashboard/DashboardLoadingState';
 
 type TimeRange = '7days' | '30days' | 'thisMonth';
 
@@ -235,9 +228,7 @@ export default function DashboardPage() {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin h-8 w-8 border-4 border-teal-500 rounded-full border-t-transparent"></div>
-        </div>
+        <DashboardLoadingState />
       ) : (
         <div className="space-y-6">
           {/* 統計卡片 */}
