@@ -1,3 +1,4 @@
+import { useLanguage } from '@/contexts/LanguageContext';
 import React from 'react';
 
 interface StatusCountsProps {
@@ -10,6 +11,8 @@ interface StatusCountsProps {
 }
 
 export const StatusDistributionChart = ({ statusCounts }: StatusCountsProps) => {
+  const { t } = useLanguage();
+
   // 準備圓餅圖的數據
   const data = [
     { status: 'Pending', count: statusCounts.pending, color: 'var(--chart-4)' },
@@ -66,7 +69,7 @@ export const StatusDistributionChart = ({ statusCounts }: StatusCountsProps) => 
   if (total === 0) {
     return (
       <div className="flex items-center justify-center h-48 flex-col">
-        <p className="text-muted-foreground">No data available</p>
+        <p className="text-muted-foreground">{t('dashboard.statusChart.noData')}</p>
       </div>
     );
   }

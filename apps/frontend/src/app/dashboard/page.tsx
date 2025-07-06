@@ -15,10 +15,13 @@ import { todoService } from '@/service/todo';
 import { Todo } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { DashboardLoadingState } from '@/components/features/dashboard/DashboardLoadingState';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 type TimeRange = '7days' | '30days' | 'thisMonth';
 
 export default function DashboardPage() {
+  const { t } = useLanguage();
+
   const [todos, setTodos] = useState<Todo[]>([]);
   const [statsData, setStatsData] = useState<TodoStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -173,10 +176,10 @@ export default function DashboardPage() {
             >
               <Link href="/todos">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Todos
+                {t('dashboard.backToTodos')}
               </Link>
             </Button>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Dashboard</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">{t('dashboard.title')}</h1>
           </div>
 
           <div className="flex items-center gap-2">
@@ -246,7 +249,7 @@ export default function DashboardPage() {
             <Card className="shadow-sm border-gray-200">
               <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-gray-100">
                 <CardTitle className="text-lg font-semibold text-gray-800">
-                  Task Status Distribution
+                  {t('dashboard.statusChart.title')}
                 </CardTitle>
                 <PieChart className="h-5 w-5 text-teal-500" />
               </CardHeader>
@@ -259,14 +262,17 @@ export default function DashboardPage() {
             <Card className="shadow-sm border-gray-200">
               <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-gray-100">
                 <CardTitle className="text-lg font-semibold text-gray-800">
-                  Recent Activity
+                  {t('dashboard.activity.title')}
                 </CardTitle>
                 <Clock className="h-5 w-5 text-teal-500" />
               </CardHeader>
               <CardContent className="pt-6">
                 {todos.length === 0 ? (
                   <div className="text-center py-8 text-gray-500">
-                    <p>No tasks yet. Create your first todo to get started!</p>
+                    <p>
+                      No tasks yet. Create your first todo to get started!
+                      {t('dashboard.activity.noTasks')}
+                    </p>
                   </div>
                 ) : (
                   <div className="space-y-4">

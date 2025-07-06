@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Activity, BarChart3, TrendingUp, Calendar } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TaskTrendsChartProps {
   chartData?: {
@@ -18,6 +19,7 @@ interface TaskTrendsChartProps {
 export function TaskTrendsChart({ chartData }: TaskTrendsChartProps) {
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month'>('week');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const { t } = useLanguage();
 
   // 模擬數據 - 可以根據 selectedPeriod 切換
   const weekData = {
@@ -56,7 +58,9 @@ export function TaskTrendsChart({ chartData }: TaskTrendsChartProps) {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-2">
             <Activity className="h-5 w-5 text-teal-500" />
-            <CardTitle className="text-lg font-semibold text-gray-800">Task Trends</CardTitle>
+            <CardTitle className="text-lg font-semibold text-gray-800">
+              {t('dashboard.trends.title')}
+            </CardTitle>
           </div>
 
           {/* Period selector */}
@@ -73,7 +77,7 @@ export function TaskTrendsChart({ chartData }: TaskTrendsChartProps) {
                 onClick={() => setSelectedPeriod('week')}
               >
                 <Calendar className="h-3 w-3 mr-1" />
-                Week
+                {t('dashboard.trends.period.week')}
               </Button>
               <Button
                 variant={selectedPeriod === 'month' ? 'default' : 'ghost'}
@@ -86,7 +90,7 @@ export function TaskTrendsChart({ chartData }: TaskTrendsChartProps) {
                 onClick={() => setSelectedPeriod('month')}
               >
                 <BarChart3 className="h-3 w-3 mr-1" />
-                Month
+                {t('dashboard.trends.period.month')}
               </Button>
             </div>
           </div>
@@ -96,7 +100,7 @@ export function TaskTrendsChart({ chartData }: TaskTrendsChartProps) {
         <div className="grid grid-cols-3 gap-4 mt-4">
           <div className="text-center">
             <div className="text-lg font-bold text-gray-800">{totalCompleted}</div>
-            <div className="text-xs text-gray-500">Completed</div>
+            <div className="text-xs text-gray-500">{t('dashboard.trends.completed')}</div>
             <div
               className={`text-xs flex items-center justify-center gap-1 mt-1 ${
                 completedChange >= 0 ? 'text-green-600' : 'text-red-600'
@@ -108,7 +112,7 @@ export function TaskTrendsChart({ chartData }: TaskTrendsChartProps) {
           </div>
           <div className="text-center">
             <div className="text-lg font-bold text-gray-800">{totalCreated}</div>
-            <div className="text-xs text-gray-500">Created</div>
+            <div className="text-xs text-gray-500">{t('dashboard.trends.created')}</div>
             <div
               className={`text-xs flex items-center justify-center gap-1 mt-1 ${
                 createdChange >= 0 ? 'text-green-600' : 'text-red-600'
@@ -120,8 +124,8 @@ export function TaskTrendsChart({ chartData }: TaskTrendsChartProps) {
           </div>
           <div className="text-center">
             <div className="text-lg font-bold text-gray-800">{completionRate}%</div>
-            <div className="text-xs text-gray-500">Rate</div>
-            <div className="text-xs text-gray-400 mt-1">Completion</div>
+            <div className="text-xs text-gray-500">{t('dashboard.trends.rate')}</div>
+            <div className="text-xs text-gray-400 mt-1">{t('dashboard.trends.completion')}</div>
           </div>
         </div>
       </CardHeader>
