@@ -96,6 +96,47 @@ const translations = {
     // 按鈕
     'button.creating': 'Creating...',
     'button.updating': 'Updating...',
+
+    // Dashboard 頁面
+    'dashboard.title': 'Dashboard',
+    'dashboard.backToTodos': 'Back to Todos',
+    'dashboard.loading': 'Loading dashboard data...',
+
+    // 統計卡片 (StatsCards)
+    'dashboard.stats.totalTasks': 'Total Tasks',
+    'dashboard.stats.totalTasks.desc': 'All tasks in the system',
+    'dashboard.stats.completionRate': 'Completion Rate',
+    'dashboard.stats.completionRate.desc': '{completed} of {total} tasks completed',
+    'dashboard.stats.inProgress': 'In Progress',
+    'dashboard.stats.inProgress.desc': '{percentage}% of all tasks',
+    'dashboard.stats.completedToday': 'Completed Today',
+    'dashboard.stats.completedToday.desc': 'Tasks completed today',
+
+    // 狀態分佈圖表 (StatusDistributionChart)
+    'dashboard.statusChart.title': 'Task Status Distribution',
+    'dashboard.statusChart.noData': 'No data available',
+    'dashboard.statusChart.pending': 'Pending',
+    'dashboard.statusChart.inProgress': 'In Progress',
+    'dashboard.statusChart.completed': 'Completed',
+
+    // 最近活動 (Recent Activity)
+    'dashboard.activity.title': 'Recent Activity',
+    'dashboard.activity.noTasks': 'No tasks yet. Create your first todo to get started!',
+    'dashboard.activity.viewAll': 'View all todos →',
+
+    // 任務趨勢圖表 (TaskTrendsChart)
+    'dashboard.trends.title': 'Task Trends',
+    'dashboard.trends.period.week': 'Week',
+    'dashboard.trends.period.month': 'Month',
+    'dashboard.trends.completed': 'Completed',
+    'dashboard.trends.created': 'Created',
+    'dashboard.trends.rate': 'Rate',
+    'dashboard.trends.completion': 'Completion',
+    'dashboard.trends.insight': '💡 Insight:',
+    'dashboard.trends.insight.high': "Great productivity! You're completing most of your tasks.",
+    'dashboard.trends.insight.medium': 'Good progress! Consider focusing on task completion.',
+    'dashboard.trends.insight.low':
+      "You're creating more tasks than completing. Try to focus on finishing existing ones.",
   },
   'zh-TW': {
     'hero.title': '輕鬆地管理大家的任務',
@@ -113,6 +154,7 @@ const translations = {
     'features.multipleViews': '多種視圖',
     'features.multipleViews.desc': '在列表和看板視圖之間切換，獲得不同的視角',
     'footer.copyright': '© {year} Todo App 保留所有權利',
+
     // Todo 頁面標題
     'todos.title': '我的待辦事項',
     'todos.emptyState': '您還沒有任何待辦事項。建立一個開始吧！',
@@ -181,9 +223,50 @@ const translations = {
     'help.tip': '提示：您可以在列表視圖和看板視圖中查看任務。篩選視圖僅顯示匹配的任務。',
     'help.viewHelp': '查看幫助',
     'help.hideHelp': '隱藏幫助',
+
     // 按鈕
     'button.creating': '建立中...',
     'button.updating': '更新中...',
+
+    // Dashboard 頁面
+    'dashboard.title': '儀表板',
+    'dashboard.backToTodos': '返回待辦事項',
+    'dashboard.loading': '載入儀表板資料中...',
+
+    // 統計卡片 (StatsCards)
+    'dashboard.stats.totalTasks': '總任務數',
+    'dashboard.stats.totalTasks.desc': '系統中的所有任務',
+    'dashboard.stats.completionRate': '完成率',
+    'dashboard.stats.completionRate.desc': '{total} 個任務中已完成 {completed} 個',
+    'dashboard.stats.inProgress': '進行中',
+    'dashboard.stats.inProgress.desc': '佔所有任務的 {percentage}%',
+    'dashboard.stats.completedToday': '今日完成',
+    'dashboard.stats.completedToday.desc': '今天完成的任務',
+
+    // 狀態分佈圖表 (StatusDistributionChart)
+    'dashboard.statusChart.title': '任務狀態分佈',
+    'dashboard.statusChart.noData': '無可用資料',
+    'dashboard.statusChart.pending': '待處理',
+    'dashboard.statusChart.inProgress': '進行中',
+    'dashboard.statusChart.completed': '已完成',
+
+    // 最近活動 (Recent Activity)
+    'dashboard.activity.title': '最近活動',
+    'dashboard.activity.noTasks': '還沒有任務。建立您的第一個待辦事項開始吧！',
+    'dashboard.activity.viewAll': '查看所有待辦事項 →',
+
+    // 任務趨勢圖表 (TaskTrendsChart)
+    'dashboard.trends.title': '任務趨勢',
+    'dashboard.trends.period.week': '週',
+    'dashboard.trends.period.month': '月',
+    'dashboard.trends.completed': '已完成',
+    'dashboard.trends.created': '已建立',
+    'dashboard.trends.rate': '比率',
+    'dashboard.trends.completion': '完成',
+    'dashboard.trends.insight': '💡 洞察：',
+    'dashboard.trends.insight.high': '生產力很棒！您正在完成大部分任務。',
+    'dashboard.trends.insight.medium': '進度良好！考慮專注於任務完成。',
+    'dashboard.trends.insight.low': '您建立的任務比完成的多。試著專注於完成現有任務。',
   },
 };
 
