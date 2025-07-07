@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, PieChart, Clock, RefreshCw, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,8 +19,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 type TimeRange = '7days' | '30days' | 'thisMonth';
 
 export default function DashboardPage() {
-  const { t } = useLanguage();
-
   const [todos, setTodos] = useState<Todo[]>([]);
   const [statsData, setStatsData] = useState<TodoStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +26,7 @@ export default function DashboardPage() {
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('7days');
   const [error, setError] = useState<string | null>(null);
 
-  const router = useRouter();
+  const { t } = useLanguage();
   const { toast } = useToast();
 
   // 載入基本 Todos 數據
@@ -40,12 +37,18 @@ export default function DashboardPage() {
     } catch (error) {
       console.error('Failed to load todos', error);
       toast({
-        title: 'Error',
-        description: 'Failed to load todos',
+        title: t('toast.error'),
+        description: t('error.loadTodos'),
         variant: 'destructive',
       });
     }
   };
+
+  const timeRangeOptions = [
+    { value: '7days' as TimeRange, label: t('timeRange.7days') },
+    { value: '30days' as TimeRange, label: t('timeRange.30days') },
+    { value: 'thisMonth' as TimeRange, label: t('timeRange.thisMonth') },
+  ];
 
   // 載入統計數據
   const loadStatsData = async (timeRange: TimeRange = selectedTimeRange) => {
@@ -55,12 +58,11 @@ export default function DashboardPage() {
       setStatsData(stats);
     } catch (error) {
       console.error('Failed to load stats data', error);
-      setError('Failed to load statistics');
+      setError(t('error.loadStats'));
 
-      // 如果統計 API 失敗，顯示錯誤但繼續顯示基本數據
       toast({
-        title: 'Warning',
-        description: 'Unable to load advanced statistics. Showing basic data.',
+        title: t('toast.warning'),
+        description: t('error.advancedStats'),
         variant: 'destructive',
       });
     }
@@ -185,11 +187,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2">
             {/* 時間範圍選擇器 */}
             <div className="flex bg-gray-100 rounded-lg p-1">
-              {[
-                { value: '7days' as TimeRange, label: '7 Days' },
-                { value: '30days' as TimeRange, label: '30 Days' },
-                { value: 'thisMonth' as TimeRange, label: 'This Month' },
-              ].map((option) => (
+              {timeRangeOptions.map((option) => (
                 <Button
                   key={option.value}
                   variant={selectedTimeRange === option.value ? 'default' : 'ghost'}
@@ -216,7 +214,7 @@ export default function DashboardPage() {
               className="flex items-center gap-1"
             >
               <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-              Refresh
+              {t('button.refresh')}
             </Button>
           </div>
         </div>
