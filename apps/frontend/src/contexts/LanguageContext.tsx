@@ -137,6 +137,18 @@ const translations = {
     'dashboard.trends.insight.medium': 'Good progress! Consider focusing on task completion.',
     'dashboard.trends.insight.low':
       "You're creating more tasks than completing. Try to focus on finishing existing ones.",
+
+    // 時間範圍翻譯
+    'timeRange.7days': '7 Days',
+    'timeRange.30days': '30 Days',
+    'timeRange.thisMonth': 'This Month',
+
+    'button.refresh': 'Refresh',
+    'toast.error': 'Error',
+    'toast.warning': 'Warning',
+    'toast.success': 'Success',
+    'error.loadStats': 'Failed to load statistics',
+    'error.advancedStats': 'Unable to load advanced statistics. Showing basic data.',
   },
   'zh-TW': {
     'hero.title': '輕鬆地管理大家的任務',
@@ -267,6 +279,18 @@ const translations = {
     'dashboard.trends.insight.high': '生產力很棒！您正在完成大部分任務。',
     'dashboard.trends.insight.medium': '進度良好！考慮專注於任務完成。',
     'dashboard.trends.insight.low': '您建立的任務比完成的多。試著專注於完成現有任務。',
+
+    // 時間範圍翻譯
+    'timeRange.7days': '7天',
+    'timeRange.30days': '30天',
+    'timeRange.thisMonth': '本月',
+
+    'button.refresh': '重新整理',
+    'toast.error': '錯誤',
+    'toast.warning': '警告',
+    'toast.success': '成功',
+    'error.loadStats': '無法載入統計資料',
+    'error.advancedStats': '無法載入進階統計資料。顯示基本資料。',
   },
 };
 
