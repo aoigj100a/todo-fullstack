@@ -34,6 +34,7 @@ export function TodoCard({
   isFocused = false,
 }: TodoCardProps) {
   const { t } = useLanguage();
+
   const [isHovered, setIsHovered] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
@@ -94,16 +95,18 @@ export function TodoCard({
           <TodoStatusIcon status={status} isUpdating={isUpdating} />
         </div>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between mb-1">
-            <h3 className="text-base font-semibold">{title}</h3>
-            <Badge className={`${statusColor[status]} ml-2`}>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-1">
+            <h3 className="text-base font-semibold line-clamp-2">{title}</h3>
+            <Badge
+              className={`${statusColor[status]} hidden flex-shrink-0 self-start sm:self-center sm:block`}
+            >
               {t(statusTranslationKeys[status])}
             </Badge>
           </div>
           {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 flex-shrink-0">
           <Button variant="ghost" size="icon" onClick={onEdit}>
             <Pencil className="h-4 w-4" />
           </Button>
