@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+
 import { useSearchParams, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Plus } from 'lucide-react';
+import { DndContext, DragEndEvent, DragOverEvent } from '@dnd-kit/core';
 
 import { TodosLoadingState } from '@/components/features/todos/TodosLoadingState';
 import { TodoCard } from '@/components/features/todos/TodoCard';
@@ -248,6 +250,25 @@ function TodosPage() {
     },
     [filteredTodos, focusedTodoIndex, handleStatusChange, t, keyboardMode],
   );
+
+  // 在 TodosPage 中添加拖曳處理函數
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    const todoId = active.id as string;
+    const newStatus = over.id as 'pending' | 'in-progress' | 'completed';
+
+    try {
+      // 修正：使用正確的 toggleTodoStatus 方法，並調用 handleStatusChange
+      await todoService.toggleTodoStatus(todoId, newStatus as TodoStatus);
+      handleStatusChange();
+      toast.success(t('toast.statusUpdated'));
+    } catch (error) {
+      toast.error(t('toast.error.update'));
+    }
+  };
 
   // 設置鍵盤事件監聽器
   useEffect(() => {
