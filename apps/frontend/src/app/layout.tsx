@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ClientProviders>
           <Navbar />
-          <main className="min-h-screen bg-gray-50">{children}</main>
+          <main className="min-h-screen bg-gray-5 main-content">{children}</main>
           <BottomNavigation />
           <Toaster />
         </ClientProviders>
