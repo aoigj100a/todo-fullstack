@@ -383,25 +383,33 @@ function TodosPage() {
                         key={todo._id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05, duration: 0.2 }}
+                        transition={{ delay: index * 0.05, duration: 0.3 }}
+                        className={`
+          ${keyboardMode && focusedTodoIndex === index ? 'ring-2 ring-blue-500' : ''}
+          transition-all duration-200
+        `}
                       >
                         <TodoCard
                           {...todo}
                           onDelete={() => handleDelete(todo._id)}
                           onEdit={() => handleEdit(todo)}
                           onStatusChange={handleStatusChange}
-                          isFocused={focusedTodoIndex === index}
+                          data-todo-id={todo._id}
                         />
                       </motion.div>
                     ))}
                   </div>
                 ) : (
-                  <TodosBoardView
-                    todos={filteredTodos}
-                    onDelete={handleDelete}
-                    onEdit={handleEdit}
-                    onStatusChange={handleStatusChange}
-                  />
+                  // 僅在 Board 視圖中啟用拖曳功能
+                  <DndContext onDragEnd={handleDragEnd}>
+                    <TodosBoardView
+                      todos={filteredTodos}
+                      onDelete={(id) => handleDelete(id)}
+                      onEdit={handleEdit}
+                      onStatusChange={handleStatusChange}
+                      onDragEnd={handleDragEnd}
+                    />
+                  </DndContext>
                 )}
               </motion.div>
             </AnimatePresence>
