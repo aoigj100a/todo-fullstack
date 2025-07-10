@@ -6,6 +6,7 @@ import { Toaster } from 'sonner';
 import ClientProviders from '@/components/ClientProviders';
 import { Navbar } from '@/components/layout/Navbar';
 import './globals.css';
+import { BottomNavigation } from '@/components/layout/BottomNavigation';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
         <ClientProviders>
           <Navbar />
           <main className="min-h-screen bg-gray-50">{children}</main>
+          <BottomNavigation />
           <Toaster />
         </ClientProviders>
       </body>
