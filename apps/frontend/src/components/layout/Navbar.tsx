@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LayoutDashboard, CheckSquare, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { authService } from '@/service/auth';
 import { LanguageSwitcher } from '../shared/LanguageSwitcher';
 import { useAuth } from '@/contexts/AuthContext';
 

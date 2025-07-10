@@ -82,13 +82,18 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* 為底部導航留出空間 */
+@media (max-width: 768px) {
+  .main-content {
+    padding-bottom: 80px;
   }
 }
