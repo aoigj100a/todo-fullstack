@@ -1,4 +1,4 @@
-// apps/frontend/src/components/todos/TodoCard.tsx
+// apps/frontend/src/components/features/todos/TodoCard.tsx
 import { useState } from 'react';
 import { Trash2, Pencil } from 'lucide-react';
 import { toast } from 'sonner';
@@ -21,6 +21,7 @@ interface TodoCardProps {
   onEdit: () => void;
   onStatusChange: () => void;
   isFocused?: boolean;
+  isDragging?: boolean; // 新增拖曳狀態
 }
 
 export function TodoCard({
@@ -32,9 +33,9 @@ export function TodoCard({
   onEdit,
   onStatusChange,
   isFocused = false,
+  isDragging = false,
 }: TodoCardProps) {
   const { t } = useLanguage();
-
   const [isHovered, setIsHovered] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
@@ -55,14 +56,14 @@ export function TodoCard({
 
   // 處理點擊狀態圖標的事件
   const handleStatusToggle = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // 阻止事件冒泡
-    if (isUpdating) return;
+    e.stopPropagation();
+    if (isUpdating || isDragging) return; // 拖曳時不處理點擊
 
     setIsUpdating(true);
     try {
       await todoService.toggleTodoStatus(_id, status);
       toast.success(t('toast.statusUpdated'));
-      onStatusChange(); // 通知父組件狀態已更新
+      onStatusChange();
     } catch (error) {
       toast.error(t('toast.error.update'));
     } finally {
@@ -71,9 +72,11 @@ export function TodoCard({
   };
 
   const handleClick = (e: React.MouseEvent) => {
+    if (isDragging) return; // 拖曳時不處理點擊
+
     const target = e.target as HTMLElement;
     if (target.closest('button')) {
-      e.stopPropagation(); // 阻止事件冒泡
+      e.stopPropagation();
       return;
     }
     router.push(`/todos/${_id}`);
@@ -82,31 +85,33 @@ export function TodoCard({
   return (
     <Card
       className={`group relative overflow-hidden transition-all duration-200 
-      hover:shadow-md cursor-pointer
-      ${isFocused ? 'ring-2 ring-teal-500 ring-offset-2' : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
+      hover:shadow-md ${isDragging ? '' : 'cursor-pointer'}
+      ${isFocused ? 'ring-2 ring-teal-500 ring-offset-2' : ''}
+      ${isDragging ? 'shadow-lg' : ''}`}
+      onMouseEnter={() => !isDragging && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
       tabIndex={isFocused ? 0 : -1}
       data-todo-id={_id}
     >
       <div className="flex items-center gap-4 p-4">
-        <div onClick={handleStatusToggle} className="cursor-pointer">
+        <div
+          onClick={handleStatusToggle}
+          className={isDragging ? 'pointer-events-none' : 'cursor-pointer'}
+        >
           <TodoStatusIcon status={status} isUpdating={isUpdating} />
         </div>
         <div className="min-w-0 flex-1">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-1">
-            <h3 className="text-base font-semibold line-clamp-2">{title}</h3>
-            <Badge
-              className={`${statusColor[status]} hidden flex-shrink-0 self-start sm:self-center sm:block`}
-            >
+          <div className="flex items-center justify-between mb-1">
+            <h3 className="text-base font-semibold">{title}</h3>
+            <Badge className={`${statusColor[status]} ml-2`}>
               {t(statusTranslationKeys[status])}
             </Badge>
           </div>
           {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 flex-shrink-0">
+        <div className={`flex items-center gap-2 ${isDragging ? 'pointer-events-none' : ''}`}>
           <Button variant="ghost" size="icon" onClick={onEdit}>
             <Pencil className="h-4 w-4" />
           </Button>
