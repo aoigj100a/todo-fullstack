@@ -6,7 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Plus } from 'lucide-react';
-import { DndContext, DragEndEvent, DragOverEvent } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 
 import { TodosLoadingState } from '@/components/features/todos/TodosLoadingState';
 import { TodoCard } from '@/components/features/todos/TodoCard';
@@ -38,6 +38,7 @@ function TodosPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [focusedTodoIndex, setFocusedTodoIndex] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   // 添加對鍵盤焦點的追蹤
   const [keyboardMode, setKeyboardMode] = useState(false);
@@ -255,19 +256,51 @@ function TodosPage() {
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
 
+    console.log('Drag end event:', {
+      activeId: active.id,
+      overId: over?.id,
+      currentTodos: filteredTodos.map((t) => ({ id: t._id, status: t.status })),
+    });
+
     if (!over) return;
 
     const todoId = active.id as string;
-    const newStatus = over.id as 'pending' | 'in-progress' | 'completed';
+    const newStatus = over.id as TodoStatus;
+
+    // 獲取當前 todo 的狀態
+    const currentTodo = filteredTodos.find((todo) => todo._id === todoId);
+    if (!currentTodo) return;
+
+    // 如果狀態沒有改變，不需要更新
+    if (currentTodo.status === newStatus) return;
 
     try {
-      // 修正：使用正確的 toggleTodoStatus 方法，並調用 handleStatusChange
-      await todoService.toggleTodoStatus(todoId, newStatus as TodoStatus);
-      handleStatusChange();
+      // 樂觀更新 - 立即更新 UI
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) => (todo._id === todoId ? { ...todo, status: newStatus } : todo)),
+      );
+
+      // 調用新的 setTodoStatus 方法
+      await todoService.setTodoStatus(todoId, newStatus);
       toast.success(t('toast.statusUpdated'));
     } catch (error) {
+      // 失敗時回滾到原始狀態
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo._id === todoId ? { ...todo, status: currentTodo.status } : todo,
+        ),
+      );
       toast.error(t('toast.error.update'));
     }
+
+    setIsDragging(false);
+  };
+
+  const handleDragStart = (e: DragStartEvent) => {
+    setIsDragging(true);
+  };
+  const handleDragCancel = () => {
+    setIsDragging(false);
   };
 
   // 設置鍵盤事件監聽器
@@ -401,13 +434,16 @@ function TodosPage() {
                   </div>
                 ) : (
                   // 僅在 Board 視圖中啟用拖曳功能
-                  <DndContext onDragEnd={handleDragEnd}>
+                  <DndContext
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    onDragCancel={handleDragCancel}
+                  >
                     <TodosBoardView
                       todos={filteredTodos}
                       onDelete={(id) => handleDelete(id)}
                       onEdit={handleEdit}
                       onStatusChange={handleStatusChange}
-                      onDragEnd={handleDragEnd}
                     />
                   </DndContext>
                 )}
