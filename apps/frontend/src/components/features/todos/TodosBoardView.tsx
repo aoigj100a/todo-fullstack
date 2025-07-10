@@ -78,7 +78,8 @@ export function TodosBoardView({ todos, onDelete, onEdit, onStatusChange }: Todo
     completed: todos.filter((todo) => todo.status === 'completed'),
   };
 
-  // 定義每個狀態欄的顏色和標題
+  // 定義每個狀態欄的顏色和標題 確認與 TodoStatus 的 'completed' 匹配
+
   const columns = [
     {
       id: 'pending',

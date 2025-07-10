@@ -87,4 +87,7 @@ export const todoService = {
       throw error;
     }
   },
+  setTodoStatus: async (id: string, status: TodoStatus) => {
+    return todoService.updateTodo(id, { status });
+  },
 };
