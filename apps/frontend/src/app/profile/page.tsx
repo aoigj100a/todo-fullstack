@@ -180,26 +180,32 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="container max-w-3xl mx-auto py-8 px-4">
-      <div className="mb-6 flex items-center">
+    <div className="container max-w-4xl mx-auto py-8 px-4">
+      <div className="mb-6 flex items-center flex-wrap">
         <Button asChild variant="ghost" className="mr-4">
           <a href="/todos">
             <ArrowLeft className="mr-2 h-4 w-4" />
             返回
           </a>
         </Button>
-        <h1 className="text-2xl font-bold flex items-center">
-          <UserCog className="mr-2 h-6 w-6 text-teal-500" />
+        <h1 className="text-2xl font-bold flex items-center flex-wrap">
+          <UserCog className="mr-2 h-6 w-6 text-teal-500 flex-shrink-0" />
           用戶設定
         </h1>
       </div>
 
       <Tabs defaultValue="account" className="space-y-6">
-        <TabsList className="w-full grid grid-cols-2">
-          <TabsTrigger value="account" className="text-base py-3">
+        <TabsList className="w-full grid grid-cols-2 h-12 bg-muted rounded-lg">
+          <TabsTrigger
+            value="account"
+            className="text-base py-2 px-2 rounded-md text-muted-foreground hover:text-foreground data-[state=active]:bg-background data-[state=active]:text-foreground transition-all"
+          >
             個人資料
           </TabsTrigger>
-          <TabsTrigger value="security" className="text-base py-3">
+          <TabsTrigger
+            value="security"
+            className="text-base py-2 px-2 rounded-md text-muted-foreground hover:text-foreground data-[state=active]:bg-background data-[state=active]:text-foreground transition-all"
+          >
             安全設定
           </TabsTrigger>
         </TabsList>
@@ -207,7 +213,7 @@ export default function ProfilePage() {
         <TabsContent value="account">
           <Card className="shadow-md">
             <CardHeader>
-              <CardTitle className="text-xl flex items-center">
+              <CardTitle className="text-xl flex items-center flex-wrap">
                 <User className="mr-2 h-5 w-5 text-teal-500" />
                 個人資料
               </CardTitle>
@@ -271,7 +277,7 @@ export default function ProfilePage() {
         </TabsContent>
 
         <TabsContent value="security">
-          <div className="space-y-6">
+          <div className="space-y-6 max-w-none">
             <Card className="shadow-md">
               <CardHeader>
                 <CardTitle className="text-xl flex items-center">
@@ -363,10 +369,12 @@ export default function ProfilePage() {
             <Card className="shadow-md border-red-100">
               <CardHeader>
                 <CardTitle className="text-xl text-red-600 flex items-center">
-                  <AlertTriangle className="mr-2 h-5 w-5 text-red-600" />
-                  危險操作區域
+                  <AlertTriangle className="mr-2 h-5 w-5 text-red-600 flex-shrink-0" />
+                  <span className="break-words">危險操作區域</span>
                 </CardTitle>
-                <CardDescription>此區域的操作可能會導致不可挽回的資料丟失</CardDescription>
+                <CardDescription className="break-words">
+                  此區域的操作可能會導致不可挽回的資料丟失
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {!showDeleteConfirm ? (
