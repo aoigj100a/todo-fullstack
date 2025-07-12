@@ -38,13 +38,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const token = authService.getToken();
     if (!token) return false;
 
-    // TODO: 在此添加 token 過期檢查邏輯
-    // 如果後端實現了 token 過期時間，可以在這裡解析 JWT 並檢查有效期
-
     return true;
   };
 
-  // 檢查用戶是否已登入
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -53,10 +49,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         if (isValidToken && storedUser) {
           setUser(storedUser);
-        } else if (!publicRoutes.includes(pathname || '') && !isLoading) {
-          // Only redirect if we're sure auth has failed and the page isn't public
+        } else {
+          // 清除無效的認證資料
           authService.logout();
-          router.push('/login');
+
+          // 只有在非公開路由時才重定向
+          if (!publicRoutes.includes(pathname || '')) {
+            toast({
+              title: '需要登入',
+              description: '請先登入以訪問此頁面',
+              variant: 'destructive',
+            });
+            router.push('/login');
+          }
         }
       } catch (error) {
         console.error('Failed to check authentication status', error);
@@ -67,30 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     checkAuth();
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!isLoading && !user && pathname && !publicRoutes.includes(pathname)) {
-      toast({
-        title: '需要登入',
-        description: '請先登入以訪問此頁面',
-        variant: 'destructive',
-      });
-      router.push('/login');
-    }
-  }, [isLoading, user, pathname, router, toast]);
-
-  // 路由保護 - 如果用戶未登入且訪問需要身份驗證的頁面，則重定向到登入頁
-  useEffect(() => {
-    if (!isLoading && !user && pathname && !publicRoutes.includes(pathname)) {
-      toast({
-        title: '需要登入',
-        description: '請先登入以訪問此頁面',
-        variant: 'destructive',
-      });
-      router.push('/login');
-    }
-  }, [isLoading, user, pathname, router, toast]);
+  }, [pathname, router, toast]); // 移除 isLoading 依賴以避免循環
 
   // 登入方法
   const login = async (email: string, password: string, remember = false) => {
@@ -99,10 +81,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const loginInput: LoginInput = { email, password };
       const response = await authService.login(loginInput);
 
+      // 先設置用戶狀態
+      setUser(response.user);
+
       // 儲存 token 和用戶資訊
       authService.setToken(response.token, remember);
       authService.setUser(response.user);
-      setUser(response.user);
 
       toast({
         title: '登入成功',
