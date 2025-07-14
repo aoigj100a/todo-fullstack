@@ -5,6 +5,7 @@ import { X, Minus, Check, Loader2 } from 'lucide-react';
 interface TodoStatusIconProps {
   status: 'pending' | 'in-progress' | 'completed';
   isUpdating?: boolean; // 添加更新中狀態
+  disabled?: boolean;
 }
 
 const TodoStatusIcon: React.FC<TodoStatusIconProps> = ({ status, isUpdating = false }) => {
