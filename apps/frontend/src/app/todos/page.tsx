@@ -9,12 +9,13 @@ import { Plus } from 'lucide-react';
 import { DndContext, DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 
 import { TodosLoadingState } from '@/components/features/todos/TodosLoadingState';
-import { TodoCard } from '@/components/features/todos/TodoCard';
+import { TodoCardList } from '@/components/features/todos/TodoCardList';
+import { TodosBoardView } from '@/components/features/todos/TodosBoardView';
+
 import { CreateTodoDialog } from '@/components/features/todos/CreateTodoDialog';
 import { EditTodoDialog } from '@/components/features/todos/EditTodoDialog';
 import { TodosFilterBar } from '@/components/features/todos/TodosFilterBar';
 import { TodosStatusFilter } from '@/components/features/todos/TodosStatusFilter';
-import { TodosBoardView } from '@/components/features/todos/TodosBoardView';
 import { TodosEmptyState } from '@/components/features/todos/TodosEmptyState';
 import { FadePresence } from '@/components/ui/nimated-presence';
 import { TodosHelpInfo } from '@/components/features/todos/TodosHelpInfo';
@@ -418,16 +419,16 @@ function TodosPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05, duration: 0.3 }}
                         className={`
-          ${keyboardMode && focusedTodoIndex === index ? 'ring-2 ring-blue-500' : ''}
-          transition-all duration-200
-        `}
+                        ${keyboardMode && focusedTodoIndex === index ? 'ring-2 ring-blue-500' : ''}
+                        transition-all duration-200
+                      `}
                       >
-                        <TodoCard
-                          {...todo}
+                        <TodoCardList
+                          todo={todo}
                           onDelete={() => handleDelete(todo._id)}
                           onEdit={() => handleEdit(todo)}
                           onStatusChange={handleStatusChange}
-                          data-todo-id={todo._id}
+                          isFocused={keyboardMode && focusedTodoIndex === index}
                         />
                       </motion.div>
                     ))}
