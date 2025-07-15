@@ -1,8 +1,9 @@
-// components/features/todos/TodosBoardView.tsx
+// apps/frontend/src/components/features/todos/TodosBoardView.tsx
 import { motion } from 'framer-motion';
-import { useDroppable } from '@dnd-kit/core';
+import { useDraggable, useDroppable } from '@dnd-kit/core';
+
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { TodoCardBoard } from './TodoCardBoard';
+import { TodoCard } from '@/components/features/todos/TodoCard';
 import { Todo } from '@/types/todo';
 
 interface TodosBoardViewProps {
@@ -12,6 +13,7 @@ interface TodosBoardViewProps {
   onStatusChange: () => void;
 }
 
+// 可拖放區域組件
 const DroppableColumn = ({ children, id }: { children: React.ReactNode; id: string }) => {
   const { setNodeRef, isOver } = useDroppable({ id });
 
@@ -27,13 +29,76 @@ const DroppableColumn = ({ children, id }: { children: React.ReactNode; id: stri
   );
 };
 
+// 可拖曳的 TodoCard 包裝器 - 簡單有效方案
+const DraggableTodoCard = ({
+  todo,
+  onDelete,
+  onEdit,
+  onStatusChange,
+}: {
+  todo: Todo;
+  onDelete: () => void;
+  onEdit: () => void;
+  onStatusChange: () => void;
+}) => {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: todo._id,
+  });
+
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : undefined;
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      className={`transition-all duration-200 select-none relative ${
+        isDragging ? 'opacity-50 z-50 cursor-grabbing' : 'cursor-grab'
+      }`}
+    >
+      <TodoCard
+        {...todo}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        onStatusChange={onStatusChange}
+        isDragging={isDragging}
+        variant="compact"
+      />
+
+      {/* 專門的拖曳區域 - 只覆蓋中間的內容區域 */}
+      <div
+        {...listeners}
+        className={`absolute top-0 left-12 right-20 bottom-0 z-10 ${
+          isDragging ? 'cursor-grabbing' : 'cursor-grab'
+        }`}
+        title="拖曳此區域移動任務"
+      />
+
+      {/* 拖曳提示 - 顯示可拖曳區域 */}
+      {!isDragging && (
+        <div className="absolute left-12 right-20 top-1/2 transform -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-20 transition-opacity">
+          <div className="border-2 border-dashed border-blue-400 rounded h-8 flex items-center justify-center">
+            <span className="text-xs text-blue-600 font-medium">拖曳區域</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export function TodosBoardView({ todos, onDelete, onEdit, onStatusChange }: TodosBoardViewProps) {
+  // 按狀態分組 todos
   const todosByStatus = {
     pending: todos.filter((todo) => todo.status === 'pending'),
     'in-progress': todos.filter((todo) => todo.status === 'in-progress'),
     completed: todos.filter((todo) => todo.status === 'completed'),
   };
 
+  // 定義每個狀態欄的顏色和標題
   const columns = [
     {
       id: 'pending',
@@ -82,15 +147,36 @@ export function TodosBoardView({ todos, onDelete, onEdit, onStatusChange }: Todo
             <CardContent className="px-2 pb-2 max-h-[calc(100vh-220px)] overflow-y-auto">
               <DroppableColumn id={column.id}>
                 <div className="space-y-2">
-                  {todosByStatus[column.id as keyof typeof todosByStatus].map((todo) => (
-                    <TodoCardBoard
-                      key={todo._id}
-                      todo={todo}
-                      onDelete={() => onDelete(todo._id)}
-                      onEdit={() => onEdit(todo)}
-                      onStatusChange={onStatusChange}
-                    />
-                  ))}
+                  {todosByStatus[column.id as keyof typeof todosByStatus].length > 0 ? (
+                    todosByStatus[column.id as keyof typeof todosByStatus].map((todo, index) => (
+                      <motion.div
+                        key={todo._id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          delay: 0.1 + index * 0.05,
+                          duration: 0.2,
+                        }}
+                        className="group"
+                      >
+                        <DraggableTodoCard
+                          todo={todo}
+                          onDelete={() => onDelete(todo._id)}
+                          onEdit={() => onEdit(todo)}
+                          onStatusChange={onStatusChange}
+                        />
+                      </motion.div>
+                    ))
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3, duration: 0.3 }}
+                      className="text-center p-4 border border-dashed rounded-lg bg-white/50"
+                    >
+                      No tasks in this status
+                    </motion.div>
+                  )}
                 </div>
               </DroppableColumn>
             </CardContent>
