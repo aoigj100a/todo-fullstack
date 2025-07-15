@@ -43,7 +43,6 @@ export const useTodoCard = ({
   const handleStatusToggle = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isUpdating || isDragging) return;
-
     setIsUpdating(true);
     try {
       await todoService.toggleTodoStatus(_id, status);
