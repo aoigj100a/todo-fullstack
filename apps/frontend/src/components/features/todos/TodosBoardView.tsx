@@ -13,15 +13,15 @@ interface TodosBoardViewProps {
   onStatusChange: () => void;
 }
 
-// 可拖放區域組件
+// 可拖放區域組件 - 無虛線版本
 const DroppableColumn = ({ children, id }: { children: React.ReactNode; id: string }) => {
   const { setNodeRef, isOver } = useDroppable({ id });
 
   return (
     <div
       ref={setNodeRef}
-      className={`min-h-[200px] transition-colors duration-200 ${
-        isOver ? 'bg-blue-50 border-2 border-blue-300 border-dashed' : ''
+      className={`min-h-[200px] transition-colors duration-200 rounded-lg ${
+        isOver ? 'bg-blue-50' : ''
       }`}
     >
       {children}
@@ -29,7 +29,7 @@ const DroppableColumn = ({ children, id }: { children: React.ReactNode; id: stri
   );
 };
 
-// 可拖曳的 TodoCard 包裝器 - 簡單有效方案
+// 可拖曳的 TodoCard 包裝器 - 保持原有的手指游標
 const DraggableTodoCard = ({
   todo,
   onDelete,
@@ -69,7 +69,7 @@ const DraggableTodoCard = ({
         variant="compact"
       />
 
-      {/* 專門的拖曳區域 - 只覆蓋中間的內容區域 */}
+      {/* 專門的拖曳區域 - 保持手指游標 */}
       <div
         {...listeners}
         className={`absolute top-0 left-12 right-20 bottom-0 z-10 ${
@@ -77,19 +77,11 @@ const DraggableTodoCard = ({
         }`}
         title="拖曳此區域移動任務"
       />
-
-      {/* 拖曳提示 - 顯示可拖曳區域 */}
-      {!isDragging && (
-        <div className="absolute left-12 right-20 top-1/2 transform -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-20 transition-opacity">
-          <div className="border-2 border-dashed border-blue-400 rounded h-8 flex items-center justify-center">
-            <span className="text-xs text-blue-600 font-medium">拖曳區域</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
+// 保持其餘的程式碼不變...
 export function TodosBoardView({ todos, onDelete, onEdit, onStatusChange }: TodosBoardViewProps) {
   // 按狀態分組 todos
   const todosByStatus = {
