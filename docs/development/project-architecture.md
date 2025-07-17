@@ -129,12 +129,14 @@ todo-fullstack/
 本專案使用基於 JWT 的身份驗證機制：
 
 1. **登入流程**:
+
    - 用戶提交登入表單（email/password）
    - 後端驗證憑證並生成 JWT
    - 返回 token 和用戶資訊
    - 前端儲存 token 到 localStorage
 
 2. **請求授權**:
+
    - 前端在 API 請求中加入 Authorization 標頭
    - 後端中間件驗證 token 的有效性
    - 驗證成功後處理請求，失敗則返回 401 錯誤
@@ -199,13 +201,13 @@ DELETE /api/todos/:id   - 刪除特定待辦事項
 ### 8.1 前端環境變數
 
 ```
-NEXT_PUBLIC_API_URL=http://localhost:5001/api
+NEXT_PUBLIC_API_URL=http://localhost:4000/api
 ```
 
 ### 8.2 後端環境變數
 
 ```
-PORT=5001
+PORT=4000
 MONGO_URI=mongodb://localhost:27017/todo-app
 JWT_SECRET=your-secret-key
 ```
