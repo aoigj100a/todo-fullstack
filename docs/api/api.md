@@ -620,7 +620,7 @@ app.use(
 ```javascript
 // 登入並獲取 token
 async function login() {
-  const response = await fetch('http://localhost:5001/api/auth/login', {
+  const response = await fetch('http://localhost:4000/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -637,7 +637,7 @@ async function login() {
 
 // 獲取所有待辦事項
 async function getTodos(token) {
-  const response = await fetch('http://localhost:5001/api/todos', {
+  const response = await fetch('http://localhost:4000/api/todos', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -668,7 +668,7 @@ async function getTodos(token) {
 
    - `MONGO_URI`: MongoDB 連接字串
    - `JWT_SECRET`: JWT 簽名密鑰
-   - `PORT`: 伺服器端口 (預設 5001)
+   - `PORT`: 伺服器端口 (預設 4000)
    - `FRONTEND_URL`: 前端 URL (CORS 用途)
 
 4. **開發模式**: 當環境變數 `NODE_ENV` 設為 `development` 時，系統會提供更詳細的日誌和錯誤信息。
