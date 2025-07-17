@@ -88,7 +88,7 @@ export function TodoCard({
         <div
           onClick={handleStatusToggle}
           className={`status-icon transition-colors relative z-50 flex-shrink-0 ${
-            isDragging ? 'pointer-events-none' : 'cursor-pointer hover:bg-gray-100 rounded-full p-1'
+            isDragging ? 'pointer-events-none' : 'cursor-pointer p-1'
           }`}
         >
           <TodoStatusIcon status={status} isUpdating={isUpdating} />
