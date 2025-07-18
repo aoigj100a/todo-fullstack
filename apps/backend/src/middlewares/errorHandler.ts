@@ -1,4 +1,5 @@
 // src/middleware/errorHandler.ts
+import { AppError } from '@/utils/errors';
 import { Request, Response, NextFunction } from 'express';
 
 const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +10,7 @@ const errorHandler = (err: Error, req: Request, res: Response, next: NextFunctio
 
   // Handle AppError instances
   if (err instanceof AppError) {
-    statusCode = err.statusCode;
+    statusCode = err.status;
     message = err.message;
   }
   // Only show stack traces in development
