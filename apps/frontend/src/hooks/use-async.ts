@@ -8,15 +8,11 @@ interface State<D> {
   status: 'idle' | 'loading' | 'error' | 'success';
 }
 
-const defaultInitialState: State<null> = {
-  data: null,
-  error: null,
-  status: 'idle',
-};
-
 export function useAsync<D = any>(initialState?: State<D>) {
   const [state, setState] = useState<State<D>>({
-    ...defaultInitialState,
+    data: null,
+    error: null,
+    status: 'idle',
     ...initialState,
   });
   const { toast } = useToast();
@@ -46,7 +42,15 @@ export function useAsync<D = any>(initialState?: State<D>) {
     [toast],
   );
 
-  const reset = useCallback(() => setState(defaultInitialState), []);
+  const reset = useCallback(
+    () =>
+      setState({
+        data: null,
+        error: null,
+        status: 'idle',
+      }),
+    [],
+  );
 
   const run = useCallback(
     async (promise: Promise<D>) => {
