@@ -4,10 +4,25 @@
 import { Language } from '@/types/ui';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+// 定義 LanguageContextType
+type LanguageContextType = {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string, vars?: Record<string, string | number>) => string;
+};
+
+interface TranslationsObject {
+  [key: string]: string;
+}
+
+interface TranslationsType {
+  [language: string]: TranslationsObject;
+}
+
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 // 定義翻譯內容
-const translations = {
+const translations: TranslationsType = {
   en: {
     'hero.title': "Easily Manage Everyone's Tasks",
     'hero.subtitle':
@@ -313,7 +328,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   // 翻譯函數
-  const t = (key: string): string => {
+  const t = (key: string, vars?: Record<string, string | number>): string => {
     const text = translations[language][key];
     if (text) {
       // 處理變數替換，如 {year}
