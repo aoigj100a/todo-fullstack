@@ -46,7 +46,7 @@ export default function Home() {
                 {/* Stylized Todo List UI Example */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm">
-                    <div className="bg-teal-100 text-teal-700 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                    <div className="h-5 w-5 rounded-full bg-teal-100 flex items-center justify-center text-teal-700">
                       <CheckCircle className="h-4 w-4" />
                     </div>
                     <span className="font-medium">Complete homepage design</span>
