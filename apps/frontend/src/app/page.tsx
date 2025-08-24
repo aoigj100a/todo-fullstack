@@ -49,21 +49,21 @@ export default function Home() {
                     <div className="h-5 w-5 rounded-full bg-teal-100 flex items-center justify-center text-teal-700">
                       <CheckCircle className="h-4 w-4" />
                     </div>
-                    <span className="font-medium">Complete homepage design</span>
+                    <span className="font-medium">{t('hero.taskComplete')}</span>
                   </div>
 
                   <div className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm">
                     <div className="h-5 w-5 rounded-full bg-blue-500 flex items-center justify-center text-white">
                       <Clock className="h-4 w-4" />
                     </div>
-                    <span className="font-medium">Implement user authentication</span>
+                    <span className="font-medium">{t('hero.taskInProgress')}</span>
                   </div>
 
                   <div className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm">
                     <div className="h-5 w-5 rounded-full bg-yellow-400 flex items-center justify-center text-white">
                       <List className="h-4 w-4" />
                     </div>
-                    <span className="font-medium">Design dashboard UI components</span>
+                    <span className="font-medium">{t('hero.taskPending')}</span>
                   </div>
                 </div>
               </div>

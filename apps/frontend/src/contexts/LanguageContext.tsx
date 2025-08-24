@@ -27,9 +27,13 @@ const translations: TranslationsType = {
     'hero.title': "Easily Manage Everyone's Tasks",
     'hero.subtitle':
       'A simple, intuitive task management app that helps you stay organized and productive.',
+    'hero.taskComplete': 'Complete landing page design',
+    'hero.taskInProgress': 'Implement user authentication',
+    'hero.taskPending': 'Design dashboard UI components',
     'login.title': 'Quick Login',
     'login.button': 'Get Started',
     'login.demo': 'Using demo account: demo@example.com / demo1234',
+
     'button.createAccount': 'Create Account',
     'features.title': 'Key Features',
     'features.taskManagement': 'Task Management',
@@ -168,6 +172,9 @@ const translations: TranslationsType = {
   'zh-TW': {
     'hero.title': '輕鬆地管理大家的任務',
     'hero.subtitle': '簡單直覺的任務管理應用程式，幫助您保持組織和高效率。',
+    'hero.taskComplete': '完成 landing page 設計',
+    'hero.taskInProgress': '實作使用者認證',
+    'hero.taskPending': '設計儀表板介面元件',
     'login.title': '快速登入',
     'login.button': '開始使用',
     'login.demo': '使用示範帳號: demo@example.com / demo1234',
