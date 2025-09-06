@@ -10,7 +10,6 @@
     "skipLibCheck": true, // 不會檢查引入的函式庫檔案
     "forceConsistentCasingInFileNames": true, //確保檔案的大小寫一致
     "moduleResolution": "node",
-    "ignoreDeprecations": "6.0",
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {

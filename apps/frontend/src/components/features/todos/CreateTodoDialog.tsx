@@ -32,6 +32,7 @@ interface CreateTodoDialogProps {
 
 export function CreateTodoDialog({
   onSuccess,
+  open: externalOpen,
   onOpenChange: externalOnOpenChange,
 }: CreateTodoDialogProps) {
   const { t } = useLanguage();

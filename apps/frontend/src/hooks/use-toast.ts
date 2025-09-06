@@ -3,7 +3,13 @@
 // Inspired by react-hot-toast library
 import * as React from 'react';
 
-import type { ToastActionElement, ToastProps } from '@/components/ui/toast';
+// Define toast types locally since we're using sonner
+type ToastActionElement = React.ReactElement;
+type ToastProps = {
+  variant?: 'default' | 'destructive';
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;

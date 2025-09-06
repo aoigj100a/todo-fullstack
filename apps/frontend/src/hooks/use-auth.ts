@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 
 import { authService } from '@/service/auth';
 import { useAsync } from './use-async';
-import { LoginInput, RegisterInput, User } from '@/types';
+import { LoginInput, RegisterInput, User, AuthResponse } from '@/types';
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
-  const { run, isLoading } = useAsync();
+  const { run, isLoading } = useAsync<AuthResponse>();
   const router = useRouter();
 
   useEffect(() => {

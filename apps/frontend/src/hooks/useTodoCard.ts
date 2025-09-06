@@ -9,11 +9,15 @@ export const useTodoCard = ({
   _id,
   status,
   onStatusChange,
+  onDelete,
+  onEdit,
   isDragging = false,
 }: {
   _id: string;
   status: 'pending' | 'in-progress' | 'completed';
   onStatusChange: () => void;
+  onDelete?: () => void;
+  onEdit?: () => void;
   isDragging?: boolean;
 }) => {
   const { t } = useLanguage();

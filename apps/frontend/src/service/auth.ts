@@ -1,5 +1,5 @@
 // src/services/auth.ts
-import { LoginInput, AuthResponse, RegisterInput } from '@/types';
+import { LoginInput, AuthResponse, RegisterInput, User } from '@/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
@@ -81,13 +81,13 @@ export const authService = {
     }
   },
 
-  setUser(user: Record<string, unknown>): void {
+  setUser(user: User): void {
     if (typeof window !== 'undefined') {
       localStorage.setItem('user', JSON.stringify(user));
     }
   },
 
-  getUser(): Record<string, unknown> | null {
+  getUser(): User | null {
     if (typeof window !== 'undefined') {
       const user = localStorage.getItem('user');
       return user ? JSON.parse(user) : null;
