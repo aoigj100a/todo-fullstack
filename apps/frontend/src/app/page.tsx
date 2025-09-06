@@ -1,7 +1,7 @@
 // apps/frontend/src/app/page.tsx
 'use client';
 
-import { CheckCircle, Clock, List, UserCircle } from 'lucide-react';
+import { CheckCircle, Clock, List } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';

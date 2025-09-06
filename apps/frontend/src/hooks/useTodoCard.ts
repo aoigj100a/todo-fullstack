@@ -8,15 +8,11 @@ import { todoService } from '@/service/todo';
 export const useTodoCard = ({
   _id,
   status,
-  onDelete,
-  onEdit,
   onStatusChange,
   isDragging = false,
 }: {
   _id: string;
   status: 'pending' | 'in-progress' | 'completed';
-  onDelete: () => void;
-  onEdit: () => void;
   onStatusChange: () => void;
   isDragging?: boolean;
 }) => {
@@ -48,7 +44,7 @@ export const useTodoCard = ({
       await todoService.toggleTodoStatus(_id, status);
       toast.success(t('toast.statusUpdated'));
       onStatusChange();
-    } catch (error) {
+    } catch (_) {
       toast.error(t('toast.error.update'));
     } finally {
       setIsUpdating(false);

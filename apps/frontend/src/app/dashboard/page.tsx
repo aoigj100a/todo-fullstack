@@ -30,19 +30,18 @@ export default function DashboardPage() {
   const { toast } = useToast();
 
   // 載入基本 Todos 數據
-  const loadTodos = async () => {
+  const loadTodos = useCallback(async () => {
     try {
       const data = await todoService.getTodos();
       setTodos(data);
-    } catch (error) {
-      console.error('Failed to load todos', error);
+    } catch (_) {
       toast({
         title: t('toast.error'),
         description: t('error.loadTodos'),
         variant: 'destructive',
       });
     }
-  };
+  }, [t, toast]);
 
   const timeRangeOptions = [
     { value: '7days' as TimeRange, label: t('timeRange.7days') },
@@ -51,22 +50,24 @@ export default function DashboardPage() {
   ];
 
   // 載入統計數據
-  const loadStatsData = async (timeRange: TimeRange = selectedTimeRange) => {
-    try {
-      setError(null);
-      const stats = await statsService.getStats(timeRange);
-      setStatsData(stats);
-    } catch (error) {
-      console.error('Failed to load stats data', error);
-      setError(t('error.loadStats'));
+  const loadStatsData = useCallback(
+    async (timeRange: TimeRange = selectedTimeRange) => {
+      try {
+        setError(null);
+        const stats = await statsService.getStats(timeRange);
+        setStatsData(stats);
+      } catch (_) {
+        setError(t('error.loadStats'));
 
-      toast({
-        title: t('toast.warning'),
-        description: t('error.advancedStats'),
-        variant: 'destructive',
-      });
-    }
-  };
+        toast({
+          title: t('toast.warning'),
+          description: t('error.advancedStats'),
+          variant: 'destructive',
+        });
+      }
+    },
+    [selectedTimeRange, t, toast]
+  );
 
   // 重新整理數據
   const refreshData = async () => {
@@ -78,7 +79,7 @@ export default function DashboardPage() {
         title: 'Success',
         description: 'Dashboard data refreshed',
       });
-    } catch (error) {
+    } catch (_) {
       toast({
         title: 'Error',
         description: 'Failed to refresh some data',
@@ -112,21 +113,21 @@ export default function DashboardPage() {
     };
 
     loadInitialData();
-  }, []);
+  }, [loadTodos, loadStatsData]);
 
   // 計算基本統計數據（從本地 todos 計算，作為後備）
   const basicStats = {
     all: todos.length,
-    pending: todos.filter((todo) => todo.status === 'pending').length,
-    inProgress: todos.filter((todo) => todo.status === 'in-progress').length,
-    completed: todos.filter((todo) => todo.status === 'completed').length,
+    pending: todos.filter(todo => todo.status === 'pending').length,
+    inProgress: todos.filter(todo => todo.status === 'in-progress').length,
+    completed: todos.filter(todo => todo.status === 'completed').length,
   };
 
   const completionRate =
     todos.length > 0 ? Math.round((basicStats.completed / todos.length) * 100) : 0;
 
   // 計算今日完成數量
-  const todayCompleted = todos.filter((todo) => {
+  const todayCompleted = todos.filter(todo => {
     if (!todo.completedAt) return false;
     const completedDate = new Date(todo.completedAt);
     const today = new Date();
@@ -148,7 +149,7 @@ export default function DashboardPage() {
   // 準備圖表數據
   const chartData = statsData?.timeSeries.completed
     ? {
-        labels: statsData.timeSeries.completed.map((item) => {
+        labels: statsData.timeSeries.completed.map(item => {
           const date = new Date(item.date);
           return date.toLocaleDateString('en-US', {
             month: 'short',
@@ -158,7 +159,7 @@ export default function DashboardPage() {
         datasets: [
           {
             label: 'Completed Tasks',
-            data: statsData.timeSeries.completed.map((item) => item.count),
+            data: statsData.timeSeries.completed.map(item => item.count),
             borderColor: 'rgb(20, 184, 166)',
             backgroundColor: 'rgba(20, 184, 166, 0.1)',
           },
@@ -187,7 +188,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2">
             {/* 時間範圍選擇器 */}
             <div className="flex bg-gray-100 rounded-lg p-1">
-              {timeRangeOptions.map((option) => (
+              {timeRangeOptions.map(option => (
                 <Button
                   key={option.value}
                   variant={selectedTimeRange === option.value ? 'default' : 'ghost'}
@@ -274,7 +275,7 @@ export default function DashboardPage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {todos.slice(0, 5).map((todo) => (
+                    {todos.slice(0, 5).map(todo => (
                       <div
                         key={todo._id}
                         className="flex items-center justify-between py-2 border-b border-gray-50 last:border-b-0"

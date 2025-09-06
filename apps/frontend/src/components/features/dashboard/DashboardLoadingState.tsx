@@ -120,11 +120,11 @@ export function DashboardLoadingState() {
                   <div key={i} className="flex flex-col items-center">
                     <div className="flex flex-col items-center w-full">
                       <Skeleton
-                        className={`w-7 rounded-t-md mb-1`}
+                        className={'w-7 rounded-t-md mb-1'}
                         style={{ height: `${Math.random() * 120 + 20}px` }}
                       />
                       <Skeleton
-                        className={`w-7 rounded-t-md`}
+                        className={'w-7 rounded-t-md'}
                         style={{ height: `${Math.random() * 120 + 20}px` }}
                       />
                     </div>

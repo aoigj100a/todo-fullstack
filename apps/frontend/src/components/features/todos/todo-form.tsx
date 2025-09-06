@@ -86,7 +86,7 @@ export default function TodoForm({ todo, onSubmit, onCancel }: TodoFormProps) {
             <Input
               id="title"
               value={formData.title}
-              onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
+              onChange={e => setFormData(prev => ({ ...prev, title: e.target.value }))}
               placeholder="Enter todo title"
               disabled={isSubmitting}
             />
@@ -97,7 +97,7 @@ export default function TodoForm({ todo, onSubmit, onCancel }: TodoFormProps) {
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
+              onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
               placeholder="Enter todo description (optional)"
               disabled={isSubmitting}
             />
@@ -107,7 +107,12 @@ export default function TodoForm({ todo, onSubmit, onCancel }: TodoFormProps) {
             <Label htmlFor="status">Status</Label>
             <Select
               value={formData.status}
-              onValueChange={(value) => setFormData((prev) => ({ ...prev, status: value as any }))}
+              onValueChange={value =>
+                setFormData(prev => ({
+                  ...prev,
+                  status: value as 'pending' | 'in-progress' | 'completed',
+                }))
+              }
               disabled={isSubmitting}
             >
               <SelectTrigger>

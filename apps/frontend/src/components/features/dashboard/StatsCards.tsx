@@ -14,7 +14,6 @@ interface StatsCardsProps {
 export function StatsCards({
   totalTasks,
   completedTasks,
-  pendingTasks,
   inProgressTasks,
   completionRate,
   todayCompleted,
@@ -67,7 +66,7 @@ export function StatsCards({
           <p className="text-xs text-muted-foreground">
             {t('dashboard.stats.inProgress.desc').replace(
               '{percentage}',
-              (Math.round((inProgressTasks / totalTasks) * 100) || 0).toString(),
+              (Math.round((inProgressTasks / totalTasks) * 100) || 0).toString()
             )}
           </p>
         </CardContent>

@@ -56,7 +56,7 @@ export default function EditTodoPage() {
           });
           router.push('/todos');
         }
-      } catch (error) {
+      } catch (_) {
         toast({
           title: 'Error',
           description: 'Failed to load todo',

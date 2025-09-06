@@ -33,7 +33,6 @@ export function TodoCard({
 }: TodoCardProps) {
   const {
     t,
-    isHovered,
     isUpdating,
     statusColor,
     statusTranslationKeys,

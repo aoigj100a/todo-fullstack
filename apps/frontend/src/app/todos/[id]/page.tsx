@@ -46,7 +46,7 @@ export default function TodoDetailPage() {
             variant: 'destructive',
           });
         }
-      } catch (error) {
+      } catch (_) {
         toast({
           title: 'Error',
           description: 'Failed to load todo details',

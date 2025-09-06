@@ -32,7 +32,6 @@ interface CreateTodoDialogProps {
 
 export function CreateTodoDialog({
   onSuccess,
-  open: externalOpen,
   onOpenChange: externalOnOpenChange,
 }: CreateTodoDialogProps) {
   const { t } = useLanguage();
@@ -110,7 +109,7 @@ export function CreateTodoDialog({
 
       handleOpenChange(false);
       onSuccess();
-    } catch (error) {
+    } catch (_) {
       toast({
         title: 'Error',
         description: t('toast.error.create'),
@@ -169,7 +168,7 @@ export function CreateTodoDialog({
                 id="title"
                 ref={titleInputRef}
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={e => setTitle(e.target.value)}
                 placeholder={t('form.titlePlaceholder')}
                 className="focus-visible:ring-teal-500"
               />
@@ -179,7 +178,7 @@ export function CreateTodoDialog({
               <Textarea
                 id="description"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={e => setDescription(e.target.value)}
                 placeholder={t('form.descriptionPlaceholder')}
                 className="focus-visible:ring-teal-500"
               />

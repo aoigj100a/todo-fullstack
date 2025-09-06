@@ -3,17 +3,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  User,
-  Lock,
-  Mail,
-  Save,
-  ArrowLeft,
-  Loader2,
-  UserCog,
-  LogOut,
-  AlertTriangle,
-} from 'lucide-react';
+import Link from 'next/link';
+import { User, Lock, Save, ArrowLeft, Loader2, UserCog, LogOut, AlertTriangle } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -78,7 +69,7 @@ export default function ProfilePage() {
 
     try {
       // 模擬 API 調用，實際應用需改為 API 請求
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // 更新用戶資料
       updateUser({
@@ -90,7 +81,7 @@ export default function ProfilePage() {
         title: '個人資料已更新',
         description: '您的個人資料已成功更新。',
       });
-    } catch (error) {
+    } catch (_) {
       toast({
         variant: 'destructive',
         title: '更新失敗',
@@ -127,7 +118,7 @@ export default function ProfilePage() {
 
     try {
       // 模擬 API 調用，實際應用需改為 API 請求
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       toast({
         title: '密碼已更新',
@@ -140,7 +131,7 @@ export default function ProfilePage() {
         newPassword: '',
         confirmPassword: '',
       });
-    } catch (error) {
+    } catch (_) {
       toast({
         variant: 'destructive',
         title: '更新失敗',
@@ -156,7 +147,7 @@ export default function ProfilePage() {
 
     try {
       // 模擬 API 調用
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
       toast({
         title: '帳號已刪除',
@@ -168,7 +159,7 @@ export default function ProfilePage() {
         logout();
         router.push('/');
       }, 2000);
-    } catch (error) {
+    } catch (_) {
       toast({
         variant: 'destructive',
         title: '刪除失敗',
@@ -183,10 +174,10 @@ export default function ProfilePage() {
     <div className="container max-w-4xl mx-auto py-8 px-4">
       <div className="mb-6 flex items-center flex-wrap">
         <Button asChild variant="ghost" className="mr-4">
-          <a href="/todos">
+          <Link href="/todos">
             <ArrowLeft className="mr-2 h-4 w-4" />
             返回
-          </a>
+          </Link>
         </Button>
         <h1 className="text-2xl font-bold flex items-center flex-wrap">
           <UserCog className="mr-2 h-6 w-6 text-teal-500 flex-shrink-0" />
@@ -229,9 +220,7 @@ export default function ProfilePage() {
                     id="name"
                     name="name"
                     value={accountFormData.name}
-                    onChange={(e) =>
-                      setAccountFormData((prev) => ({ ...prev, name: e.target.value }))
-                    }
+                    onChange={e => setAccountFormData(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="輸入您的名稱"
                     className="h-12 text-base"
                     required
@@ -246,9 +235,7 @@ export default function ProfilePage() {
                     name="email"
                     type="email"
                     value={accountFormData.email}
-                    onChange={(e) =>
-                      setAccountFormData((prev) => ({ ...prev, email: e.target.value }))
-                    }
+                    onChange={e => setAccountFormData(prev => ({ ...prev, email: e.target.value }))}
                     placeholder="輸入您的電子郵件"
                     className="h-12 text-base"
                     required
@@ -297,8 +284,8 @@ export default function ProfilePage() {
                       name="currentPassword"
                       type="password"
                       value={passwordFormData.currentPassword}
-                      onChange={(e) =>
-                        setPasswordFormData((prev) => ({
+                      onChange={e =>
+                        setPasswordFormData(prev => ({
                           ...prev,
                           currentPassword: e.target.value,
                         }))
@@ -317,8 +304,8 @@ export default function ProfilePage() {
                       name="newPassword"
                       type="password"
                       value={passwordFormData.newPassword}
-                      onChange={(e) =>
-                        setPasswordFormData((prev) => ({ ...prev, newPassword: e.target.value }))
+                      onChange={e =>
+                        setPasswordFormData(prev => ({ ...prev, newPassword: e.target.value }))
                       }
                       placeholder="輸入新密碼"
                       className="h-12 text-base"
@@ -334,8 +321,8 @@ export default function ProfilePage() {
                       name="confirmPassword"
                       type="password"
                       value={passwordFormData.confirmPassword}
-                      onChange={(e) =>
-                        setPasswordFormData((prev) => ({
+                      onChange={e =>
+                        setPasswordFormData(prev => ({
                           ...prev,
                           confirmPassword: e.target.value,
                         }))

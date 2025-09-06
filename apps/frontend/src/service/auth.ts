@@ -5,8 +5,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
 export const authService = {
   async login(input: LoginInput): Promise<AuthResponse> {
-    console.log(`Sending login request to ${API_URL}/auth/login`);
-
     try {
       const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
@@ -18,16 +16,15 @@ export const authService = {
         credentials: 'include',
       });
 
-      console.log(`Login response status: ${response.status}`);
-
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Login error response:', errorData);
         throw new Error(errorData.error || 'Failed to login');
       }
 
       const data = await response.json();
-      console.log('Login success response:', data);
+      
+      // eslint-disable-next-line no-console
+      console.log('Login successful:', data);
 
       // 確保返回格式一致
       return {
@@ -35,7 +32,6 @@ export const authService = {
         user: data.user,
       };
     } catch (error) {
-      console.error('Login fetch error:', error);
       throw error;
     }
   },
@@ -85,13 +81,13 @@ export const authService = {
     }
   },
 
-  setUser(user: any): void {
+  setUser(user: Record<string, unknown>): void {
     if (typeof window !== 'undefined') {
       localStorage.setItem('user', JSON.stringify(user));
     }
   },
 
-  getUser(): any | null {
+  getUser(): Record<string, unknown> | null {
     if (typeof window !== 'undefined') {
       const user = localStorage.getItem('user');
       return user ? JSON.parse(user) : null;

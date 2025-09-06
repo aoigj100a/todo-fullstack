@@ -1,8 +1,7 @@
 // src/app/(auth)/login/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Link from 'next/link';
 import {
   Card,
@@ -18,11 +17,9 @@ import { Label } from '@/components/ui/label';
 import { LockKeyhole } from 'lucide-react';
 
 import { useToast } from '@/hooks/use-toast';
-import { authService } from '@/service/auth';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginPage() {
-  const router = useRouter();
   const { toast } = useToast();
   const { login } = useAuth(); // Use auth context hook
   const [isLoading, setIsLoading] = useState(false);
