@@ -1,7 +1,6 @@
 // apps/backend/src/scripts/seed-data.js
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const path = require('path');
 
 // 載入環境變數
 dotenv.config();
@@ -10,7 +9,7 @@ dotenv.config();
 mongoose
   .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/todo-app')
   .then(() => console.log('MongoDB 連接成功，準備植入資料'))
-  .catch((err) => {
+  .catch(err => {
     console.error('MongoDB 連接錯誤:', err);
     process.exit(1);
   });
@@ -47,7 +46,7 @@ const TodoSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 // 創建 Todo 模型
@@ -151,7 +150,7 @@ async function seedDatabase() {
 
     // 顯示插入的數據
     console.log('已植入的待辦事項:');
-    createdTodos.forEach((todo) => {
+    createdTodos.forEach(todo => {
       console.log(`- ${todo.title} (${todo.status})`);
     });
 
