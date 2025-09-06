@@ -69,7 +69,7 @@ const testUpdateTodo = async (todoId: string) => {
         status: 'in-progress',
         description: 'Updated description',
       },
-      { new: true },
+      { new: true }
     );
     console.log('Updated Todo:', JSON.stringify(updatedTodo, null, 2));
     return updatedTodo;

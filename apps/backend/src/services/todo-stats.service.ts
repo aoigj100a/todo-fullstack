@@ -75,11 +75,15 @@ export const getCompletedTasksByDate = async (startDate: Date, endDate: Date) =>
 };
 
 // 輔助函數：填充沒有數據的日期
-export const fillMissingDates = (data: any[], startDate: Date, endDate: Date) => {
+export const fillMissingDates = (
+  data: Array<{ _id: string; count: number }>,
+  startDate: Date,
+  endDate: Date
+) => {
   const dateMap = new Map();
 
   // 將現有數據放入 Map
-  data.forEach((item) => {
+  data.forEach(item => {
     dateMap.set(item._id, item.count);
   });
 
@@ -139,7 +143,7 @@ export const getProductivityByHour = async () => {
   const hourlyData = Array(24)
     .fill(0)
     .map((_, hour) => {
-      const found = result.find((item) => item.hour === hour);
+      const found = result.find(item => item.hour === hour);
       return {
         hour,
         count: found ? found.count : 0,
@@ -149,7 +153,7 @@ export const getProductivityByHour = async () => {
   // 找出最高效時段
   const mostProductiveHour = hourlyData.reduce(
     (max, current) => (current.count > max.count ? current : max),
-    { hour: 0, count: 0 },
+    { hour: 0, count: 0 }
   );
 
   return {

@@ -37,14 +37,14 @@ const UserSchema = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 // Add password comparison method
 UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
   try {
     return await bcrypt.compare(candidatePassword, this.password);
-  } catch (error) {
+  } catch {
     throw new Error('Password comparison failed');
   }
 };

@@ -15,7 +15,7 @@ app.use(
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-  }),
+  })
 );
 
 // 解析 JSON 請求體
@@ -40,13 +40,13 @@ app.get('/api/health', (req, res) => {
 
 // 404 處理
 app.use((req, res, next) => {
-  const error: any = new Error('Not Found');
+  const error = new Error('Not Found') as Error & { status: number };
   error.status = 404;
   next(error);
 });
 
 // 錯誤處理中間件
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: Error & { status?: number }, req: express.Request, res: express.Response) => {
   res.status(err.status || 500);
   res.json({
     error: {

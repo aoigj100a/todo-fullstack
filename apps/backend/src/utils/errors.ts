@@ -1,6 +1,7 @@
 // src/utils/errors.ts
 
 // 定義錯誤代碼列舉
+/* eslint-disable no-unused-vars */
 export enum ErrorCode {
   // 資料相關錯誤 (1xx)
   INVALID = 100, // 無效的資料
@@ -26,13 +27,14 @@ export enum ErrorCode {
   NETWORK = 501, // 網路錯誤
   TIMEOUT = 502, // 超時錯誤
 }
+/* eslint-enable no-unused-vars */
 
 // 定義錯誤回應介面
 export interface IErrorResponse {
   code: ErrorCode;
   message: string;
   status: number;
-  details?: any;
+  details?: Record<string, unknown>;
   timestamp: string;
 }
 
@@ -40,10 +42,15 @@ export interface IErrorResponse {
 export class AppError extends Error {
   public readonly code: ErrorCode;
   public readonly status: number;
-  public readonly details?: any;
+  public readonly details?: Record<string, unknown>;
   public readonly timestamp: string;
 
-  constructor(message: string, code: ErrorCode, status: number = 500, details?: any) {
+  constructor(
+    message: string,
+    code: ErrorCode,
+    status: number = 500,
+    details?: Record<string, unknown>
+  ) {
     super(message);
     this.name = this.constructor.name;
     this.code = code;
@@ -70,14 +77,9 @@ export class AppError extends Error {
 }
 
 // 錯誤處理中間件
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
-export const errorHandler = (
-  err: Error | AppError,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const errorHandler = (err: Error | AppError, req: Request, res: Response) => {
   console.error('Error:', {
     name: err.name,
     message: err.message,
@@ -103,7 +105,7 @@ export const errorHandler = (
     'Internal Server Error',
     ErrorCode.SYSTEM,
     500,
-    process.env.NODE_ENV === 'development' ? err : undefined,
+    process.env.NODE_ENV === 'development' ? err : undefined
   );
   res.status(appError.status).json(appError.toResponse());
 };
