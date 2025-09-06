@@ -16,7 +16,7 @@ interface TaskTrendsChartProps {
   };
 }
 
-export function TaskTrendsChart({ chartData }: TaskTrendsChartProps) {
+export function TaskTrendsChart({}: TaskTrendsChartProps) {
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month'>('week');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { t } = useLanguage();

@@ -5,6 +5,7 @@ module.exports = {
     node: true,
     jest: true,
   },
+  ignorePatterns: ['dist/**/*'],
   rules: {
     // 後端特定覆寫規則
     'no-console': [

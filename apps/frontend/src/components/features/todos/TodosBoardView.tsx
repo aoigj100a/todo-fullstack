@@ -85,9 +85,9 @@ const DraggableTodoCard = ({
 export function TodosBoardView({ todos, onDelete, onEdit, onStatusChange }: TodosBoardViewProps) {
   // 按狀態分組 todos
   const todosByStatus = {
-    pending: todos.filter((todo) => todo.status === 'pending'),
-    'in-progress': todos.filter((todo) => todo.status === 'in-progress'),
-    completed: todos.filter((todo) => todo.status === 'completed'),
+    pending: todos.filter(todo => todo.status === 'pending'),
+    'in-progress': todos.filter(todo => todo.status === 'in-progress'),
+    completed: todos.filter(todo => todo.status === 'completed'),
   };
 
   // 定義每個狀態欄的顏色和標題

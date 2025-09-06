@@ -44,6 +44,7 @@
     "@vitest/coverage-v8": "^3.2.1",
     "autoprefixer": "^10.4.17",
     "eslint-config-next": "^15.2.4",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "jsdom": "^26.1.0",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",

@@ -37,7 +37,7 @@ export function EditTodoDialog({ todo, open, onClose, onSuccess }: EditTodoDialo
   const [title, setTitle] = useState(todo.title);
   const [description, setDescription] = useState(todo.description || '');
   const [status, setStatus] = useState<'pending' | 'in-progress' | 'completed'>(
-    todo.status as 'pending' | 'in-progress' | 'completed',
+    todo.status as 'pending' | 'in-progress' | 'completed'
   );
   const [isLoading, setIsLoading] = useState(false);
 
@@ -76,7 +76,7 @@ export function EditTodoDialog({ todo, open, onClose, onSuccess }: EditTodoDialo
 
       onSuccess();
       onClose();
-    } catch (error) {
+    } catch (_) {
       toast({
         title: 'Error',
         description: t('toast.error.update'),
@@ -111,7 +111,7 @@ export function EditTodoDialog({ todo, open, onClose, onSuccess }: EditTodoDialo
               <Input
                 id="title"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={e => setTitle(e.target.value)}
                 placeholder={t('form.titlePlaceholder')}
               />
             </div>
@@ -120,7 +120,7 @@ export function EditTodoDialog({ todo, open, onClose, onSuccess }: EditTodoDialo
               <Textarea
                 id="description"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={e => setDescription(e.target.value)}
                 placeholder={t('form.descriptionPlaceholder')}
               />
             </div>

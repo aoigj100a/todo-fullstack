@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 
 import { useSearchParams, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Plus } from 'lucide-react';
-import { DndContext, DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 
 import { TodosLoadingState } from '@/components/features/todos/TodosLoadingState';
 import { TodoCardList } from '@/components/features/todos/TodoCardList';
@@ -39,7 +39,6 @@ function TodosPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [focusedTodoIndex, setFocusedTodoIndex] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
 
   // 添加對鍵盤焦點的追蹤
   const [keyboardMode, setKeyboardMode] = useState(false);
@@ -72,37 +71,37 @@ function TodosPage() {
       },
       timeout: 5000,
       getItemTitle: (todo: Todo) => todo.title,
-    },
+    }
   );
 
-  const loadTodos = async () => {
+  const loadTodos = useCallback(async () => {
     try {
       const data = await todoService.getTodos();
-      setTodos((prevTodos) => {
+      setTodos(() => {
         const pendingTodoIds = getPendingDeletionIds();
         return data.filter((todo: Todo) => !pendingTodoIds.includes(todo._id));
       });
-    } catch (error) {
+    } catch (_) {
       toast.error(t('toast.error.load'));
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [getPendingDeletionIds, t]);
 
   const filteredTodos = useMemo(() => {
     if (filterStatus === 'all') {
       return todos;
     } else {
-      return todos.filter((todo) => todo.status === filterStatus);
+      return todos.filter(todo => todo.status === filterStatus);
     }
   }, [todos, filterStatus]);
 
   const statusCounts = useMemo(() => {
     return {
       all: todos.length,
-      pending: todos.filter((todo) => todo.status === 'pending').length,
-      'in-progress': todos.filter((todo) => todo.status === 'in-progress').length,
-      completed: todos.filter((todo) => todo.status === 'completed').length,
+      pending: todos.filter(todo => todo.status === 'pending').length,
+      'in-progress': todos.filter(todo => todo.status === 'in-progress').length,
+      completed: todos.filter(todo => todo.status === 'completed').length,
     };
   }, [todos]);
 
@@ -121,9 +120,9 @@ function TodosPage() {
     handleEditClose();
   };
 
-  const handleStatusChange = async () => {
+  const handleStatusChange = useCallback(async () => {
     await loadTodos();
-  };
+  }, [loadTodos]);
 
   const handleViewChange = useCallback(
     (view: ViewType) => {
@@ -137,7 +136,7 @@ function TodosPage() {
 
       router.push(`?${params.toString()}`, { scroll: false });
     },
-    [router, searchParams],
+    [router, searchParams]
   );
 
   const handleFilterChange = useCallback(
@@ -150,7 +149,7 @@ function TodosPage() {
 
       router.push(`?${params.toString()}`, { scroll: false });
     },
-    [router, searchParams],
+    [router, searchParams]
   );
 
   // 清除篩選時也需要更新 URL
@@ -188,7 +187,6 @@ function TodosPage() {
       // N 鍵打開創建對話框
       if ((e.key === 'n' || e.key === 'N') && !e.ctrlKey && !e.metaKey && !e.altKey) {
         e.preventDefault();
-        console.log('N key pressed, opening create dialog');
         setIsCreateDialogOpen(true);
         return;
       }
@@ -202,14 +200,14 @@ function TodosPage() {
 
       if (e.key === 'ArrowDown') {
         e.preventDefault();
-        setFocusedTodoIndex((prev) => {
+        setFocusedTodoIndex(prev => {
           // 如果沒有選中項目或已是最後一項，則選中第一項
           if (prev === null || prev >= filteredTodos.length - 1) return 0;
           return prev + 1;
         });
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        setFocusedTodoIndex((prev) => {
+        setFocusedTodoIndex(prev => {
           // 如果沒有選中項目或已是第一項，則選中最後一項
           if (prev === null || prev <= 0) return filteredTodos.length - 1;
           return prev - 1;
@@ -224,7 +222,7 @@ function TodosPage() {
         const focusedTodo = filteredTodos[focusedTodoIndex];
         // 顯示視覺反饋
         const statusElement = document.querySelector(
-          `[data-todo-id="${focusedTodo._id}"] .status-icon`,
+          `[data-todo-id="${focusedTodo._id}"] .status-icon`
         );
         if (statusElement) {
           statusElement.classList.add('animate-pulse');
@@ -250,18 +248,12 @@ function TodosPage() {
         }
       }
     },
-    [filteredTodos, focusedTodoIndex, handleStatusChange, t, keyboardMode],
+    [filteredTodos, focusedTodoIndex, handleStatusChange, t, keyboardMode]
   );
 
   // 在 TodosPage 中添加拖曳處理函數
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
-
-    console.log('Drag end event:', {
-      activeId: active.id,
-      overId: over?.id,
-      currentTodos: filteredTodos.map((t) => ({ id: t._id, status: t.status })),
-    });
 
     if (!over) return;
 
@@ -269,7 +261,7 @@ function TodosPage() {
     const newStatus = over.id as TodoStatus;
 
     // 獲取當前 todo 的狀態
-    const currentTodo = filteredTodos.find((todo) => todo._id === todoId);
+    const currentTodo = filteredTodos.find(todo => todo._id === todoId);
     if (!currentTodo) return;
 
     // 如果狀態沒有改變，不需要更新
@@ -277,37 +269,29 @@ function TodosPage() {
 
     try {
       // 樂觀更新 - 立即更新 UI
-      setTodos((prevTodos) =>
-        prevTodos.map((todo) => (todo._id === todoId ? { ...todo, status: newStatus } : todo)),
+      setTodos(prevTodos =>
+        prevTodos.map(todo => (todo._id === todoId ? { ...todo, status: newStatus } : todo))
       );
 
       // 調用新的 setTodoStatus 方法
       await todoService.setTodoStatus(todoId, newStatus);
       toast.success(t('toast.statusUpdated'));
-    } catch (error) {
+    } catch (_) {
       // 失敗時回滾到原始狀態
-      setTodos((prevTodos) =>
-        prevTodos.map((todo) =>
-          todo._id === todoId ? { ...todo, status: currentTodo.status } : todo,
-        ),
+      setTodos(prevTodos =>
+        prevTodos.map(todo =>
+          todo._id === todoId ? { ...todo, status: currentTodo.status } : todo
+        )
       );
       toast.error(t('toast.error.update'));
     }
-
-    setIsDragging(false);
   };
 
-  const handleDragStart = (e: DragStartEvent) => {
-    setIsDragging(true);
-  };
-  const handleDragCancel = () => {
-    setIsDragging(false);
-  };
+  const handleDragStart = (_: DragStartEvent) => {};
+  const handleDragCancel = () => {};
 
   // 設置鍵盤事件監聽器
   useEffect(() => {
-    console.log('Setting up keyboard event listener');
-
     const handleKeyPress = (e: KeyboardEvent) => {
       handleKeyDown(e);
     };
@@ -316,7 +300,6 @@ function TodosPage() {
     document.addEventListener('keydown', handleKeyPress);
 
     return () => {
-      console.log('Removing keyboard event listener');
       document.removeEventListener('keydown', handleKeyPress);
     };
   }, [handleKeyDown]);
@@ -355,7 +338,7 @@ function TodosPage() {
     return () => {
       clearPendingDeletions();
     };
-  }, [searchParams, clearPendingDeletions]);
+  }, [searchParams, clearPendingDeletions, loadTodos]);
 
   return (
     <div className="p-4 sm:p-8">
@@ -442,7 +425,7 @@ function TodosPage() {
                   >
                     <TodosBoardView
                       todos={filteredTodos}
-                      onDelete={(id) => handleDelete(id)}
+                      onDelete={id => handleDelete(id)}
                       onEdit={handleEdit}
                       onStatusChange={handleStatusChange}
                     />

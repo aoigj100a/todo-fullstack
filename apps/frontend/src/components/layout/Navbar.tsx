@@ -50,7 +50,7 @@ export function Navbar() {
             Todo App
           </Link>
           <nav className="hidden md:flex items-center gap-4">
-            {navItems.map((item) => (
+            {navItems.map(item => (
               <Link
                 key={item.href}
                 href={item.href}

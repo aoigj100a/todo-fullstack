@@ -1,11 +1,11 @@
 // src/components/todos/TodosLoadingState.tsx
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function TodosLoadingState() {
   return (
     <div className="space-y-4">
-      {[1, 2, 3].map((index) => (
+      {[1, 2, 3].map(index => (
         <Card key={index} className="p-4">
           <div className="flex items-center">
             <div className="px-4">

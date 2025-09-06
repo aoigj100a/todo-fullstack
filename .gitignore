@@ -48,3 +48,6 @@ Thumbs.db
 *.tmp
 *.temp
 .cache/
+
+# AI Development Configuration
+CLAUDE.md

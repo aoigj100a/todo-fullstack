@@ -6,6 +6,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:prettier/recommended', // 新增這行來整合 Prettier
+    'prettier', // 禁用與 prettier 衝突的規則
   ],
   plugins: ['prettier'],
   // 基本規則 - 所有人都必須遵守的
@@ -15,10 +16,10 @@ module.exports = {
     'no-debugger': 'warn',
     'no-unused-vars': 'warn',
 
-    // 基本格式 - 寬鬆設定
-    indent: ['warn', 2],
-    quotes: ['warn', 'single'],
-    semi: ['warn', 'always'],
+    // 移除與 prettier 衝突的格式規則，讓 prettier 處理
+    // indent: ['warn', 2], // 移除，由 prettier 處理
+    // quotes: ['warn', 'single'], // 移除，由 prettier 處理
+    // semi: ['warn', 'always'], // 移除，由 prettier 處理
 
     // React 相關 - 基本規則
     'react/prop-types': 'off',

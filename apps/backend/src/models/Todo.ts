@@ -46,7 +46,7 @@ const TodoSchema = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 export const Todo = mongoose.model<ITodo>('Todo', TodoSchema);

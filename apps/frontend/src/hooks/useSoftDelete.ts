@@ -11,9 +11,9 @@ interface SoftDeleteOptions<T> {
 export function useSoftDelete<T extends { _id: string }>(
   items: T[],
   setItems: React.Dispatch<React.SetStateAction<T[]>>,
-  options: SoftDeleteOptions<T>,
+  options: SoftDeleteOptions<T>
 ) {
-  const { onDelete, timeout = 5000, getItemTitle = (item) => item._id } = options;
+  const { onDelete, timeout = 5000, getItemTitle = item => item._id } = options;
 
   const pendingDeletions = useRef<
     Map<
@@ -28,7 +28,7 @@ export function useSoftDelete<T extends { _id: string }>(
 
   const handleDelete = useCallback(
     async (itemId: string) => {
-      const itemToDelete = items.find((item) => item._id === itemId);
+      const itemToDelete = items.find(item => item._id === itemId);
       if (!itemToDelete) return;
 
       // Clear any existing timeout
@@ -39,7 +39,7 @@ export function useSoftDelete<T extends { _id: string }>(
       }
 
       // Optimistically remove from UI
-      setItems((currentItems) => currentItems.filter((item) => item._id !== itemId));
+      setItems(currentItems => currentItems.filter(item => item._id !== itemId));
 
       // Show toast with undo button
       const itemTitle = getItemTitle(itemToDelete);
@@ -58,8 +58,15 @@ export function useSoftDelete<T extends { _id: string }>(
           await onDelete(itemId);
           pendingDeletions.current.delete(itemId);
         } catch (error) {
-          console.error('Delete failed:', error);
-          handleUndo(itemId);
+          // Restore item on delete failure
+          const pendingDeletion = pendingDeletions.current.get(itemId);
+          if (pendingDeletion) {
+            setItems(currentItems => {
+              if (currentItems.some(item => item._id === itemId)) return currentItems;
+              return [...currentItems, pendingDeletion.item];
+            });
+            pendingDeletions.current.delete(itemId);
+          }
           toast.error('Failed to delete item');
         }
       }, timeout);
@@ -71,7 +78,7 @@ export function useSoftDelete<T extends { _id: string }>(
         toastId: toastId?.toString(),
       });
     },
-    [items, setItems, onDelete, timeout, getItemTitle],
+    [items, setItems, onDelete, timeout, getItemTitle]
   );
 
   const handleUndo = useCallback(
@@ -85,8 +92,8 @@ export function useSoftDelete<T extends { _id: string }>(
       }
       pendingDeletions.current.delete(itemId);
 
-      setItems((currentItems) => {
-        if (currentItems.some((item) => item._id === itemId)) return currentItems;
+      setItems(currentItems => {
+        if (currentItems.some(item => item._id === itemId)) return currentItems;
         return [...currentItems, pendingDeletion.item];
       });
 
@@ -95,7 +102,7 @@ export function useSoftDelete<T extends { _id: string }>(
         description: `"${itemTitle}" has been restored`,
       });
     },
-    [setItems, getItemTitle],
+    [setItems, getItemTitle]
   );
 
   const clearPendingDeletions = useCallback(() => {

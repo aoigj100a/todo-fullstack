@@ -63,42 +63,35 @@ export default function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
               <div className="h-4 w-4 rounded-full border-2" />
             )}
           </Button>
-          
+
           <div>
-            <h3 className={`font-medium ${
-              todo.status === 'completed' ? 'line-through text-muted-foreground' : ''
-            }`}>
+            <h3
+              className={`font-medium ${
+                todo.status === 'completed' ? 'line-through text-muted-foreground' : ''
+              }`}
+            >
               {todo.title}
             </h3>
             {todo.description && (
-              <p className="text-sm text-muted-foreground">
-                {todo.description}
-              </p>
+              <p className="text-sm text-muted-foreground">{todo.description}</p>
             )}
           </div>
         </div>
 
         <div className="flex items-center space-x-2">
-          <Badge
-            className={`${getStatusColor(todo.status)} text-white`}
-          >
-            {todo.status}
-          </Badge>
-          
+          <Badge className={`${getStatusColor(todo.status)} text-white`}>{todo.status}</Badge>
+
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => {/* TODO: Implement edit */}}
+            onClick={() => {
+              /* TODO: Implement edit */
+            }}
           >
             <Edit2 className="h-4 w-4" />
           </Button>
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleDelete}
-            disabled={isDeleting}
-          >
+
+          <Button variant="ghost" size="sm" onClick={handleDelete} disabled={isDeleting}>
             <Trash2 className="h-4 w-4 text-red-500" />
           </Button>
         </div>

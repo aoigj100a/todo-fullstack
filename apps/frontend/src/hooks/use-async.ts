@@ -8,7 +8,7 @@ interface State<D> {
   status: 'idle' | 'loading' | 'error' | 'success';
 }
 
-export function useAsync<D = any>(initialState?: State<D>) {
+export function useAsync<D = unknown>(initialState?: State<D>) {
   const [state, setState] = useState<State<D>>({
     data: null,
     error: null,
@@ -39,7 +39,7 @@ export function useAsync<D = any>(initialState?: State<D>) {
         variant: 'destructive',
       });
     },
-    [toast],
+    [toast]
   );
 
   const reset = useCallback(
@@ -49,7 +49,7 @@ export function useAsync<D = any>(initialState?: State<D>) {
         error: null,
         status: 'idle',
       }),
-    [],
+    []
   );
 
   const run = useCallback(
@@ -58,7 +58,7 @@ export function useAsync<D = any>(initialState?: State<D>) {
         throw new Error('Parameter must be a Promise');
       }
 
-      setState((prev) => ({ ...prev, status: 'loading' }));
+      setState(prev => ({ ...prev, status: 'loading' }));
 
       try {
         const data = await promise;
@@ -69,7 +69,7 @@ export function useAsync<D = any>(initialState?: State<D>) {
         return Promise.reject(error);
       }
     },
-    [setData, setError],
+    [setData, setError]
   );
 
   return {

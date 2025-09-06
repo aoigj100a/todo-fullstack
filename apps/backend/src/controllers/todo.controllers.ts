@@ -6,7 +6,7 @@ export const getTodos = async (req: Request, res: Response) => {
   try {
     const todos = await Todo.find();
     res.json({ success: true, data: todos });
-  } catch (error) {
+  } catch {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch todos',
@@ -88,7 +88,13 @@ export const updateTodo = async (req: Request, res: Response) => {
       });
     }
     // 建立更新物件
-    const updateData: any = {};
+    const updateData: {
+      title?: string;
+      description?: string;
+      status?: string;
+      completedAt?: Date | null;
+      assignedTo?: string;
+    } = {};
 
     // 只更新有提供的欄位
     if (title?.trim()) updateData.title = title.trim();

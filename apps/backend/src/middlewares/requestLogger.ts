@@ -33,7 +33,7 @@ const requestLogger = (req: Request, res: Response, next: NextFunction) => {
           duration,
           ip: req.ip,
           userAgent: req.get('user-agent'),
-        }),
+        })
       );
     }
   });

@@ -65,7 +65,7 @@ export const getTodoStats = async (req: Request, res: Response) => {
       total: 0,
     };
 
-    statusCounts.forEach((item: any) => {
+    statusCounts.forEach((item: { _id: string; count: number }) => {
       if (item._id === 'pending') formattedStatusCounts.pending = item.count;
       else if (item._id === 'in-progress') formattedStatusCounts.inProgress = item.count;
       else if (item._id === 'completed') formattedStatusCounts.completed = item.count;
@@ -129,7 +129,7 @@ export const getStatusStats = async (req: Request, res: Response) => {
       total: 0,
     };
 
-    statusCounts.forEach((item: any) => {
+    statusCounts.forEach((item: { _id: string; count: number }) => {
       if (item._id === 'pending') formattedStatusCounts.pending = item.count;
       else if (item._id === 'in-progress') formattedStatusCounts.inProgress = item.count;
       else if (item._id === 'completed') formattedStatusCounts.completed = item.count;
@@ -219,7 +219,7 @@ export const getTimeSeriesStats = async (req: Request, res: Response) => {
 
     while (currentDate <= endDate) {
       const dateStr = currentDate.toISOString().split('T')[0];
-      const dayData = createdByDate.find((item) => item._id === dateStr);
+      const dayData = createdByDate.find(item => item._id === dateStr);
 
       formattedCreatedByDate.push({
         date: dateStr,
@@ -288,7 +288,7 @@ export const getProductivityStats = async (req: Request, res: Response) => {
       .fill(0)
       .map((_, index) => {
         const dayOfWeek = index + 1; // MongoDB 的 $dayOfWeek 返回 1-7
-        const found = productivityByDayOfWeek.find((item) => item._id === dayOfWeek);
+        const found = productivityByDayOfWeek.find(item => item._id === dayOfWeek);
         return {
           dayOfWeek,
           dayName: dayNames[index],
@@ -299,7 +299,7 @@ export const getProductivityStats = async (req: Request, res: Response) => {
     // 找出最高效的工作日
     const mostProductiveDay = dailyData.reduce(
       (max, current) => (current.count > max.count ? current : max),
-      { dayOfWeek: 0, dayName: '', count: 0 },
+      { dayOfWeek: 0, dayName: '', count: 0 }
     );
 
     res.json({
@@ -382,7 +382,7 @@ export const getCompletionTimeStats = async (req: Request, res: Response) => {
       { category: 'slow', label: 'Over 24 hours', count: 0 },
     ];
 
-    completionTimeDistribution.forEach((item: any) => {
+    completionTimeDistribution.forEach((item: { _id: number; count: number }) => {
       if (item._id === 0) formattedDistribution[0].count = item.count;
       else if (item._id === 3600000) formattedDistribution[1].count = item.count;
       else if (item._id === 86400000) formattedDistribution[2].count = item.count;

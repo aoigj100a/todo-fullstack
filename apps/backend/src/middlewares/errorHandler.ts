@@ -1,8 +1,8 @@
 // src/middleware/errorHandler.ts
 import { AppError } from '@/utils/errors';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (err: Error, req: Request, res: Response) => {
   // Set defaults
   let statusCode = 500;
   let message = 'Internal Server Error';

@@ -24,7 +24,7 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
       const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
       req.user = decoded;
       next();
-    } catch (error) {
+    } catch {
       return res.status(401).json({
         success: false,
         error: 'Token is invalid or expired',

@@ -35,13 +35,13 @@ export const StatusDistributionChart = ({ statusCounts }: StatusCountsProps) => 
       lightColor: '#d1fae5', // green-100 作為輔助色
       labelKey: 'dashboard.statusChart.completed',
     },
-  ].filter((item) => item.count > 0);
+  ].filter(item => item.count > 0);
 
   const total = data.reduce((sum, item) => sum + item.count, 0);
 
   // 計算每個扇形的角度
   let cumulativeAngle = 0;
-  const segments = data.map((item) => {
+  const segments = data.map(item => {
     const angle = (item.count / total) * 360;
     const startAngle = cumulativeAngle;
     cumulativeAngle += angle;
