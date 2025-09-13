@@ -380,7 +380,6 @@
 - **方法**: `GET`
 - **認證**: 需要 Bearer Token（可選，取決於後端設定）
 - **查詢參數** (可選):
-
   - `dateFrom`: 開始日期 (YYYY-MM-DD 格式)
   - `dateTo`: 結束日期 (YYYY-MM-DD 格式)
 
@@ -578,7 +577,7 @@ app.use(
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-  }),
+  })
 );
 ```
 
@@ -665,7 +664,6 @@ async function getTodos(token) {
 2. **測試帳號**: 系統內建了測試帳號 (demo@example.com/demo1234)，方便開發測試使用。
 
 3. **環境變數**: API 伺服器依賴以下環境變數：
-
    - `MONGO_URI`: MongoDB 連接字串
    - `JWT_SECRET`: JWT 簽名密鑰
    - `PORT`: 伺服器端口 (預設 4000)

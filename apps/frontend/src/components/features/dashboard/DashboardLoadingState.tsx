@@ -8,7 +8,7 @@ export function DashboardLoadingState() {
     <div className="space-y-6">
       {/* Stats Cards Loading */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {[1, 2, 3, 4].map((index) => (
+        {[1, 2, 3, 4].map(index => (
           <Card key={index} className="animate-pulse">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <Skeleton className="h-4 w-24" />
@@ -43,7 +43,7 @@ export function DashboardLoadingState() {
               </div>
             </div>
             <div className="flex justify-center flex-wrap gap-4 mt-4">
-              {[1, 2, 3].map((i) => (
+              {[1, 2, 3].map(i => (
                 <div key={i} className="flex items-center">
                   <Skeleton className="w-3 h-3 mr-1 rounded" />
                   <Skeleton className="h-3 w-20" />
@@ -64,7 +64,7 @@ export function DashboardLoadingState() {
           </CardHeader>
           <CardContent className="pt-6">
             <div className="space-y-4">
-              {[1, 2, 3, 4, 5].map((i) => (
+              {[1, 2, 3, 4, 5].map(i => (
                 <div key={i} className="flex items-center justify-between py-2">
                   <div className="flex items-center flex-1">
                     <Skeleton className="w-3 h-3 rounded-full mr-3" />
@@ -95,7 +95,7 @@ export function DashboardLoadingState() {
             </div>
           </div>
           <div className="grid grid-cols-3 gap-4 mt-4">
-            {[1, 2, 3].map((i) => (
+            {[1, 2, 3].map(i => (
               <div key={i} className="text-center">
                 <Skeleton className="h-6 w-12 mx-auto mb-1" />
                 <Skeleton className="h-3 w-20 mx-auto mb-1" />
@@ -107,7 +107,7 @@ export function DashboardLoadingState() {
         <CardContent className="pt-6">
           <div className="h-[240px] relative">
             <div className="absolute left-0 top-0 h-full flex flex-col justify-between pr-2">
-              {[1, 2, 3, 4, 5].map((i) => (
+              {[1, 2, 3, 4, 5].map(i => (
                 <Skeleton key={i} className="h-3 w-8" />
               ))}
             </div>
@@ -116,7 +116,7 @@ export function DashboardLoadingState() {
                 className="grid h-full gap-3 items-end"
                 style={{ gridTemplateColumns: 'repeat(7, 1fr)' }}
               >
-                {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                {[1, 2, 3, 4, 5, 6, 7].map(i => (
                   <div key={i} className="flex flex-col items-center">
                     <div className="flex flex-col items-center w-full">
                       <Skeleton

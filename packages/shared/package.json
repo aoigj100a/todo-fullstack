@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "lint:fix": "eslint . --ext .ts --fix"  
+    "lint:fix": "eslint . --ext .ts --fix"
   },
   "dependencies": {
     "zod": "^3.22.0"

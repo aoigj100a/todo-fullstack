@@ -169,7 +169,7 @@ export default function EditTodoPage() {
               <Input
                 id="title"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={e => setTitle(e.target.value)}
                 placeholder="Enter todo title"
                 required
                 className="border-gray-300 focus:border-teal-500 focus:ring-teal-500"
@@ -183,7 +183,7 @@ export default function EditTodoPage() {
               <Textarea
                 id="description"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={e => setDescription(e.target.value)}
                 placeholder="Enter todo description (optional)"
                 rows={4}
                 className="border-gray-300 focus:border-teal-500 focus:ring-teal-500"

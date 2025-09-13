@@ -22,7 +22,7 @@ export const authService = {
       }
 
       const data = await response.json();
-      
+
       // eslint-disable-next-line no-console
       console.log('Login successful:', data);
 
