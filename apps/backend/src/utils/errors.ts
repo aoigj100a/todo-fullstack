@@ -97,7 +97,7 @@ export const errorHandler = (err: Error | AppError, req: Request, res: Response)
   if (err.name === 'ValidationError') {
     const appError = new AppError('Validation Failed', ErrorCode.VALIDATION, 400, {
       originalError: err.message,
-      name: err.name
+      name: err.name,
     });
     res.status(appError.status).json(appError.toResponse());
     return;
@@ -108,11 +108,13 @@ export const errorHandler = (err: Error | AppError, req: Request, res: Response)
     'Internal Server Error',
     ErrorCode.SYSTEM,
     500,
-    process.env.NODE_ENV === 'development' ? {
-      originalError: err.message,
-      name: err.name,
-      stack: err.stack
-    } : undefined
+    process.env.NODE_ENV === 'development'
+      ? {
+          originalError: err.message,
+          name: err.name,
+          stack: err.stack,
+        }
+      : undefined
   );
   res.status(appError.status).json(appError.toResponse());
 };

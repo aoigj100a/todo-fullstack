@@ -72,7 +72,7 @@ export default function LoginPage() {
                 name="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="h-12 text-base"
                 required
@@ -87,7 +87,7 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 className="h-12 text-base"
                 required

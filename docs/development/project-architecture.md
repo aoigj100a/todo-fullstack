@@ -129,14 +129,12 @@ todo-fullstack/
 本專案使用基於 JWT 的身份驗證機制：
 
 1. **登入流程**:
-
    - 用戶提交登入表單（email/password）
    - 後端驗證憑證並生成 JWT
    - 返回 token 和用戶資訊
    - 前端儲存 token 到 localStorage
 
 2. **請求授權**:
-
    - 前端在 API 請求中加入 Authorization 標頭
    - 後端中間件驗證 token 的有效性
    - 驗證成功後處理請求，失敗則返回 401 錯誤
