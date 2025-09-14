@@ -113,7 +113,7 @@ export default function DashboardPage() {
     };
 
     loadInitialData();
-  }, [loadTodos, loadStatsData]);
+  }, []); // 移除依賴，只在組件掛載時執行一次
 
   // 計算基本統計數據（從本地 todos 計算，作為後備）
   const basicStats = {

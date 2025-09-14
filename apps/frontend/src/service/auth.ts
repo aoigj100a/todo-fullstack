@@ -46,8 +46,8 @@ export const authService = {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Failed to register');
+      const errorData = await response.json();
+      throw new Error(errorData.error || errorData.message || 'Failed to register');
     }
 
     return response.json();
