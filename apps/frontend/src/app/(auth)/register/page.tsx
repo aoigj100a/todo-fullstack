@@ -3,7 +3,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { UserPlus } from 'lucide-react';
 import Link from 'next/link';
+
 import {
   Card,
   CardContent,
@@ -15,15 +17,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { UserPlus } from 'lucide-react';
 
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { authService } from '@/service/auth';
 import { RegisterInput } from '@/types';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -45,9 +45,7 @@ export default function RegisterPage() {
 
     // 基本的密碼驗證
     if (input.password !== input.confirmPassword) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
+      toast.error('Error', {
         description: 'Passwords do not match',
       });
       setIsLoading(false);
@@ -58,17 +56,13 @@ export default function RegisterPage() {
       const response = await authService.register(input);
       authService.setToken(response.token);
       authService.setUser(response.user);
-
-      toast({
-        title: 'Registration successful',
+      toast.success('Registration successful', {
         description: 'Redirecting to dashboard...',
       });
 
       router.push('/todos');
     } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
+      toast.error('Error', {
         description: error instanceof Error ? error.message : 'Failed to register',
       });
     } finally {
