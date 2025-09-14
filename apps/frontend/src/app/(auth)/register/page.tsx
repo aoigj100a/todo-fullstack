@@ -3,22 +3,15 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { UserPlus } from 'lucide-react';
-import Link from 'next/link';
+import { toast } from 'sonner';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { RegisterFooter } from './_components/RegisterFooter';
+import { RegisterHeader } from './_components/RegisterHeader';
 
-import { toast } from 'sonner';
 import { authService } from '@/service/auth';
 import { RegisterInput } from '@/types';
 
@@ -73,15 +66,7 @@ export default function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-md mx-auto shadow-lg">
-        <CardHeader className="text-center pb-6">
-          <CardTitle className="text-3xl font-bold text-gray-800 flex items-center justify-center gap-2">
-            <UserPlus className="h-8 w-8 text-teal-500" />
-            <span>Register</span>
-          </CardTitle>
-          <CardDescription className="text-base text-gray-600">
-            Create your account to get started
-          </CardDescription>
-        </CardHeader>
+        <RegisterHeader />
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-6">
             <div className="space-y-3">
@@ -144,7 +129,7 @@ export default function RegisterPage() {
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-5 pb-6">
+          <div className="flex flex-col space-y-5 px-6 pb-2">
             <Button
               type="submit"
               className="w-full h-12 text-lg bg-teal-500 hover:bg-teal-600"
@@ -152,14 +137,9 @@ export default function RegisterPage() {
             >
               {isLoading ? 'Creating account...' : 'Register'}
             </Button>
-            <p className="text-base text-center text-gray-600">
-              Already have an account?{' '}
-              <Link href="/login" className="text-teal-500 hover:underline font-medium">
-                Login
-              </Link>
-            </p>
-          </CardFooter>
+          </div>
         </form>
+        <RegisterFooter />
       </Card>
     </div>
   );
