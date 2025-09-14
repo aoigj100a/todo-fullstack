@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-
 import { useSearchParams, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
@@ -11,7 +10,6 @@ import { DndContext, DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { TodosLoadingState } from '@/components/features/todos/TodosLoadingState';
 import { TodoCardList } from '@/components/features/todos/TodoCardList';
 import { TodosBoardView } from '@/components/features/todos/TodosBoardView';
-
 import { CreateTodoDialog } from '@/components/features/todos/CreateTodoDialog';
 import { EditTodoDialog } from '@/components/features/todos/EditTodoDialog';
 import { TodosFilterBar } from '@/components/features/todos/TodosFilterBar';
@@ -139,18 +137,15 @@ function TodosPage() {
     [router, searchParams]
   );
 
-  const handleFilterChange = useCallback(
-    (status: FilterStatus) => {
-      setFilterStatus(status);
+  const handleFilterChange = useCallback((status: FilterStatus) => {
+    setFilterStatus(status);
 
-      // 更新 URL 參數
-      const params = new URLSearchParams(searchParams.toString());
-      params.set('status', status);
+    // 更新 URL 參數
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('status', status);
 
-      router.push(`?${params.toString()}`, { scroll: false });
-    },
-    [router, searchParams]
-  );
+    router.push(`?${params.toString()}`, { scroll: false });
+  }, []);
 
   // 清除篩選時也需要更新 URL
   const handleClearFilter = useCallback(() => {
@@ -320,8 +315,22 @@ function TodosPage() {
   }, [keyboardMode]);
 
   useEffect(() => {
-    // 載入 Todos
-    loadTodos();
+    // 載入 Todos - 只在組件掛載時執行
+    const fetchTodos = async () => {
+      try {
+        const data = await todoService.getTodos();
+        setTodos(() => {
+          const pendingTodoIds = getPendingDeletionIds();
+          return data.filter((todo: Todo) => !pendingTodoIds.includes(todo._id));
+        });
+      } catch (_) {
+        toast.error(t('toast.error.load'));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTodos();
 
     // 從 URL 參數或 localStorage 載入視圖類型
     const viewParam = searchParams.get('view') as ViewType | null;
@@ -338,7 +347,15 @@ function TodosPage() {
     return () => {
       clearPendingDeletions();
     };
-  }, [searchParams, clearPendingDeletions, loadTodos]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 單獨處理 searchParams 變化
+  useEffect(() => {
+    const viewParam = searchParams.get('view') as ViewType | null;
+    if (viewParam === 'list' || viewParam === 'board') {
+      setViewType(viewParam);
+    }
+  }, [searchParams]);
 
   return (
     <div className="p-4 sm:p-8">
