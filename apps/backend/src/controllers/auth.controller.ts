@@ -9,17 +9,17 @@ const JWT_EXPIRES_IN = '24h';
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password, name, confirmPassword } = req.body;
 
-    // 基本驗證
-    if (!email || !password || !name) {
+    // Mirror frontend validation: Check password confirmation
+    if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
-        error: 'Email, password and name are required',
+        error: 'Passwords do not match',
       });
     }
 
-    // 檢查用戶是否已存在
+    // Check if user already exists (handled by validator, but double-check)
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
@@ -28,23 +28,29 @@ export const register = async (req: Request, res: Response) => {
       });
     }
 
-    // 加密密碼
-    const salt = await bcrypt.genSalt(10);
+    // Hash password with higher security rounds
+    const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // 創建新用戶
+    // Create new user
     const user = new User({
-      email,
+      email: email.toLowerCase().trim(),
       password: hashedPassword,
-      name,
+      name: name.trim(),
     });
 
     await user.save();
 
-    // 生成 JWT token
-    const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN,
-    });
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+        iat: Date.now(),
+      },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
 
     res.status(201).json({
       success: true,
@@ -68,36 +74,55 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    // 基本驗證
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        error: 'Email and password are required',
-      });
-    }
-
-    // 查找用戶（包含密碼字段）
-    const user = await User.findOne({ email }).select('+password');
+    // Find user with password field (normalized email)
+    const user = await User.findOne({ email: email.toLowerCase().trim() }).select('+password');
     if (!user) {
+      if (res.locals.trackFailedLogin) {
+        res.locals.trackFailedLogin();
+      }
       return res.status(401).json({
         success: false,
         error: 'Invalid credentials',
       });
     }
 
-    // 比較密碼
+    // Compare password with timing-safe comparison
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      if (res.locals.trackFailedLogin) {
+        res.locals.trackFailedLogin();
+      }
       return res.status(401).json({
         success: false,
         error: 'Invalid credentials',
       });
     }
 
-    // 生成 JWT token
-    const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN,
-    });
+    // Clear login attempts on successful login
+    if (res.locals.clearLoginAttempts) {
+      res.locals.clearLoginAttempts();
+    }
+
+    // Generate JWT token with enhanced security
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+        iat: Date.now(),
+      },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    // Update last login time (optional - don't fail if it errors)
+    try {
+      await User.findByIdAndUpdate(user._id, {
+        lastLogin: new Date(),
+        $inc: { loginCount: 1 },
+      });
+    } catch (updateError) {
+      console.warn('Failed to update user login stats:', updateError);
+    }
 
     res.json({
       success: true,
