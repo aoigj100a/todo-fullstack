@@ -106,14 +106,33 @@ export default function DashboardPage() {
     const loadInitialData = async () => {
       setIsLoading(true);
       try {
-        await Promise.all([loadTodos(), loadStatsData()]);
+        const [todosData] = await Promise.all([
+          todoService.getTodos(),
+          statsService.getStats(selectedTimeRange).catch(() => null)
+        ]);
+
+        setTodos(todosData);
+        if (statsService.getStats) {
+          try {
+            const stats = await statsService.getStats(selectedTimeRange);
+            setStatsData(stats);
+          } catch (_) {
+            setError(t('error.loadStats'));
+          }
+        }
+      } catch (_) {
+        toast({
+          title: t('toast.error'),
+          description: t('error.loadTodos'),
+          variant: 'destructive',
+        });
       } finally {
         setIsLoading(false);
       }
     };
 
     loadInitialData();
-  }, []); // 移除依賴，只在組件掛載時執行一次
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 計算基本統計數據（從本地 todos 計算，作為後備）
   const basicStats = {

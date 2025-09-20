@@ -119,6 +119,18 @@ export const errorHandler = (err: Error | AppError, req: Request, res: Response)
   res.status(appError.status).json(appError.toResponse());
 };
 
+// 用來建立一致錯誤回應的輔助函式
+export const createError = (
+  message: string,
+  details?: Record<string, unknown>
+): { success: false; error: string; details?: Record<string, unknown> } => {
+  return {
+    success: false,
+    error: message,
+    ...(details && { ...details }),
+  };
+};
+
 // 使用範例：
 /*
 throw new AppError(
