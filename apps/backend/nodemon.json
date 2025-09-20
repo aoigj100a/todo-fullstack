@@ -1,6 +1,10 @@
 {
-  "watch": ["src"],
-  "ext": ".ts,.js",
-  "ignore": [],
-  "exec": "ts-node ./src/server.ts"
+  "watch": ["dist"],
+  "ext": "js",
+  "ignore": ["dist/**/*.map"],
+  "exec": "node dist/server.js",
+  "delay": "1000",
+  "env": {
+    "NODE_ENV": "development"
+  }
 }
