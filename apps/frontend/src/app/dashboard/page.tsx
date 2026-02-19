@@ -1,190 +1,52 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, PieChart, Clock, RefreshCw, AlertCircle } from 'lucide-react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StatsCards } from '@/components/features/dashboard/StatsCards';
 import { StatusDistributionChart } from '@/components/features/dashboard/StatusDistributionChart';
 import { TaskTrendsChart } from '@/components/features/dashboard/TaskTrendsChart';
-
-import { statsService, TodoStats } from '@/service/stats';
-import { todoService } from '@/service/todo';
-import { Todo } from '@/types';
-import { useToast } from '@/hooks/use-toast';
 import { DashboardLoadingState } from '@/components/features/dashboard/DashboardLoadingState';
-import { useLanguage } from '@/contexts/LanguageContext';
 
-type TimeRange = '7days' | '30days' | 'thisMonth';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useToast } from '@/hooks/use-toast';
+
+import { useDashboard, TimeRange } from '@/hooks/useDashboard';
 
 export default function DashboardPage() {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [statsData, setStatsData] = useState<TodoStats | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('7days');
-  const [error, setError] = useState<string | null>(null);
-
   const { t } = useLanguage();
   const { toast } = useToast();
 
-  // 載入基本 Todos 數據
-  const loadTodos = useCallback(async () => {
-    try {
-      const data = await todoService.getTodos();
-      setTodos(data);
-    } catch (_) {
-      toast({
-        title: t('toast.error'),
-        description: t('error.loadTodos'),
-        variant: 'destructive',
-      });
-    }
-  }, [t, toast]);
+  const {
+    todos,
+    statsData,
+    isLoading,
+    isRefreshing,
+    selectedTimeRange,
+    error,
+    displayStats,
+    displayCompletionRate,
+    todayCompleted,
+    chartData,
+    refreshData,
+    handleTimeRangeChange,
+  } = useDashboard(
+    (title, description, variant) => {
+      toast({ title, description, variant });
+    },
+    (title, description) => {
+      toast({ title, description });
+    },
+    t
+  );
 
   const timeRangeOptions = [
     { value: '7days' as TimeRange, label: t('timeRange.7days') },
     { value: '30days' as TimeRange, label: t('timeRange.30days') },
     { value: 'thisMonth' as TimeRange, label: t('timeRange.thisMonth') },
   ];
-
-  // 載入統計數據
-  const loadStatsData = useCallback(
-    async (timeRange: TimeRange = selectedTimeRange) => {
-      try {
-        setError(null);
-        const stats = await statsService.getStats(timeRange);
-        setStatsData(stats);
-      } catch (_) {
-        setError(t('error.loadStats'));
-
-        toast({
-          title: t('toast.warning'),
-          description: t('error.advancedStats'),
-          variant: 'destructive',
-        });
-      }
-    },
-    [selectedTimeRange, t, toast]
-  );
-
-  // 重新整理數據
-  const refreshData = async () => {
-    setIsRefreshing(true);
-    try {
-      await Promise.all([loadTodos(), loadStatsData(selectedTimeRange)]);
-
-      toast({
-        title: 'Success',
-        description: 'Dashboard data refreshed',
-      });
-    } catch (_) {
-      toast({
-        title: 'Error',
-        description: 'Failed to refresh some data',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
-
-  // 處理時間範圍變更
-  const handleTimeRangeChange = async (timeRange: TimeRange) => {
-    setSelectedTimeRange(timeRange);
-    setIsRefreshing(true);
-    try {
-      await loadStatsData(timeRange);
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
-
-  // 初始載入
-  useEffect(() => {
-    const loadInitialData = async () => {
-      setIsLoading(true);
-      try {
-        const [todosData] = await Promise.all([
-          todoService.getTodos(),
-          statsService.getStats(selectedTimeRange).catch(() => null)
-        ]);
-
-        setTodos(todosData);
-        if (statsService.getStats) {
-          try {
-            const stats = await statsService.getStats(selectedTimeRange);
-            setStatsData(stats);
-          } catch (_) {
-            setError(t('error.loadStats'));
-          }
-        }
-      } catch (_) {
-        toast({
-          title: t('toast.error'),
-          description: t('error.loadTodos'),
-          variant: 'destructive',
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadInitialData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // 計算基本統計數據（從本地 todos 計算，作為後備）
-  const basicStats = {
-    all: todos.length,
-    pending: todos.filter(todo => todo.status === 'pending').length,
-    inProgress: todos.filter(todo => todo.status === 'in-progress').length,
-    completed: todos.filter(todo => todo.status === 'completed').length,
-  };
-
-  const completionRate =
-    todos.length > 0 ? Math.round((basicStats.completed / todos.length) * 100) : 0;
-
-  // 計算今日完成數量
-  const todayCompleted = todos.filter(todo => {
-    if (!todo.completedAt) return false;
-    const completedDate = new Date(todo.completedAt);
-    const today = new Date();
-    return completedDate.setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0);
-  }).length;
-
-  // 使用統計 API 數據或後備到基本計算
-  const displayStats = statsData
-    ? {
-        all: statsData.statusCounts.total,
-        pending: statsData.statusCounts.pending,
-        inProgress: statsData.statusCounts.inProgress,
-        completed: statsData.statusCounts.completed,
-      }
-    : basicStats;
-
-  const displayCompletionRate = statsData?.completionRate ?? completionRate;
-
-  // 準備圖表數據
-  const chartData = statsData?.timeSeries.completed
-    ? {
-        labels: statsData.timeSeries.completed.map(item => {
-          const date = new Date(item.date);
-          return date.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-          });
-        }),
-        datasets: [
-          {
-            label: 'Completed Tasks',
-            data: statsData.timeSeries.completed.map(item => item.count),
-            borderColor: 'rgb(20, 184, 166)',
-            backgroundColor: 'rgba(20, 184, 166, 0.1)',
-          },
-        ],
-      }
-    : undefined;
 
   return (
     <div className="p-4 sm:p-8">
@@ -287,10 +149,7 @@ export default function DashboardPage() {
               <CardContent className="pt-6">
                 {todos.length === 0 ? (
                   <div className="text-center py-8 text-gray-500">
-                    <p>
-                      No tasks yet. Create your first todo to get started!
-                      {t('dashboard.activity.noTasks')}
-                    </p>
+                    <p>{t('dashboard.activity.noTasks')}</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -314,7 +173,7 @@ export default function DashboardPage() {
                               {todo.title}
                             </p>
                             <p className="text-xs text-gray-500 capitalize">
-                              {todo.status.replace('-', ' ')}
+                              {todo.status.replace('-', t('dashboard.activity.statusReplaceHyphen'))}
                             </p>
                           </div>
                         </div>
@@ -332,7 +191,7 @@ export default function DashboardPage() {
                           href="/todos"
                           className="text-sm text-teal-600 hover:text-teal-700 font-medium"
                         >
-                          View all todos →
+                          {t('dashboard.activity.viewAllLink')}
                         </Link>
                       </div>
                     )}
@@ -352,7 +211,7 @@ export default function DashboardPage() {
               <Card className="shadow-sm border-gray-200">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm font-medium text-gray-600">
-                    Most Productive Hour
+                    {t('dashboard.insight.productiveHour')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -360,7 +219,7 @@ export default function DashboardPage() {
                     {statsData.productivity.mostProductiveHour.hour}:00
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    {statsData.productivity.mostProductiveHour.count} tasks completed
+                    {statsData.productivity.mostProductiveHour.count} {t('dashboard.insight.tasksCompleted')}
                   </p>
                 </CardContent>
               </Card>
@@ -369,7 +228,7 @@ export default function DashboardPage() {
               <Card className="shadow-sm border-gray-200">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm font-medium text-gray-600">
-                    Avg Completion Time
+                    {t('dashboard.insight.avgCompletion')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -377,7 +236,7 @@ export default function DashboardPage() {
                     {statsData.averageCompletionTime.hours.toFixed(1)}h
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    {statsData.averageCompletionTime.days.toFixed(1)} days average
+                    {statsData.averageCompletionTime.days.toFixed(1)} {t('dashboard.insight.daysAverage')}
                   </p>
                 </CardContent>
               </Card>
@@ -386,7 +245,7 @@ export default function DashboardPage() {
               <Card className="shadow-sm border-gray-200">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm font-medium text-gray-600">
-                    Weekly Completion Rate
+                    {t('dashboard.insight.weeklyRate')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -395,7 +254,7 @@ export default function DashboardPage() {
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
                     {statsData.productivity.tasksCompletedThisWeek}/
-                    {statsData.productivity.tasksCreatedThisWeek} tasks this week
+                    {statsData.productivity.tasksCreatedThisWeek} {t('dashboard.insight.tasksThisWeek')}
                   </p>
                 </CardContent>
               </Card>

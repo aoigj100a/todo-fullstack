@@ -167,7 +167,23 @@ const translations: TranslationsType = {
     'toast.warning': 'Warning',
     'toast.success': 'Success',
     'error.loadStats': 'Failed to load statistics',
+    'error.loadTodos': 'Failed to load todos',
     'error.advancedStats': 'Unable to load advanced statistics. Showing basic data.',
+
+    // Dashboard 統計洞察
+    'dashboard.insight.productiveHour': 'Most Productive Hour',
+    'dashboard.insight.tasksCompleted': 'tasks completed',
+    'dashboard.insight.avgCompletion': 'Avg Completion Time',
+    'dashboard.insight.daysAverage': 'days average',
+    'dashboard.insight.weeklyRate': 'Weekly Completion Rate',
+    'dashboard.insight.tasksThisWeek': 'tasks this week',
+
+    // Dashboard 其他
+    'dashboard.refreshSuccess': 'Dashboard data refreshed',
+    'dashboard.refreshError': 'Failed to refresh some data',
+    'dashboard.chartLabel.completedTasks': 'Completed Tasks',
+    'dashboard.activity.viewAllLink': 'View all todos →',
+    'dashboard.activity.statusReplaceHyphen': ' ',
   },
   'zh-TW': {
     'hero.title': '輕鬆地管理大家的任務',
@@ -312,7 +328,23 @@ const translations: TranslationsType = {
     'toast.warning': '警告',
     'toast.success': '成功',
     'error.loadStats': '無法載入統計資料',
+    'error.loadTodos': '無法載入待辦事項',
     'error.advancedStats': '無法載入進階統計資料。顯示基本資料。',
+
+    // Dashboard 統計洞察
+    'dashboard.insight.productiveHour': '最高效時段',
+    'dashboard.insight.tasksCompleted': '個任務已完成',
+    'dashboard.insight.avgCompletion': '平均完成時間',
+    'dashboard.insight.daysAverage': '天平均',
+    'dashboard.insight.weeklyRate': '週完成率',
+    'dashboard.insight.tasksThisWeek': '本週任務',
+
+    // Dashboard 其他
+    'dashboard.refreshSuccess': '儀表板資料已重新整理',
+    'dashboard.refreshError': '部分資料重新整理失敗',
+    'dashboard.chartLabel.completedTasks': '已完成任務',
+    'dashboard.activity.viewAllLink': '查看所有待辦事項 →',
+    'dashboard.activity.statusReplaceHyphen': ' ',
   },
 };
 
