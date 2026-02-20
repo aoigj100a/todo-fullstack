@@ -1,6 +1,7 @@
-// src/components/features/todos/CreateTodoDialog.tsx 修復受控模式
-import { useState, useEffect, useRef } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useRef } from 'react';
+
+import { KeyboardIcon, Plus } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,7 +13,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -20,14 +20,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { todoService } from '@/service/todo';
+import { Textarea } from '@/components/ui/textarea';
+
 import { useLanguage } from '@/contexts/LanguageContext';
-import { KeyboardIcon, Plus } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+
+import { todoService } from '@/service/todo';
+
+import { TodoStatus } from '@/types/todo';
 
 interface CreateTodoDialogProps {
   onSuccess: () => void;
-  open?: boolean; // 受控打開狀態
-  onOpenChange?: (open: boolean) => void; // 打開狀態變更回調
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export function CreateTodoDialog({
@@ -38,43 +43,15 @@ export function CreateTodoDialog({
   const { t } = useLanguage();
   const { toast } = useToast();
 
-  // 當存在外部控制時，不使用內部狀態
   const [internalOpen, setInternalOpen] = useState(false);
-
-  // 判斷是受控模式還是非受控模式
   const isControlled = externalOpen !== undefined;
   const open = isControlled ? externalOpen : internalOpen;
 
   const titleInputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [status, setStatus] = useState<'pending' | 'in-progress' | 'completed'>('pending');
+  const [status, setStatus] = useState<TodoStatus>('pending');
   const [isLoading, setIsLoading] = useState(false);
-
-  // 處理對話框開關狀態變更
-  const handleOpenChange = (newOpen: boolean) => {
-    if (!isControlled) {
-      setInternalOpen(newOpen);
-    }
-
-    if (externalOnOpenChange) {
-      externalOnOpenChange(newOpen);
-    }
-
-    // 重置表單 (當對話框關閉時)
-    if (!newOpen) {
-      resetForm();
-    }
-  };
-
-  // 當對話框打開時，聚焦到標題輸入框
-  useEffect(() => {
-    if (open && titleInputRef.current) {
-      setTimeout(() => {
-        titleInputRef.current?.focus();
-      }, 100);
-    }
-  }, [open]);
 
   const resetForm = () => {
     setTitle('');
@@ -82,9 +59,17 @@ export function CreateTodoDialog({
     setStatus('pending');
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleOpenChange = (newOpen: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(newOpen);
+    }
+    externalOnOpenChange?.(newOpen);
+    if (!newOpen) {
+      resetForm();
+    }
+  };
 
+  const submitTodo = async () => {
     if (!title.trim()) {
       toast({
         title: 'Error',
@@ -100,7 +85,7 @@ export function CreateTodoDialog({
         title,
         description,
         status,
-        assignedTo: 'Jenny', // TODO - 暫時寫死，之後要改成當前登入使用者
+        assignedTo: 'Jenny', // TODO - replace with current logged-in user
       });
 
       toast({
@@ -121,15 +106,15 @@ export function CreateTodoDialog({
     }
   };
 
-  // 鍵盤事件處理
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    submitTodo();
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Ctrl+Enter 或 Cmd+Enter (Mac) 提交表單
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
-      const form = e.currentTarget.closest('form');
-      if (form) {
-        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-      }
+      submitTodo();
     }
   };
 
@@ -149,7 +134,14 @@ export function CreateTodoDialog({
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent className="sm:max-w-[425px]" onKeyDown={handleKeyDown}>
+      <DialogContent
+        className="sm:max-w-[425px]"
+        onKeyDown={handleKeyDown}
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+          titleInputRef.current?.focus();
+        }}
+      >
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -188,7 +180,7 @@ export function CreateTodoDialog({
               <Label htmlFor="status">{t('form.status')}</Label>
               <Select
                 value={status}
-                onValueChange={(value: 'pending' | 'in-progress' | 'completed') => setStatus(value)}
+                onValueChange={(value: TodoStatus) => setStatus(value)}
               >
                 <SelectTrigger id="status">
                   <SelectValue placeholder={t('form.selectStatus')} />
