@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { LayoutDashboard, CheckSquare, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '../shared/LanguageSwitcher';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { useAuth } from '@/contexts/AuthContext';
 
 export function Navbar() {
@@ -67,6 +68,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
+          <ThemeToggle />
           <Button
             variant="ghost"
             size="sm"
