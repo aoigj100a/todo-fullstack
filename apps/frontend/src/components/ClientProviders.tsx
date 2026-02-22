@@ -4,11 +4,14 @@
 import { ReactNode } from 'react';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 
 export default function ClientProviders({ children }: { children: ReactNode }) {
   return (
-    <LanguageProvider>
-      <AuthProvider>{children}</AuthProvider>
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>{children}</AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
