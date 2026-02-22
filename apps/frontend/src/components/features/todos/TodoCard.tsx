@@ -100,7 +100,7 @@ export function TodoCard({
         <div className="flex-1 min-w-0 py-2 relative">
           <h3
             className={cn(
-              'font-medium text-gray-900 truncate select-none',
+              'font-medium text-foreground truncate select-none',
               variant === 'compact' ? 'text-sm' : 'text-base',
             )}
           >
@@ -109,10 +109,10 @@ export function TodoCard({
 
           {/* 描述 - 根據變體調整顯示 */}
           {description && variant === 'default' && (
-            <p className="text-sm text-gray-500 mt-1 line-clamp-2 select-none">{description}</p>
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-2 select-none">{description}</p>
           )}
           {description && variant === 'compact' && (
-            <p className="text-xs text-gray-400 mt-1 truncate select-none">{description}</p>
+            <p className="text-xs text-muted-foreground mt-1 truncate select-none">{description}</p>
           )}
 
           {/* 狀態徽章 - 只在 default 模式顯示 */}

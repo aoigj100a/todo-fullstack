@@ -26,17 +26,17 @@ export function DashboardLoadingState() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Status Distribution Chart Loading */}
         <Card className="animate-pulse">
-          <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-gray-100">
+          <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-border">
             <div className="flex items-center gap-2">
               <Skeleton className="h-5 w-5" />
               <Skeleton className="h-5 w-40" />
             </div>
-            <PieChart className="h-5 w-5 text-gray-300" />
+            <PieChart className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent className="pt-6">
             <div className="flex items-center justify-center h-48">
               <div className="relative">
-                <div className="w-32 h-32 rounded-full border-8 border-gray-200"></div>
+                <div className="w-32 h-32 rounded-full border-8 border-border"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Skeleton className="h-4 w-12" />
                 </div>
@@ -55,12 +55,12 @@ export function DashboardLoadingState() {
 
         {/* Recent Activity Loading */}
         <Card className="animate-pulse">
-          <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-gray-100">
+          <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-border">
             <div className="flex items-center gap-2">
               <Skeleton className="h-5 w-5" />
               <Skeleton className="h-5 w-32" />
             </div>
-            <Clock className="h-5 w-5 text-gray-300" />
+            <Clock className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent className="pt-6">
             <div className="space-y-4">
@@ -83,10 +83,10 @@ export function DashboardLoadingState() {
 
       {/* Trends Chart Loading */}
       <Card className="animate-pulse">
-        <CardHeader className="pb-4 border-b border-gray-100">
+        <CardHeader className="pb-4 border-b border-border">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-2">
-              <Activity className="h-5 w-5 text-gray-300" />
+              <Activity className="h-5 w-5 text-muted-foreground" />
               <Skeleton className="h-5 w-32" />
             </div>
             <div className="flex gap-2">

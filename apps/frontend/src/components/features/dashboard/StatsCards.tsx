@@ -42,7 +42,7 @@ export function StatsCards({
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{completionRate}%</div>
-          <div className="h-2 w-full bg-gray-200 rounded-full mt-2">
+          <div className="h-2 w-full bg-muted rounded-full mt-2">
             <div
               className="h-full bg-green-500 rounded-full"
               style={{ width: `${completionRate}%` }}

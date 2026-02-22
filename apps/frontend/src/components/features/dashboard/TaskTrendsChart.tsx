@@ -53,26 +53,26 @@ export function TaskTrendsChart({}: TaskTrendsChartProps) {
     createdTrend.length >= 2 ? ((createdTrend[1] - createdTrend[0]) / createdTrend[0]) * 100 : 0;
 
   return (
-    <Card className="shadow-sm border-gray-200">
-      <CardHeader className="pb-4 border-b border-gray-100">
+    <Card className="shadow-sm border-border">
+      <CardHeader className="pb-4 border-b border-border">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-2">
             <Activity className="h-5 w-5 text-teal-500" />
-            <CardTitle className="text-lg font-semibold text-gray-800">
+            <CardTitle className="text-lg font-semibold text-foreground">
               {t('dashboard.trends.title')}
             </CardTitle>
           </div>
 
           {/* Period selector */}
           <div className="flex items-center gap-2">
-            <div className="flex bg-gray-100 rounded-lg p-1">
+            <div className="flex bg-muted rounded-lg p-1">
               <Button
                 variant={selectedPeriod === 'week' ? 'default' : 'ghost'}
                 size="sm"
                 className={`h-8 px-3 text-xs font-medium transition-colors ${
                   selectedPeriod === 'week'
                     ? 'bg-teal-500 hover:bg-teal-600 text-white shadow-sm'
-                    : 'hover:bg-gray-200 text-gray-600'
+                    : 'hover:bg-muted/80 text-muted-foreground'
                 }`}
                 onClick={() => setSelectedPeriod('week')}
               >
@@ -85,7 +85,7 @@ export function TaskTrendsChart({}: TaskTrendsChartProps) {
                 className={`h-8 px-3 text-xs font-medium transition-colors ${
                   selectedPeriod === 'month'
                     ? 'bg-teal-500 hover:bg-teal-600 text-white shadow-sm'
-                    : 'hover:bg-gray-200 text-gray-600'
+                    : 'hover:bg-muted/80 text-muted-foreground'
                 }`}
                 onClick={() => setSelectedPeriod('month')}
               >
@@ -99,8 +99,8 @@ export function TaskTrendsChart({}: TaskTrendsChartProps) {
         {/* Summary stats */}
         <div className="grid grid-cols-3 gap-4 mt-4">
           <div className="text-center">
-            <div className="text-lg font-bold text-gray-800">{totalCompleted}</div>
-            <div className="text-xs text-gray-500">{t('dashboard.trends.completed')}</div>
+            <div className="text-lg font-bold text-foreground">{totalCompleted}</div>
+            <div className="text-xs text-muted-foreground">{t('dashboard.trends.completed')}</div>
             <div
               className={`text-xs flex items-center justify-center gap-1 mt-1 ${
                 completedChange >= 0 ? 'text-green-600' : 'text-red-600'
@@ -111,8 +111,8 @@ export function TaskTrendsChart({}: TaskTrendsChartProps) {
             </div>
           </div>
           <div className="text-center">
-            <div className="text-lg font-bold text-gray-800">{totalCreated}</div>
-            <div className="text-xs text-gray-500">{t('dashboard.trends.created')}</div>
+            <div className="text-lg font-bold text-foreground">{totalCreated}</div>
+            <div className="text-xs text-muted-foreground">{t('dashboard.trends.created')}</div>
             <div
               className={`text-xs flex items-center justify-center gap-1 mt-1 ${
                 createdChange >= 0 ? 'text-green-600' : 'text-red-600'
@@ -123,9 +123,9 @@ export function TaskTrendsChart({}: TaskTrendsChartProps) {
             </div>
           </div>
           <div className="text-center">
-            <div className="text-lg font-bold text-gray-800">{completionRate}%</div>
-            <div className="text-xs text-gray-500">{t('dashboard.trends.rate')}</div>
-            <div className="text-xs text-gray-400 mt-1">{t('dashboard.trends.completion')}</div>
+            <div className="text-lg font-bold text-foreground">{completionRate}%</div>
+            <div className="text-xs text-muted-foreground">{t('dashboard.trends.rate')}</div>
+            <div className="text-xs text-muted-foreground mt-1">{t('dashboard.trends.completion')}</div>
           </div>
         </div>
       </CardHeader>
@@ -133,7 +133,7 @@ export function TaskTrendsChart({}: TaskTrendsChartProps) {
       <CardContent className="pt-6">
         <div className="h-[240px] relative">
           {/* Y-axis labels */}
-          <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-400 pr-2">
+          <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-muted-foreground pr-2">
             <span>{maxValue}</span>
             <span>{Math.round(maxValue * 0.75)}</span>
             <span>{Math.round(maxValue * 0.5)}</span>
@@ -148,7 +148,7 @@ export function TaskTrendsChart({}: TaskTrendsChartProps) {
               {[0, 0.25, 0.5, 0.75, 1].map((ratio, index) => (
                 <div
                   key={index}
-                  className="absolute w-full border-t border-gray-100"
+                  className="absolute w-full border-t border-border"
                   style={{ bottom: `${ratio * 100}%` }}
                 />
               ))}
@@ -218,7 +218,7 @@ export function TaskTrendsChart({}: TaskTrendsChartProps) {
                   {/* Day label */}
                   <span
                     className={`text-xs mt-2 font-medium transition-colors ${
-                      hoveredIndex === index ? 'text-gray-800' : 'text-gray-500'
+                      hoveredIndex === index ? 'text-foreground' : 'text-muted-foreground'
                     }`}
                   >
                     {day}
@@ -233,17 +233,17 @@ export function TaskTrendsChart({}: TaskTrendsChartProps) {
         <div className="flex justify-center mt-6 gap-6">
           <div className="flex items-center">
             <div className="w-4 h-4 bg-gradient-to-r from-teal-500 to-teal-400 rounded-sm mr-2 shadow-sm" />
-            <span className="text-sm text-gray-600 font-medium">Completed Tasks</span>
+            <span className="text-sm text-muted-foreground font-medium">Completed Tasks</span>
           </div>
           <div className="flex items-center">
             <div className="w-4 h-4 bg-gradient-to-r from-blue-400 to-blue-300 rounded-sm mr-2 shadow-sm" />
-            <span className="text-sm text-gray-600 font-medium">Created Tasks</span>
+            <span className="text-sm text-muted-foreground font-medium">Created Tasks</span>
           </div>
         </div>
 
         {/* Additional insights */}
-        <div className="mt-6 p-4 bg-gradient-to-r from-teal-50 to-blue-50 rounded-lg border border-teal-100">
-          <div className="text-sm text-gray-700">
+        <div className="mt-6 p-4 bg-gradient-to-r from-teal-50 to-blue-50 dark:from-teal-950/30 dark:to-blue-950/30 rounded-lg border border-teal-100 dark:border-teal-900/40">
+          <div className="text-sm text-foreground">
             <span className="font-medium">💡 Insight:</span>
             {completionRate >= 80 ? (
               <span className="ml-1">

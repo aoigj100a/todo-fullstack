@@ -21,7 +21,7 @@ const DroppableColumn = ({ children, id }: { children: React.ReactNode; id: stri
     <div
       ref={setNodeRef}
       className={`min-h-[200px] transition-colors duration-200 rounded-lg ${
-        isOver ? 'bg-blue-50' : ''
+        isOver ? 'bg-blue-50 dark:bg-blue-900/20' : ''
       }`}
     >
       {children}
@@ -95,23 +95,23 @@ export function TodosBoardView({ todos, onDelete, onEdit, onStatusChange }: Todo
     {
       id: 'pending',
       title: 'Pending',
-      color: 'bg-yellow-100',
-      textColor: 'text-yellow-700',
-      borderColor: 'border-yellow-200',
+      color: 'bg-yellow-100 dark:bg-yellow-900/20',
+      textColor: 'text-yellow-700 dark:text-yellow-400',
+      borderColor: 'border-yellow-200 dark:border-yellow-800/40',
     },
     {
       id: 'in-progress',
       title: 'In Progress',
-      color: 'bg-blue-100',
-      textColor: 'text-blue-700',
-      borderColor: 'border-blue-200',
+      color: 'bg-blue-100 dark:bg-blue-900/20',
+      textColor: 'text-blue-700 dark:text-blue-400',
+      borderColor: 'border-blue-200 dark:border-blue-800/40',
     },
     {
       id: 'completed',
       title: 'Completed',
-      color: 'bg-green-100',
-      textColor: 'text-green-700',
-      borderColor: 'border-green-200',
+      color: 'bg-green-100 dark:bg-green-900/20',
+      textColor: 'text-green-700 dark:text-green-400',
+      borderColor: 'border-green-200 dark:border-green-800/40',
     },
   ];
 
@@ -131,7 +131,7 @@ export function TodosBoardView({ todos, onDelete, onEdit, onStatusChange }: Todo
                 className={`text-md font-medium flex items-center justify-between ${column.textColor}`}
               >
                 {column.title}
-                <span className="bg-white text-xs font-normal px-2 py-1 rounded-full">
+                <span className="bg-background text-xs font-normal px-2 py-1 rounded-full">
                   {todosByStatus[column.id as keyof typeof todosByStatus].length}
                 </span>
               </CardTitle>
@@ -164,7 +164,7 @@ export function TodosBoardView({ todos, onDelete, onEdit, onStatusChange }: Todo
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.3, duration: 0.3 }}
-                      className="text-center p-4 border border-dashed rounded-lg bg-white/50"
+                      className="text-center p-4 border border-dashed rounded-lg bg-background/50"
                     >
                       No tasks in this status
                     </motion.div>

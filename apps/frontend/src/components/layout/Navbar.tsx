@@ -43,7 +43,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="border-b bg-white flex justify-center">
+    <header className="border-b bg-background flex justify-center">
       <div className="w-10/12 flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/todos" className="font-semibold text-lg flex items-center">
@@ -56,7 +56,7 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                  item.active ? 'bg-teal-50 text-teal-700' : 'text-gray-600 hover:bg-gray-100'
+                  item.active ? 'bg-teal-50 text-teal-700' : 'text-muted-foreground hover:bg-muted'
                 }`}
               >
                 <item.icon className="h-4 w-4 mr-1" />
@@ -73,7 +73,7 @@ export function Navbar() {
             variant="ghost"
             size="sm"
             onClick={handleLogout}
-            className="text-gray-600 hover:text-red-600"
+            className="text-muted-foreground hover:text-red-600"
           >
             <LogOut className="h-4 w-4 mr-1" />
             Logout
