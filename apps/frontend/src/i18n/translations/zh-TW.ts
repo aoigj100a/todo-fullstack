@@ -138,6 +138,10 @@ export const zhTW: TranslationsObject = {
   'timeRange.30days': '30天',
   'timeRange.thisMonth': '本月',
 
+  // Theme
+  'theme.toggleLight': '切換為淺色模式',
+  'theme.toggleDark': '切換為深色模式',
+
   'button.refresh': '重新整理',
   'toast.error': '錯誤',
   'toast.warning': '警告',

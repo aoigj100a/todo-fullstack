@@ -12,7 +12,7 @@ export function BottomNavigation() {
 
   if (pathname === '/login' || pathname === '/register' || pathname === '/') return null;
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border z-50 md:hidden">
       <div className="flex justify-around items-center h-16 px-4">
         <Link
           href="/todos"
@@ -20,7 +20,7 @@ export function BottomNavigation() {
             'flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-colors min-w-[60px]',
             pathname === '/todos' || pathname.startsWith('/todos/')
               ? 'text-teal-600 bg-teal-50'
-              : 'text-gray-600 hover:text-teal-600 hover:bg-gray-50'
+              : 'text-muted-foreground hover:text-teal-600 hover:bg-muted/50'
           )}
         >
           <CheckSquare className="h-5 w-5" />
@@ -33,7 +33,7 @@ export function BottomNavigation() {
             'flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-colors min-w-[60px]',
             pathname === '/dashboard'
               ? 'text-teal-600 bg-teal-50'
-              : 'text-gray-600 hover:text-teal-600 hover:bg-gray-50'
+              : 'text-muted-foreground hover:text-teal-600 hover:bg-muted/50'
           )}
         >
           <LayoutDashboard className="h-5 w-5" />
@@ -46,7 +46,7 @@ export function BottomNavigation() {
             'flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-colors min-w-[60px]',
             pathname === '/profile'
               ? 'text-teal-600 bg-teal-50'
-              : 'text-gray-600 hover:text-teal-600 hover:bg-gray-50'
+              : 'text-muted-foreground hover:text-teal-600 hover:bg-muted/50'
           )}
         >
           <User className="h-5 w-5" />

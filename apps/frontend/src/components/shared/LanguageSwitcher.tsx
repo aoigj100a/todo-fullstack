@@ -19,7 +19,7 @@ export function LanguageSwitcher() {
 
   return (
     <div className="flex items-center gap-2">
-      <Globe className="h-4 w-4 text-gray-500" />
+      <Globe className="h-4 w-4 text-muted-foreground" />
       <Button
         variant="ghost"
         size="sm"

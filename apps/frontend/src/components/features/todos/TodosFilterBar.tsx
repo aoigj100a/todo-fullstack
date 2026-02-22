@@ -15,7 +15,7 @@ export function TodosFilterBar({ className, viewType, onViewChange }: TodosFilte
   const { t } = useLanguage();
   return (
     <div
-      className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white rounded-lg shadow-sm ${className}`}
+      className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background rounded-lg shadow-sm ${className}`}
     >
       <div className="flex gap-2 border rounded-md p-1 bg-muted/20">
         <Button

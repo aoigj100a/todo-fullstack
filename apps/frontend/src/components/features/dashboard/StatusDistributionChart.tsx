@@ -86,10 +86,10 @@ export const StatusDistributionChart = ({ statusCounts }: StatusCountsProps) => 
   if (total === 0) {
     return (
       <div className="flex items-center justify-center h-48 flex-col">
-        <div className="w-32 h-32 rounded-full border-4 border-gray-200 flex items-center justify-center mb-4">
-          <span className="text-gray-400 text-sm">無資料</span>
+        <div className="w-32 h-32 rounded-full border-4 border-border flex items-center justify-center mb-4">
+          <span className="text-muted-foreground text-sm">無資料</span>
         </div>
-        <p className="text-gray-500 text-sm">{t('dashboard.statusChart.noData')}</p>
+        <p className="text-muted-foreground text-sm">{t('dashboard.statusChart.noData')}</p>
       </div>
     );
   }
@@ -131,8 +131,8 @@ export const StatusDistributionChart = ({ statusCounts }: StatusCountsProps) => 
             cx={centerX}
             cy={centerY}
             r={radius * 0.6}
-            fill="white"
-            stroke="#f3f4f6"
+            fill="hsl(var(--background))"
+            stroke="hsl(var(--border))"
             strokeWidth="2"
             filter="url(#dropshadow)"
           />
@@ -142,7 +142,7 @@ export const StatusDistributionChart = ({ statusCounts }: StatusCountsProps) => 
             x={centerX}
             y={centerY - 8}
             textAnchor="middle"
-            className="text-2xl font-bold fill-gray-700"
+            className="text-2xl font-bold fill-foreground"
             dominantBaseline="middle"
           >
             {total}
@@ -151,7 +151,7 @@ export const StatusDistributionChart = ({ statusCounts }: StatusCountsProps) => 
             x={centerX}
             y={centerY + 12}
             textAnchor="middle"
-            className="text-sm fill-gray-500"
+            className="text-sm fill-muted-foreground"
             dominantBaseline="middle"
           >
             總任務
@@ -177,10 +177,10 @@ export const StatusDistributionChart = ({ statusCounts }: StatusCountsProps) => 
 
             {/* 標籤與數據 */}
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors">
+              <span className="text-sm font-medium text-foreground transition-colors">
                 {t(segment.labelKey)}
               </span>
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
+              <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                 <span className="font-semibold">{segment.count} 項</span>
                 <span>({segment.percentage.toFixed(0)}%)</span>
               </div>

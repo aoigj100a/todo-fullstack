@@ -141,6 +141,10 @@ export const en: TranslationsObject = {
   'timeRange.30days': '30 Days',
   'timeRange.thisMonth': 'This Month',
 
+  // Theme
+  'theme.toggleLight': 'Switch to light mode',
+  'theme.toggleDark': 'Switch to dark mode',
+
   'button.refresh': 'Refresh',
   'toast.error': 'Error',
   'toast.warning': 'Warning',
