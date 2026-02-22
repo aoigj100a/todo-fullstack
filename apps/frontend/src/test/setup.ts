@@ -1,5 +1,9 @@
 import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import { vi, afterEach } from 'vitest';
+
+// singleThread: true 模式下 @testing-library/react 的 cleanup 不會自動跨檔案執行，需要手動註冊
+afterEach(cleanup);
 
 // Mock Next.js router
 vi.mock('next/navigation', () => ({

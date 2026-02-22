@@ -214,7 +214,24 @@ export const todoService = {
 ### 測試框架
 
 - 前端：Vitest + @testing-library/react
-- 測試檔案位置：`src/__test__/` 目錄
+
+### 測試檔案位置
+
+- 測試檔案放在被測模組同層的 `__test__/` 目錄下（co-location）
+- 全域測試設定檔放在 `src/test/`
+
+```md
+src/components/todos/
+├── **test**/
+│ └── TodoCard.test.tsx
+├── TodoCard.tsx
+└── TodoList.tsx
+
+src/hooks/
+├── **test**/
+│ └── useTodoCard.test.ts
+└── useTodoCard.ts
+```
 
 ### 檔案命名
 

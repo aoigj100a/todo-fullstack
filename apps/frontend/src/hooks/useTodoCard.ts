@@ -1,25 +1,28 @@
 // hooks/useTodoCard.ts
 import { useState } from 'react';
+
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+
 import { useLanguage } from '@/contexts/LanguageContext';
+
 import { todoService } from '@/service/todo';
+
+import { TodoStatus } from '@/types/todo';
+
+interface UseTodoCardParams {
+  _id: string;
+  status: TodoStatus;
+  onStatusChange: () => void;
+  isDragging?: boolean;
+}
 
 export const useTodoCard = ({
   _id,
   status,
   onStatusChange,
-  onDelete,
-  onEdit,
   isDragging = false,
-}: {
-  _id: string;
-  status: 'pending' | 'in-progress' | 'completed';
-  onStatusChange: () => void;
-  onDelete?: () => void;
-  onEdit?: () => void;
-  isDragging?: boolean;
-}) => {
+}: UseTodoCardParams) => {
   const { t } = useLanguage();
   const [isHovered, setIsHovered] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
