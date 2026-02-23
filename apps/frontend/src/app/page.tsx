@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -13,10 +14,11 @@ export default function Home() {
   const { t } = useLanguage();
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-teal-50 to-white dark:from-background dark:to-background">
+    <main className="min-h-screen bg-gradient-to-b from-teal-50 to-white dark:from-teal-950/30 dark:to-background">
       <div className="max-w-6xl mx-auto px-4 py-12 sm:py-20">
-        {/* 語言切換器 */}
-        <div className="absolute top-4 right-4">
+        {/* 語言切換器 + 主題切換器 */}
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+          <ThemeToggle />
           <LanguageSwitcher />
         </div>
 
@@ -46,7 +48,7 @@ export default function Home() {
                 {/* Stylized Todo List UI Example */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 bg-background p-3 rounded-lg shadow-sm">
-                    <div className="h-5 w-5 rounded-full bg-teal-100 flex items-center justify-center text-teal-700">
+                    <div className="h-5 w-5 rounded-full bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400 flex items-center justify-center">
                       <CheckCircle className="h-4 w-4" />
                     </div>
                     <span className="font-medium">{t('hero.taskComplete')}</span>
@@ -78,7 +80,7 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-border">
-              <div className="bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-400 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+              <div className="bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <CheckCircle className="h-6 w-6" />
               </div>
               <h3 className="text-xl font-semibold mb-2">{t('features.taskManagement')}</h3>
@@ -86,7 +88,7 @@ export default function Home() {
             </div>
 
             <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-border">
-              <div className="bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+              <div className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <Clock className="h-6 w-6" />
               </div>
               <h3 className="text-xl font-semibold mb-2">{t('features.progressTracking')}</h3>
@@ -94,7 +96,7 @@ export default function Home() {
             </div>
 
             <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-border">
-              <div className="bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+              <div className="bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <List className="h-6 w-6" />
               </div>
               <h3 className="text-xl font-semibold mb-2">{t('features.multipleViews')}</h3>
