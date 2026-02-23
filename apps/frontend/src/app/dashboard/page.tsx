@@ -63,12 +63,12 @@ export default function DashboardPage() {
                 {t('dashboard.backToTodos')}
               </Link>
             </Button>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">{t('dashboard.title')}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">{t('dashboard.title')}</h1>
           </div>
 
           <div className="flex items-center gap-2">
             {/* 時間範圍選擇器 */}
-            <div className="flex bg-gray-100 rounded-lg p-1">
+            <div className="flex bg-muted rounded-lg p-1">
               {timeRangeOptions.map(option => (
                 <Button
                   key={option.value}
@@ -77,7 +77,7 @@ export default function DashboardPage() {
                   className={`h-8 px-3 text-xs font-medium transition-colors ${
                     selectedTimeRange === option.value
                       ? 'bg-teal-500 hover:bg-teal-600 text-white shadow-sm'
-                      : 'hover:bg-gray-200 text-gray-600'
+                      : 'hover:bg-accent text-muted-foreground'
                   }`}
                   onClick={() => handleTimeRangeChange(option.value)}
                   disabled={isRefreshing}
@@ -126,9 +126,9 @@ export default function DashboardPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* 狀態分布圖 */}
-            <Card className="shadow-sm border-gray-200">
-              <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-gray-100">
-                <CardTitle className="text-lg font-semibold text-gray-800">
+            <Card className="shadow-sm border-border">
+              <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-border">
+                <CardTitle className="text-lg font-semibold text-foreground">
                   {t('dashboard.statusChart.title')}
                 </CardTitle>
                 <PieChart className="h-5 w-5 text-teal-500" />
@@ -139,16 +139,16 @@ export default function DashboardPage() {
             </Card>
 
             {/* 最近活動 */}
-            <Card className="shadow-sm border-gray-200">
-              <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-gray-100">
-                <CardTitle className="text-lg font-semibold text-gray-800">
+            <Card className="shadow-sm border-border">
+              <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-border">
+                <CardTitle className="text-lg font-semibold text-foreground">
                   {t('dashboard.activity.title')}
                 </CardTitle>
                 <Clock className="h-5 w-5 text-teal-500" />
               </CardHeader>
               <CardContent className="pt-6">
                 {todos.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     <p>{t('dashboard.activity.noTasks')}</p>
                   </div>
                 ) : (
@@ -156,7 +156,7 @@ export default function DashboardPage() {
                     {todos.slice(0, 5).map(todo => (
                       <div
                         key={todo._id}
-                        className="flex items-center justify-between py-2 border-b border-gray-50 last:border-b-0"
+                        className="flex items-center justify-between py-2 border-b border-border/50 last:border-b-0"
                       >
                         <div className="flex items-center flex-1 min-w-0">
                           <div
@@ -169,15 +169,15 @@ export default function DashboardPage() {
                             }`}
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
+                            <p className="text-sm font-medium text-foreground truncate">
                               {todo.title}
                             </p>
-                            <p className="text-xs text-gray-500 capitalize">
+                            <p className="text-xs text-muted-foreground capitalize">
                               {todo.status.replace('-', t('dashboard.activity.statusReplaceHyphen'))}
                             </p>
                           </div>
                         </div>
-                        <div className="text-xs text-gray-400 ml-4 flex-shrink-0">
+                        <div className="text-xs text-muted-foreground ml-4 flex-shrink-0">
                           {new Date(todo.updatedAt).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
@@ -208,51 +208,51 @@ export default function DashboardPage() {
           {statsData && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* 生產力洞察 */}
-              <Card className="shadow-sm border-gray-200">
+              <Card className="shadow-sm border-border">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-gray-600">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
                     {t('dashboard.insight.productiveHour')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-gray-800">
+                  <div className="text-2xl font-bold text-foreground">
                     {statsData.productivity.mostProductiveHour.hour}:00
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {statsData.productivity.mostProductiveHour.count} {t('dashboard.insight.tasksCompleted')}
                   </p>
                 </CardContent>
               </Card>
 
               {/* 平均完成時間 */}
-              <Card className="shadow-sm border-gray-200">
+              <Card className="shadow-sm border-border">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-gray-600">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
                     {t('dashboard.insight.avgCompletion')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-gray-800">
+                  <div className="text-2xl font-bold text-foreground">
                     {statsData.averageCompletionTime.hours.toFixed(1)}h
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {statsData.averageCompletionTime.days.toFixed(1)} {t('dashboard.insight.daysAverage')}
                   </p>
                 </CardContent>
               </Card>
 
               {/* 週完成率 */}
-              <Card className="shadow-sm border-gray-200">
+              <Card className="shadow-sm border-border">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-gray-600">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
                     {t('dashboard.insight.weeklyRate')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-gray-800">
+                  <div className="text-2xl font-bold text-foreground">
                     {statsData.productivity.weeklyCompletionRate.toFixed(1)}%
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {statsData.productivity.tasksCompletedThisWeek}/
                     {statsData.productivity.tasksCreatedThisWeek} {t('dashboard.insight.tasksThisWeek')}
                   </p>

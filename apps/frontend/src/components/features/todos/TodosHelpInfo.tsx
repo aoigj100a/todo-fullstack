@@ -73,14 +73,14 @@ export function TodosHelpInfo() {
                       <div
                         key={shortcutIdx}
                         className={`flex items-center gap-2 ${
-                          shortcut.highlight ? 'bg-teal-50 p-1 rounded border border-teal-100' : ''
+                          shortcut.highlight ? 'bg-teal-50 dark:bg-teal-900/30 p-1 rounded border border-teal-100 dark:border-teal-900/40' : ''
                         }`}
                       >
-                        <kbd className="px-2 py-1 bg-white border shadow-sm rounded text-xs font-semibold min-w-[32px] text-center">
+                        <kbd className="px-2 py-1 bg-background border shadow-sm rounded text-xs font-semibold min-w-[32px] text-center">
                           {shortcut.key}
                         </kbd>
                         <span
-                          className={`text-xs ${shortcut.highlight ? 'text-teal-700 font-medium' : 'text-muted-foreground'}`}
+                          className={`text-xs ${shortcut.highlight ? 'text-teal-700 dark:text-teal-400 font-medium' : 'text-muted-foreground'}`}
                         >
                           {shortcut.description}
                         </span>
@@ -93,7 +93,7 @@ export function TodosHelpInfo() {
           </CardContent>
           <CardFooter className="py-3 border-t border-dashed mt-2">
             <p className="text-xs text-muted-foreground flex items-center gap-2">
-              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-teal-100 text-teal-800 text-xs">
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-teal-100 dark:bg-teal-900/40 text-teal-800 dark:text-teal-400 text-xs">
                 i
               </span>
               {t('help.tip')}

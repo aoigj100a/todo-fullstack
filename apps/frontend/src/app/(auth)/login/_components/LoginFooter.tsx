@@ -16,7 +16,7 @@ export function LoginFooter({ isLoading }: LoginFooterProps) {
       >
         {isLoading ? 'Logging in...' : 'Login'}
       </Button>
-      <p className="text-base text-center text-gray-600">
+      <p className="text-base text-center text-muted-foreground">
         Don't have an account?{' '}
         <Link href="/register" className="text-teal-500 hover:underline font-medium">
           Register
