@@ -126,8 +126,8 @@ export default function EditTodoPage() {
       <div className="container max-w-2xl mx-auto py-8 px-4">
         <Card className="text-center p-6">
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900">Todo not found</h2>
-            <p className="text-gray-600">The requested todo does not exist.</p>
+            <h2 className="text-xl font-semibold text-foreground">Todo not found</h2>
+            <p className="text-muted-foreground">The requested todo does not exist.</p>
             <Button asChild className="mt-4 bg-teal-500 hover:bg-teal-600">
               <Link href="/todos">
                 <ArrowLeft className="mr-2 h-4 w-4" />
@@ -146,24 +146,24 @@ export default function EditTodoPage() {
         <Button
           asChild
           variant="ghost"
-          className="mr-4 text-teal-600 hover:text-teal-700 hover:bg-teal-50"
+          className="mr-4 text-teal-600 hover:text-teal-700 hover:bg-teal-50 dark:hover:bg-teal-900/20"
         >
           <Link href={`/todos/${todo._id}`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Link>
         </Button>
-        <h1 className="text-2xl font-bold text-gray-800">Edit Todo</h1>
+        <h1 className="text-2xl font-bold text-foreground">Edit Todo</h1>
       </div>
 
-      <Card className="overflow-hidden border-gray-200 shadow-md">
-        <CardHeader className="bg-gradient-to-r from-teal-50 to-white border-b border-gray-100">
-          <CardTitle className="text-xl font-bold text-gray-800">Edit Todo Details</CardTitle>
+      <Card className="overflow-hidden border-border shadow-md">
+        <CardHeader className="bg-gradient-to-r from-teal-50 to-white dark:from-card dark:to-card border-b border-border">
+          <CardTitle className="text-xl font-bold text-foreground">Edit Todo Details</CardTitle>
         </CardHeader>
         <CardContent className="p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="title" className="text-gray-700">
+              <Label htmlFor="title" className="text-foreground">
                 Title
               </Label>
               <Input
@@ -172,12 +172,12 @@ export default function EditTodoPage() {
                 onChange={e => setTitle(e.target.value)}
                 placeholder="Enter todo title"
                 required
-                className="border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                className="border-input focus:border-teal-500 focus:ring-teal-500"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description" className="text-gray-700">
+              <Label htmlFor="description" className="text-foreground">
                 Description
               </Label>
               <Textarea
@@ -186,19 +186,19 @@ export default function EditTodoPage() {
                 onChange={e => setDescription(e.target.value)}
                 placeholder="Enter todo description (optional)"
                 rows={4}
-                className="border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                className="border-input focus:border-teal-500 focus:ring-teal-500"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="status" className="text-gray-700">
+              <Label htmlFor="status" className="text-foreground">
                 Status
               </Label>
               <Select
                 value={status}
                 onValueChange={(value: 'pending' | 'in-progress' | 'completed') => setStatus(value)}
               >
-                <SelectTrigger id="status" className="border-gray-300 focus:ring-teal-500">
+                <SelectTrigger id="status" className="border-input focus:ring-teal-500">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -214,7 +214,7 @@ export default function EditTodoPage() {
                 type="button"
                 variant="outline"
                 onClick={() => router.push(`/todos/${todo._id}`)}
-                className="flex-1 border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700"
+                className="flex-1 border-teal-200 dark:border-teal-900/40 text-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 hover:text-teal-700"
               >
                 Cancel
               </Button>

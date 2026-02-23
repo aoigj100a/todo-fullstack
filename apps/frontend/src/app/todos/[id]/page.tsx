@@ -15,9 +15,9 @@ import { Todo } from '@/types/todo';
 import { todoService } from '@/service/todo';
 
 const statusColorMap = {
-  pending: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  'in-progress': 'bg-blue-100 text-blue-800 border-blue-200',
-  completed: 'bg-green-100 text-green-800 border-green-200',
+  pending: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800/40',
+  'in-progress': 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/40',
+  completed: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/40',
 } as const;
 
 export default function TodoDetailPage() {
@@ -95,8 +95,8 @@ export default function TodoDetailPage() {
       <div className="container max-w-2xl mx-auto py-8 px-4">
         <Card className="text-center p-6">
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900">Todo not found</h2>
-            <p className="text-gray-600">The requested todo does not exist.</p>
+            <h2 className="text-xl font-semibold text-foreground">Todo not found</h2>
+            <p className="text-muted-foreground">The requested todo does not exist.</p>
             <Button asChild className="mt-4 bg-teal-500 hover:bg-teal-600">
               <Link href="/todos">
                 <ArrowLeft className="mr-2 h-4 w-4" />
@@ -115,20 +115,20 @@ export default function TodoDetailPage() {
         <Button
           asChild
           variant="ghost"
-          className="mr-4 text-teal-600 hover:text-teal-700 hover:bg-teal-50"
+          className="mr-4 text-teal-600 hover:text-teal-700 hover:bg-teal-50 dark:hover:bg-teal-900/20"
         >
           <Link href="/todos">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Link>
         </Button>
-        <h1 className="text-2xl font-bold text-gray-800">Todo Details</h1>
+        <h1 className="text-2xl font-bold text-foreground">Todo Details</h1>
       </div>
 
-      <Card className="overflow-hidden border-gray-200 shadow-md">
-        <CardHeader className="bg-gradient-to-r from-teal-50 to-white border-b border-gray-100 pb-4">
+      <Card className="overflow-hidden border-border shadow-md">
+        <CardHeader className="bg-gradient-to-r from-teal-50 to-white dark:from-card dark:to-card border-b border-border pb-4">
           <div className="flex flex-col space-y-2 md:flex-row md:items-center md:justify-between md:space-y-0">
-            <CardTitle className="text-xl font-bold text-gray-800">{todo.title}</CardTitle>
+            <CardTitle className="text-xl font-bold text-foreground">{todo.title}</CardTitle>
             <Badge className={statusColorMap[todo.status as keyof typeof statusColorMap]}>
               {todo.status.charAt(0).toUpperCase() + todo.status.slice(1).replace('-', ' ')}
             </Badge>
@@ -138,22 +138,22 @@ export default function TodoDetailPage() {
           <div className="space-y-6">
             {todo.description && (
               <div className="mt-2">
-                <h3 className="mb-2 text-sm font-medium text-gray-500">Description</h3>
-                <p className="rounded-lg bg-gray-50 p-4 text-gray-700">{todo.description}</p>
+                <h3 className="mb-2 text-sm font-medium text-muted-foreground">Description</h3>
+                <p className="rounded-lg bg-muted p-4 text-foreground">{todo.description}</p>
               </div>
             )}
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="rounded-lg bg-gray-50 p-4">
-                <div className="flex items-center text-gray-600">
+              <div className="rounded-lg bg-muted p-4">
+                <div className="flex items-center text-muted-foreground">
                   <Calendar className="mr-2 h-4 w-4 text-teal-500" />
                   <span className="text-sm font-medium">Created:</span>
                   <span className="ml-2 text-sm">{format(new Date(todo.createdAt), 'PPP')}</span>
                 </div>
               </div>
 
-              <div className="rounded-lg bg-gray-50 p-4">
-                <div className="flex items-center text-gray-600">
+              <div className="rounded-lg bg-muted p-4">
+                <div className="flex items-center text-muted-foreground">
                   <Clock className="mr-2 h-4 w-4 text-teal-500" />
                   <span className="text-sm font-medium">Last Updated:</span>
                   <span className="ml-2 text-sm">{format(new Date(todo.updatedAt), 'PPP')}</span>
@@ -162,8 +162,8 @@ export default function TodoDetailPage() {
             </div>
 
             {todo.assignedTo && (
-              <div className="rounded-lg bg-gray-50 p-4">
-                <div className="flex items-center text-gray-600">
+              <div className="rounded-lg bg-muted p-4">
+                <div className="flex items-center text-muted-foreground">
                   <span className="mr-2 text-teal-500">👤</span>
                   <span className="text-sm font-medium">Assigned to:</span>
                   <span className="ml-2 text-sm">{todo.assignedTo}</span>
@@ -174,7 +174,7 @@ export default function TodoDetailPage() {
             <div className="mt-8 flex gap-4">
               <Button
                 variant="outline"
-                className="flex-1 border-teal-200 text-teal-500 hover:bg-teal-50 hover:text-teal-600"
+                className="flex-1 border-teal-200 dark:border-teal-900/40 text-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/20 hover:text-teal-600"
                 onClick={() => router.push(`/todos/${todo._id}/edit`)}
               >
                 <Edit className="mr-2 h-4 w-4" />

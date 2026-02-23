@@ -378,13 +378,13 @@ function TodosPage() {
         <TodosFilterBar
           viewType={viewType}
           onViewChange={handleViewChange}
-          className="bg-white rounded-lg shadow-sm"
+          className="bg-card rounded-lg shadow-sm"
         />
         <TodosStatusFilter
           currentStatus={filterStatus}
           statusCounts={statusCounts}
           onStatusChange={handleFilterChange}
-          className="bg-white rounded-lg shadow-sm"
+          className="bg-card rounded-lg shadow-sm"
         />
       </div>
 
