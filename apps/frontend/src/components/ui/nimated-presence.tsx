@@ -3,9 +3,10 @@
 
 import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { AnimatePresence, motion, AnimationProps } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import type { MotionProps } from 'framer-motion';
 
-interface AnimatedContainerProps extends Omit<AnimationProps, 'className'> {
+interface AnimatedContainerProps extends Omit<MotionProps, 'className'> {
   children: React.ReactNode;
   className?: string;
 }
