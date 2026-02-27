@@ -15,7 +15,7 @@ import { EditTodoDialog } from '@/components/features/todos/EditTodoDialog';
 import { TodosFilterBar } from '@/components/features/todos/TodosFilterBar';
 import { TodosStatusFilter } from '@/components/features/todos/TodosStatusFilter';
 import { TodosEmptyState } from '@/components/features/todos/TodosEmptyState';
-import { FadePresence } from '@/components/ui/nimated-presence';
+import { FadePresence } from '@/components/ui/animated-presence';
 import { TodosHelpInfo } from '@/components/features/todos/TodosHelpInfo';
 import { Button } from '@/components/ui/button';
 

@@ -1,4 +1,4 @@
-// src/components/ui/nimated-presence.tsx
+// src/components/ui/animated-presence.tsx
 'use client';
 
 import * as React from 'react';
