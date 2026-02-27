@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
@@ -28,7 +28,7 @@ type ViewType = 'list' | 'board';
 type FilterStatus = 'all' | 'pending' | 'in-progress' | 'completed';
 type TodoStatus = 'pending' | 'in-progress' | 'completed';
 
-function TodosPage() {
+function TodosPageContent() {
   const { t } = useLanguage();
 
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -490,4 +490,10 @@ function TodosPage() {
   );
 }
 
-export default TodosPage;
+export default function TodosPage() {
+  return (
+    <Suspense fallback={<TodosLoadingState />}>
+      <TodosPageContent />
+    </Suspense>
+  );
+}

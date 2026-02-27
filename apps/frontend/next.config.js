@@ -5,9 +5,6 @@ const nextConfig = {
     ignoreDuringBuilds: false,
     dirs: ['src'],
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
 };
 
 module.exports = nextConfig;
