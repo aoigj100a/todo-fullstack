@@ -18,5 +18,5 @@
     }
   },
   "include": ["src/**/*", ".eslintrc.js"],
-  "exclude": ["node_modules", "dist", "src/test-todo.ts"]
+  "exclude": ["node_modules", "dist"]
 }

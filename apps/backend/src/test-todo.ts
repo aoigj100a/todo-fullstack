@@ -1,6 +1,6 @@
 // src/test-todo.ts
 import mongoose from 'mongoose';
-import { Todo } from './models/Todo';
+import { Todo, ITodo } from './models/Todo';
 
 // MongoDB 連線設定
 const connectDB = async () => {
@@ -39,7 +39,7 @@ const testCreateTodo = async () => {
       dueDate: new Date('2025-03-01'),
     });
 
-    const savedTodo = await newTodo.save();
+    const savedTodo = await newTodo.save() as ITodo & { _id: mongoose.Types.ObjectId };
     console.log('Created Todo:', JSON.stringify(savedTodo.toJSON(), null, 2));
     return savedTodo;
   } catch (error) {
