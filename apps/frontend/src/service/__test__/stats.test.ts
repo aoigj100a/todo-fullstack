@@ -118,7 +118,6 @@ describe('statsService', () => {
 
   describe('getRelativeDate', () => {
     test('should return a date offset by positive days', () => {
-      const now = new Date();
       const result = statsService.getRelativeDate(3);
       const expected = new Date();
       expected.setDate(expected.getDate() + 3);

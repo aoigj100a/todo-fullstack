@@ -13,10 +13,3 @@ export interface BaseEntity {
   createdAt: string;
   updatedAt: string;
 }
-
-// 可選: 擴展 Window 介面增加全域類型
-declare global {
-  interface Window {
-    // 在需要時可以擴展 Window 類型
-  }
-}

@@ -95,7 +95,7 @@ export function CreateTodoDialog({
 
       handleOpenChange(false);
       onSuccess();
-    } catch (_) {
+    } catch {
       toast({
         title: 'Error',
         description: t('toast.error.create'),
@@ -137,7 +137,7 @@ export function CreateTodoDialog({
       <DialogContent
         className="sm:max-w-[425px]"
         onKeyDown={handleKeyDown}
-        onOpenAutoFocus={(e) => {
+        onOpenAutoFocus={e => {
           e.preventDefault();
           titleInputRef.current?.focus();
         }}
@@ -178,10 +178,7 @@ export function CreateTodoDialog({
             </div>
             <div className="grid gap-2">
               <Label htmlFor="status">{t('form.status')}</Label>
-              <Select
-                value={status}
-                onValueChange={(value: TodoStatus) => setStatus(value)}
-              >
+              <Select value={status} onValueChange={(value: TodoStatus) => setStatus(value)}>
                 <SelectTrigger id="status">
                   <SelectValue placeholder={t('form.selectStatus')} />
                 </SelectTrigger>

@@ -29,15 +29,17 @@ interface UseDashboardReturn {
     completed: number;
   };
   displayCompletionRate: number;
-  chartData: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      borderColor: string;
-      backgroundColor: string;
-    }[];
-  } | undefined;
+  chartData:
+    | {
+        labels: string[];
+        datasets: {
+          label: string;
+          data: number[];
+          borderColor: string;
+          backgroundColor: string;
+        }[];
+      }
+    | undefined;
   loadTodos: () => Promise<void>;
   loadStatsData: (timeRange?: TimeRange) => Promise<void>;
   refreshData: () => Promise<void>;
@@ -61,7 +63,7 @@ export function useDashboard(
     try {
       const data = await todoService.getTodos();
       setTodos(data);
-    } catch (_) {
+    } catch {
       onError(t('toast.error'), t('error.loadTodos'), 'destructive');
     }
   }, [t, onError]);
@@ -73,7 +75,7 @@ export function useDashboard(
         setError(null);
         const stats = await statsService.getStats(timeRange);
         setStatsData(stats);
-      } catch (_) {
+      } catch {
         setError(t('error.loadStats'));
 
         onError(t('toast.warning'), t('error.advancedStats'), 'destructive');
@@ -89,7 +91,7 @@ export function useDashboard(
       await Promise.all([loadTodos(), loadStatsData(selectedTimeRange)]);
 
       onSuccess(t('toast.success'), t('dashboard.refreshSuccess'));
-    } catch (_) {
+    } catch {
       onError(t('toast.error'), t('dashboard.refreshError'), 'destructive');
     } finally {
       setIsRefreshing(false);
@@ -97,15 +99,18 @@ export function useDashboard(
   }, [loadTodos, loadStatsData, selectedTimeRange, t, onError, onSuccess]);
 
   // 處理時間範圍變更
-  const handleTimeRangeChange = useCallback(async (timeRange: TimeRange) => {
-    setSelectedTimeRange(timeRange);
-    setIsRefreshing(true);
-    try {
-      await loadStatsData(timeRange);
-    } finally {
-      setIsRefreshing(false);
-    }
-  }, [loadStatsData]);
+  const handleTimeRangeChange = useCallback(
+    async (timeRange: TimeRange) => {
+      setSelectedTimeRange(timeRange);
+      setIsRefreshing(true);
+      try {
+        await loadStatsData(timeRange);
+      } finally {
+        setIsRefreshing(false);
+      }
+    },
+    [loadStatsData]
+  );
 
   // 初始載入
   useEffect(() => {
@@ -114,7 +119,7 @@ export function useDashboard(
       try {
         const [todosData] = await Promise.all([
           todoService.getTodos(),
-          statsService.getStats(selectedTimeRange).catch(() => null)
+          statsService.getStats(selectedTimeRange).catch(() => null),
         ]);
 
         setTodos(todosData);
@@ -122,11 +127,11 @@ export function useDashboard(
           try {
             const stats = await statsService.getStats(selectedTimeRange);
             setStatsData(stats);
-          } catch (_) {
+          } catch {
             setError(t('error.loadStats'));
           }
         }
-      } catch (_) {
+      } catch {
         onError(t('toast.error'), t('error.loadTodos'), 'destructive');
       } finally {
         setIsLoading(false);

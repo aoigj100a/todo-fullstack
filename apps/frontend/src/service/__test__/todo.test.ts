@@ -61,7 +61,7 @@ describe('todoService', () => {
       global.fetch = mockFetchFailure();
 
       await expect(todoService.createTodo({ title: 'fail' })).rejects.toThrow(
-        'Failed to create todo',
+        'Failed to create todo'
       );
     });
   });

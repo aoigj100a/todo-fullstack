@@ -63,7 +63,9 @@ export default function DashboardPage() {
                 {t('dashboard.backToTodos')}
               </Link>
             </Button>
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">{t('dashboard.title')}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
+              {t('dashboard.title')}
+            </h1>
           </div>
 
           <div className="flex items-center gap-2">
@@ -173,7 +175,10 @@ export default function DashboardPage() {
                               {todo.title}
                             </p>
                             <p className="text-xs text-muted-foreground capitalize">
-                              {todo.status.replace('-', t('dashboard.activity.statusReplaceHyphen'))}
+                              {todo.status.replace(
+                                '-',
+                                t('dashboard.activity.statusReplaceHyphen')
+                              )}
                             </p>
                           </div>
                         </div>
@@ -219,7 +224,8 @@ export default function DashboardPage() {
                     {statsData.productivity.mostProductiveHour.hour}:00
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {statsData.productivity.mostProductiveHour.count} {t('dashboard.insight.tasksCompleted')}
+                    {statsData.productivity.mostProductiveHour.count}{' '}
+                    {t('dashboard.insight.tasksCompleted')}
                   </p>
                 </CardContent>
               </Card>
@@ -236,7 +242,8 @@ export default function DashboardPage() {
                     {statsData.averageCompletionTime.hours.toFixed(1)}h
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {statsData.averageCompletionTime.days.toFixed(1)} {t('dashboard.insight.daysAverage')}
+                    {statsData.averageCompletionTime.days.toFixed(1)}{' '}
+                    {t('dashboard.insight.daysAverage')}
                   </p>
                 </CardContent>
               </Card>
@@ -254,7 +261,8 @@ export default function DashboardPage() {
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
                     {statsData.productivity.tasksCompletedThisWeek}/
-                    {statsData.productivity.tasksCreatedThisWeek} {t('dashboard.insight.tasksThisWeek')}
+                    {statsData.productivity.tasksCreatedThisWeek}{' '}
+                    {t('dashboard.insight.tasksThisWeek')}
                   </p>
                 </CardContent>
               </Card>

@@ -5,35 +5,31 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
 export const authService = {
   async login(input: LoginInput): Promise<AuthResponse> {
-    try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(input),
-        // 確保傳遞 credentials
-        credentials: 'include',
-      });
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(input),
+      // 確保傳遞 credentials
+      credentials: 'include',
+    });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to login');
-      }
-
-      const data = await response.json();
-
-      // eslint-disable-next-line no-console
-      console.log('Login successful:', data);
-
-      // 確保返回格式一致
-      return {
-        token: data.token,
-        user: data.user,
-      };
-    } catch (error) {
-      throw error;
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to login');
     }
+
+    const data = await response.json();
+
+    // eslint-disable-next-line no-console
+    console.log('Login successful:', data);
+
+    // 確保返回格式一致
+    return {
+      token: data.token,
+      user: data.user,
+    };
   },
 
   async register(input: RegisterInput): Promise<AuthResponse> {

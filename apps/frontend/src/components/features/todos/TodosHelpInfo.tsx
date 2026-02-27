@@ -73,7 +73,9 @@ export function TodosHelpInfo() {
                       <div
                         key={shortcutIdx}
                         className={`flex items-center gap-2 ${
-                          shortcut.highlight ? 'bg-teal-50 dark:bg-teal-900/30 p-1 rounded border border-teal-100 dark:border-teal-900/40' : ''
+                          shortcut.highlight
+                            ? 'bg-teal-50 dark:bg-teal-900/30 p-1 rounded border border-teal-100 dark:border-teal-900/40'
+                            : ''
                         }`}
                       >
                         <kbd className="px-2 py-1 bg-background border shadow-sm rounded text-xs font-semibold min-w-[32px] text-center">

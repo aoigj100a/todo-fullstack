@@ -81,7 +81,7 @@ export default function ProfilePage() {
         title: '個人資料已更新',
         description: '您的個人資料已成功更新。',
       });
-    } catch (_) {
+    } catch {
       toast({
         variant: 'destructive',
         title: '更新失敗',
@@ -131,7 +131,7 @@ export default function ProfilePage() {
         newPassword: '',
         confirmPassword: '',
       });
-    } catch (_) {
+    } catch {
       toast({
         variant: 'destructive',
         title: '更新失敗',
@@ -159,7 +159,7 @@ export default function ProfilePage() {
         logout();
         router.push('/');
       }, 2000);
-    } catch (_) {
+    } catch {
       toast({
         variant: 'destructive',
         title: '刪除失敗',

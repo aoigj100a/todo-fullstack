@@ -56,7 +56,7 @@ export default function EditTodoPage() {
           });
           router.push('/todos');
         }
-      } catch (_) {
+      } catch {
         toast({
           title: 'Error',
           description: 'Failed to load todo',
@@ -102,7 +102,7 @@ export default function EditTodoPage() {
 
       // 導航回詳情頁
       router.push(`/todos/${todo._id}`);
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'Failed to update todo',

@@ -16,7 +16,7 @@ interface TaskTrendsChartProps {
   };
 }
 
-export function TaskTrendsChart({}: TaskTrendsChartProps) {
+export function TaskTrendsChart(_props: TaskTrendsChartProps) {
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month'>('week');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { t } = useLanguage();
@@ -125,7 +125,9 @@ export function TaskTrendsChart({}: TaskTrendsChartProps) {
           <div className="text-center">
             <div className="text-lg font-bold text-foreground">{completionRate}%</div>
             <div className="text-xs text-muted-foreground">{t('dashboard.trends.rate')}</div>
-            <div className="text-xs text-muted-foreground mt-1">{t('dashboard.trends.completion')}</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              {t('dashboard.trends.completion')}
+            </div>
           </div>
         </div>
       </CardHeader>

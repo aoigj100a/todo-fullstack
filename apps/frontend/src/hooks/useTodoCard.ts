@@ -51,7 +51,7 @@ export const useTodoCard = ({
       await todoService.toggleTodoStatus(_id, status);
       toast.success(t('toast.statusUpdated'));
       onStatusChange();
-    } catch (_) {
+    } catch {
       toast.error(t('toast.error.update'));
     } finally {
       setIsUpdating(false);

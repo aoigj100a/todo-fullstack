@@ -76,7 +76,7 @@ export function EditTodoDialog({ todo, open, onClose, onSuccess }: EditTodoDialo
 
       onSuccess();
       onClose();
-    } catch (_) {
+    } catch {
       toast({
         title: 'Error',
         description: t('toast.error.update'),

@@ -56,7 +56,7 @@ export function TodoCard({
     !isDragging && 'cursor-pointer',
     isFocused && 'ring-2 ring-teal-500 ring-offset-2',
     isDragging && 'shadow-lg',
-    variant === 'compact' && 'p-1',
+    variant === 'compact' && 'p-1'
   );
 
   // 處理編輯按鈕點擊
@@ -90,7 +90,7 @@ export function TodoCard({
           onClick={handleStatusToggle}
           className={cn(
             'status-icon transition-colors relative z-50 flex-shrink-0',
-            isDragging ? 'pointer-events-none' : 'cursor-pointer p-1',
+            isDragging ? 'pointer-events-none' : 'cursor-pointer p-1'
           )}
         >
           <TodoStatusIcon status={status} isUpdating={isUpdating} />
@@ -101,7 +101,7 @@ export function TodoCard({
           <h3
             className={cn(
               'font-medium text-foreground truncate select-none',
-              variant === 'compact' ? 'text-sm' : 'text-base',
+              variant === 'compact' ? 'text-sm' : 'text-base'
             )}
           >
             {title}
@@ -109,7 +109,9 @@ export function TodoCard({
 
           {/* 描述 - 根據變體調整顯示 */}
           {description && variant === 'default' && (
-            <p className="text-sm text-muted-foreground mt-1 line-clamp-2 select-none">{description}</p>
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-2 select-none">
+              {description}
+            </p>
           )}
           {description && variant === 'compact' && (
             <p className="text-xs text-muted-foreground mt-1 truncate select-none">{description}</p>
@@ -127,7 +129,7 @@ export function TodoCard({
             <div
               className={cn(
                 'inline-block px-2 py-1 rounded-full text-xs mt-1 select-none',
-                statusColor[status],
+                statusColor[status]
               )}
             >
               {t(statusTranslationKeys[status])}
@@ -146,7 +148,7 @@ export function TodoCard({
               variant === 'compact'
                 ? 'opacity-60 hover:opacity-100' // Board 視圖中始終可見
                 : 'opacity-0 group-hover:opacity-100', // List 視圖中 hover 顯示
-              isDragging ? 'pointer-events-none' : 'pointer-events-auto',
+              isDragging ? 'pointer-events-none' : 'pointer-events-auto'
             )}
             disabled={isDragging}
           >
@@ -161,7 +163,7 @@ export function TodoCard({
               variant === 'compact'
                 ? 'opacity-60 hover:opacity-100' // Board 視圖中始終可見
                 : 'opacity-0 group-hover:opacity-100', // List 視圖中 hover 顯示
-              isDragging ? 'pointer-events-none' : 'pointer-events-auto',
+              isDragging ? 'pointer-events-none' : 'pointer-events-auto'
             )}
             disabled={isDragging}
           >

@@ -79,7 +79,7 @@ function TodosPage() {
         const pendingTodoIds = getPendingDeletionIds();
         return data.filter((todo: Todo) => !pendingTodoIds.includes(todo._id));
       });
-    } catch (_) {
+    } catch {
       toast.error(t('toast.error.load'));
     } finally {
       setIsLoading(false);
@@ -271,7 +271,7 @@ function TodosPage() {
       // 調用新的 setTodoStatus 方法
       await todoService.setTodoStatus(todoId, newStatus);
       toast.success(t('toast.statusUpdated'));
-    } catch (_) {
+    } catch {
       // 失敗時回滾到原始狀態
       setTodos(prevTodos =>
         prevTodos.map(todo =>
@@ -282,7 +282,7 @@ function TodosPage() {
     }
   };
 
-  const handleDragStart = (_: DragStartEvent) => {};
+  const handleDragStart = (_event: DragStartEvent) => {};
   const handleDragCancel = () => {};
 
   // 設置鍵盤事件監聽器
@@ -323,7 +323,7 @@ function TodosPage() {
           const pendingTodoIds = getPendingDeletionIds();
           return data.filter((todo: Todo) => !pendingTodoIds.includes(todo._id));
         });
-      } catch (_) {
+      } catch {
         toast.error(t('toast.error.load'));
       } finally {
         setIsLoading(false);

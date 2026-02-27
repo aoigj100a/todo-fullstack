@@ -57,7 +57,7 @@ export function useSoftDelete<T extends { _id: string }>(
         try {
           await onDelete(itemId);
           pendingDeletions.current.delete(itemId);
-        } catch (error) {
+        } catch {
           // Restore item on delete failure
           const pendingDeletion = pendingDeletions.current.get(itemId);
           if (pendingDeletion) {

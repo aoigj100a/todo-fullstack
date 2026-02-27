@@ -33,7 +33,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   // 翻譯函數
-  const t = (key: string, vars?: Record<string, string | number>): string => {
+  const t = (key: string): string => {
     const text = translations[language][key];
     if (text) {
       // 處理變數替換，如 {year}

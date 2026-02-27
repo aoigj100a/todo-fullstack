@@ -1,8 +1,6 @@
 // src/types/auth.ts
 // 認證相關型別定義
 
-import { BaseEntity } from './index';
-
 /**
  * 登入請求參數
  */
