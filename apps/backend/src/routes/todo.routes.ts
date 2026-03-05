@@ -17,6 +17,7 @@ import {
   contentValidation,
   headerSecurity,
 } from '../middlewares/security.middleware';
+import { protect } from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -26,20 +27,22 @@ router.use(mongoInjectionProtection);
 router.use(xssProtection);
 router.use(sqlInjectionProtection);
 
-router.get('/', getTodosValidation, handleValidationErrors, getTodos);
+router.get('/', protect, getTodosValidation, handleValidationErrors, getTodos);
 
 router.post(
   '/',
+  protect,
   rateLimitSensitiveOps(20, 5 * 60 * 1000),
   createTodoValidation,
   handleValidationErrors,
   createTodo
 );
 
-router.put('/:id', updateTodoValidation, handleValidationErrors, updateTodo);
+router.put('/:id', protect, updateTodoValidation, handleValidationErrors, updateTodo);
 
 router.delete(
   '/:id',
+  protect,
   rateLimitSensitiveOps(10, 5 * 60 * 1000),
   deleteTodoValidation,
   handleValidationErrors,

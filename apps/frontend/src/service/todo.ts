@@ -2,10 +2,22 @@ import { CreateTodoInput, Todo, TodoStatus } from '@/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
+const getAuthHeaders = (): HeadersInit => {
+  const token =
+    localStorage.getItem('token') ||
+    sessionStorage.getItem('token');
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+};
+
 export const todoService = {
   getTodos: async () => {
     try {
-      const response = await fetch(`${API_URL}/todos`);
+      const response = await fetch(`${API_URL}/todos`, {
+        headers: getAuthHeaders(),
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch todos');
       }
@@ -21,9 +33,7 @@ export const todoService = {
     try {
       const response = await fetch(`${API_URL}/todos`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(todo),
       });
 
@@ -43,9 +53,7 @@ export const todoService = {
     try {
       const response = await fetch(`${API_URL}/todos/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(updates),
       });
 
@@ -75,6 +83,7 @@ export const todoService = {
     try {
       const response = await fetch(`${API_URL}/todos/${id}`, {
         method: 'DELETE',
+        headers: getAuthHeaders(),
       });
 
       if (!response.ok) {
