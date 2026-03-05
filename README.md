@@ -45,7 +45,7 @@
 
 ```
 Email: demo@example.com
-Password: Demo1234!
+Password: demo1234
 
 // 快速體驗功能
 ✅ 完整的CRUD操作

@@ -1,11 +1,10 @@
 // src/controllers/todo.controllers.ts
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { Todo } from '../models/Todo';
-import { AuthRequest } from '../middlewares/auth.middleware';
 
-export const getTodos = async (req: AuthRequest, res: Response) => {
+export const getTodos = async (req: Request, res: Response) => {
   try {
-    const todos = await Todo.find({ userId: req.user!.userId });
+    const todos = await Todo.find();
     res.json({ success: true, data: todos });
   } catch {
     res.status(500).json({
@@ -15,7 +14,7 @@ export const getTodos = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const createTodo = async (req: AuthRequest, res: Response) => {
+export const createTodo = async (req: Request, res: Response) => {
   try {
     const { title, description, status, assignedTo } = req.body;
 
@@ -43,7 +42,6 @@ export const createTodo = async (req: AuthRequest, res: Response) => {
       description,
       status: status || 'pending', // 預設為 pending
       assignedTo,
-      userId: req.user!.userId,
     });
 
     // 儲存到資料庫
@@ -63,7 +61,7 @@ export const createTodo = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateTodo = async (req: AuthRequest, res: Response) => {
+export const updateTodo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { title, description, status, assignedTo } = req.body;
@@ -124,11 +122,10 @@ export const updateTodo = async (req: AuthRequest, res: Response) => {
     if (assignedTo !== undefined) updateData.assignedTo = assignedTo;
 
     // 使用 { new: true } 來返回更新後的文件
-    const updatedTodo = await Todo.findOneAndUpdate(
-      { _id: id, userId: req.user!.userId },
-      updateData,
-      { new: true, runValidators: true }
-    );
+    const updatedTodo = await Todo.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true, // 確保更新時也運行驗證
+    });
     // 如果找不到對應的 todo
     if (!updatedTodo) {
       return res.status(404).json({
@@ -151,7 +148,7 @@ export const updateTodo = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const deleteTodo = async (req: AuthRequest, res: Response) => {
+export const deleteTodo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -172,7 +169,7 @@ export const deleteTodo = async (req: AuthRequest, res: Response) => {
     }
 
     // 刪除指定的 todo
-    const deletedTodo = await Todo.findOneAndDelete({ _id: id, userId: req.user!.userId });
+    const deletedTodo = await Todo.findByIdAndDelete(id);
 
     // 如果找不到對應的 todo
     if (!deletedTodo) {
