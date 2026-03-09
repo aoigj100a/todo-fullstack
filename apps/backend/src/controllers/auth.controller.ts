@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { User } from '../models/User';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const JWT_EXPIRES_IN = '24h';
 
 export const register = async (req: Request, res: Response) => {
@@ -46,9 +45,9 @@ export const register = async (req: Request, res: Response) => {
       {
         userId: user._id,
         email: user.email,
-        iat: Date.now(),
+        iat: Math.floor(Date.now() / 1000),
       },
-      JWT_SECRET,
+      process.env.JWT_SECRET as string,
       { expiresIn: JWT_EXPIRES_IN }
     );
 
@@ -108,9 +107,9 @@ export const login = async (req: Request, res: Response) => {
       {
         userId: user._id,
         email: user.email,
-        iat: Date.now(),
+        iat: Math.floor(Date.now() / 1000),
       },
-      JWT_SECRET,
+      process.env.JWT_SECRET as string,
       { expiresIn: JWT_EXPIRES_IN }
     );
 
