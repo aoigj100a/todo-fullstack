@@ -22,8 +22,9 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
+import { toast } from 'sonner';
+
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useToast } from '@/hooks/use-toast';
 
 import { todoService } from '@/service/todo';
 
@@ -41,7 +42,6 @@ export function CreateTodoDialog({
   onOpenChange: externalOnOpenChange,
 }: CreateTodoDialogProps) {
   const { t } = useLanguage();
-  const { toast } = useToast();
 
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = externalOpen !== undefined;
@@ -71,11 +71,7 @@ export function CreateTodoDialog({
 
   const submitTodo = async () => {
     if (!title.trim()) {
-      toast({
-        title: 'Error',
-        description: t('toast.validation.title'),
-        variant: 'destructive',
-      });
+      toast.error(t('toast.validation.title'));
       return;
     }
 
@@ -88,19 +84,12 @@ export function CreateTodoDialog({
         assignedTo: 'Jenny', // TODO - replace with current logged-in user
       });
 
-      toast({
-        title: 'Success',
-        description: t('toast.createSuccess'),
-      });
+      toast.success(t('toast.createSuccess'));
 
       handleOpenChange(false);
       onSuccess();
     } catch {
-      toast({
-        title: 'Error',
-        description: t('toast.error.create'),
-        variant: 'destructive',
-      });
+      toast.error(t('toast.error.create'));
     } finally {
       setIsLoading(false);
     }
