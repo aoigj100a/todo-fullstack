@@ -17,6 +17,22 @@
 
 ## 🎬 專案演示說明
 
+### 測試帳號資訊
+
+從<https://todo-fullstack-frontend-delta.vercel.app>登入開始使用。
+
+```md
+Email: Demo@example.com
+Password: Demo1234@
+
+// 快速體驗功能
+✅ 完整的CRUD操作
+✅ 即時狀態更新
+✅ 撤銷刪除功能
+✅ 多語言支援
+✅ 響應式設計
+```
+
 ### Demo流程設計
 
 ```typescript
@@ -39,20 +55,6 @@
    - 確實刪除一則todo項目
    - 展示多語言切換功能
    - 展示響應式設計適配
-```
-
-### 測試帳號資訊
-
-```
-Email: demo@example.com
-Password: demo1234
-
-// 快速體驗功能
-✅ 完整的CRUD操作
-✅ 即時狀態更新
-✅ 撤銷刪除功能
-✅ 多語言支援
-✅ 響應式設計
 ```
 
 ## 💻 技術棧
